@@ -30,7 +30,11 @@ async function parseResponse(response: Response): Promise<unknown> {
 
   const contentType = response.headers.get('content-type')
 
-  if (contentType?.includes('application/json')) {
+  const isJson =
+    contentType?.includes('application/json') ||
+    contentType?.includes('+json')
+
+  if (isJson) {
     return response.json()
   }
 
@@ -38,13 +42,20 @@ async function parseResponse(response: Response): Promise<unknown> {
 }
 
 function getErrorMessage(payload: unknown, status: number) {
-  if (
-    typeof payload === 'object' &&
-    payload !== null &&
-    'message' in payload &&
-    typeof payload.message === 'string'
-  ) {
-    return payload.message
+  if (typeof payload === 'object' && payload !== null) {
+    if (
+      'detail' in payload &&
+      typeof payload.detail === 'string'
+    ) {
+      return payload.detail
+    }
+
+    if (
+      'message' in payload &&
+      typeof payload.message === 'string'
+    ) {
+      return payload.message
+    }
   }
 
   return `Request failed with status ${status}`
