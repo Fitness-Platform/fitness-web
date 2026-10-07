@@ -1,4 +1,5 @@
 import LoginForm from "../components/LoginForm";
+import { Link } from 'react-router-dom'
 
 function LoginPage() {
   return (
@@ -70,9 +71,12 @@ function LoginPage() {
 
             <p className="mt-8 text-center text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <span className="font-medium text-foreground">
+              <Link
+                to="/register"
+                className="font-medium text-foreground hover:underline"
+              >
                 Create account
-              </span>
+              </Link>
             </p>
           </div>
         </div>
