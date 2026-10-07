@@ -13,7 +13,13 @@ export const registerSchema = z
       .string()
       .min(1, 'Password is required.')
       .min(8, 'Password must be at least 8 characters.')
-      .max(72, 'Password must be at most 72 characters.'),
+      .max(72, 'Password must be at most 72 characters.')
+      .refine(
+        (password) => password.trim().length > 0,
+        {
+          message: 'Password cannot be blank.',
+        },
+      ),
 
     confirmPassword: z
       .string()
