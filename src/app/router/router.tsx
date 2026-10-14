@@ -21,14 +21,23 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: '/app',
-    element: <ProtectedRoute />,
-    children: [],
-  },
-
-  {
-    path: '/admin',
-    element: <AdminRoute />,
-    children: [],
-  },
+  path: '/app',
+  element: <ProtectedRoute />,
+  children: [
+    {
+      index: true,
+      element: <p>Member area</p>,
+    },
+  ],
+},
+{
+  path: '/admin',
+  element: <AdminRoute />,
+  children: [
+    {
+      index: true,
+      element: <p>Admin area</p>,
+    },
+  ],
+},
 ])
