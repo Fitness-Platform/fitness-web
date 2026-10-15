@@ -10,6 +10,7 @@ import MemberCoachingPage from "../../features/member/pages/MemberCoachingPage";
 import MemberGroupsPage from "../../features/member/pages/MemberGroupsPage";
 import MemberHomePage from "../../features/member/pages/MemberHomePage";
 import MemberProgramsPage from "../../features/member/pages/MemberProgramsPage";
+import MemberProgramOverviewPage from "../../features/member/pages/MemberProgramOverviewPage";
 
 export const router = createBrowserRouter([
   {
@@ -26,40 +27,44 @@ export const router = createBrowserRouter([
   },
 
   {
-  path: '/app',
-  element: <ProtectedRoute />,
-  children: [
-    {
-      element: <MemberLayout />,
-      children: [
-        {
-          index: true,
-          element: <MemberHomePage />,
-        },
-        {
-          path: 'programs',
-          element: <MemberProgramsPage />,
-        },
-        {
-          path: 'groups',
-          element: <MemberGroupsPage />,
-        },
-        {
-          path: 'coaching',
-          element: <MemberCoachingPage />,
-        },
-      ],
-    },
-  ],
-},
-{
-  path: '/admin',
-  element: <AdminRoute />,
-  children: [
-    {
-      index: true,
-      element: <p>Admin area</p>,
-    },
-  ],
-},
+    path: "/app",
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <MemberLayout />,
+        children: [
+          {
+            index: true,
+            element: <MemberHomePage />,
+          },
+          {
+            path: "programs",
+            element: <MemberProgramsPage />,
+          },
+          {
+            path: "programs/:programId",
+            element: <MemberProgramOverviewPage />,
+          },
+          {
+            path: "groups",
+            element: <MemberGroupsPage />,
+          },
+          {
+            path: "coaching",
+            element: <MemberCoachingPage />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <AdminRoute />,
+    children: [
+      {
+        index: true,
+        element: <p>Admin area</p>,
+      },
+    ],
+  },
 ]);
