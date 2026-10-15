@@ -1,8 +1,11 @@
+import { Link } from 'react-router-dom'
+
 import type { MemberProgramSummary } from '../types/memberProgram'
 
 type MemberProgramCardProps = {
   program: MemberProgramSummary
   showAccessInfo?: boolean
+  to?: string
 }
 
 function formatAccessDate(value: string) {
@@ -13,12 +16,15 @@ function formatAccessDate(value: string) {
   }).format(new Date(value))
 }
 
-function MemberProgramCard({
+function MemberProgramCardContent({
   program,
-  showAccessInfo = false,
-}: MemberProgramCardProps) {
+  showAccessInfo,
+}: {
+  program: MemberProgramSummary
+  showAccessInfo: boolean
+}) {
   return (
-    <article className="border border-border p-5 sm:p-6">
+    <>
       <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
         Program
       </p>
@@ -38,6 +44,35 @@ function MemberProgramCard({
           Available until {formatAccessDate(program.accessExpiresAt)}
         </p>
       )}
+    </>
+  )
+}
+
+function MemberProgramCard({
+  program,
+  showAccessInfo = false,
+  to,
+}: MemberProgramCardProps) {
+  if (to) {
+    return (
+      <Link
+        to={to}
+        className="block border border-border p-5 transition hover:border-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-2 sm:p-6"
+      >
+        <MemberProgramCardContent
+          program={program}
+          showAccessInfo={showAccessInfo}
+        />
+      </Link>
+    )
+  }
+
+  return (
+    <article className="border border-border p-5 sm:p-6">
+      <MemberProgramCardContent
+        program={program}
+        showAccessInfo={showAccessInfo}
+      />
     </article>
   )
 }
