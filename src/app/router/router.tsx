@@ -1,22 +1,27 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from "react-router-dom";
 
-import LoginPage from '../../features/auth/pages/LoginPage'
-import RootPage from '../../routes/RootPage'
-import RegisterPage from '../../features/auth/pages/RegisterPage'
-import AdminRoute from '../../features/auth/components/AdminRoute'
-import ProtectedRoute from '../../features/auth/components/ProtectedRoute'
+import LoginPage from "../../features/auth/pages/LoginPage";
+import RootPage from "../../routes/RootPage";
+import RegisterPage from "../../features/auth/pages/RegisterPage";
+import AdminRoute from "../../features/auth/components/AdminRoute";
+import ProtectedRoute from "../../features/auth/components/ProtectedRoute";
+import MemberLayout from "../../features/member/layouts/MemberLayout";
+import MemberCoachingPage from "../../features/member/pages/MemberCoachingPage";
+import MemberGroupsPage from "../../features/member/pages/MemberGroupsPage";
+import MemberHomePage from "../../features/member/pages/MemberHomePage";
+import MemberProgramsPage from "../../features/member/pages/MemberProgramsPage";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <RootPage />,
   },
   {
-    path: '/login',
+    path: "/login",
     element: <LoginPage />,
   },
   {
-    path: '/register',
+    path: "/register",
     element: <RegisterPage />,
   },
 
@@ -25,8 +30,25 @@ export const router = createBrowserRouter([
   element: <ProtectedRoute />,
   children: [
     {
-      index: true,
-      element: <p>Member area</p>,
+      element: <MemberLayout />,
+      children: [
+        {
+          index: true,
+          element: <MemberHomePage />,
+        },
+        {
+          path: 'programs',
+          element: <MemberProgramsPage />,
+        },
+        {
+          path: 'groups',
+          element: <MemberGroupsPage />,
+        },
+        {
+          path: 'coaching',
+          element: <MemberCoachingPage />,
+        },
+      ],
     },
   ],
 },
@@ -40,4 +62,4 @@ export const router = createBrowserRouter([
     },
   ],
 },
-])
+]);
