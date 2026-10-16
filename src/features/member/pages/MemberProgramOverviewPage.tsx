@@ -1,8 +1,17 @@
 import { Link, useParams } from 'react-router-dom'
 
+import { ApiError } from '../../../services/apiClient'
 import MemberProgramResourceCard from '../components/MemberProgramResourceCard'
 import MemberProgramWeekCard from '../components/MemberProgramWeekCard'
 import { useMyProgramQuery } from '../hooks/useMyProgramQuery'
+
+function formatAccessDate(value: string) {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(new Date(value))
+}
 
 function MemberProgramOverviewPage() {
   const { programId } = useParams()
@@ -11,8 +20,12 @@ function MemberProgramOverviewPage() {
     data: program,
     isPending,
     isError,
+    error,
     refetch,
   } = useMyProgramQuery(programId)
+
+  const isAccessDenied =
+    error instanceof ApiError && error.status === 403
 
   return (
     <div className="space-y-8">
@@ -31,7 +44,26 @@ function MemberProgramOverviewPage() {
         </div>
       )}
 
-      {isError && (
+      {isAccessDenied && (
+        <div className="border border-border p-5 sm:p-6">
+          <p className="font-medium text-foreground">
+            You don't have access to this program.
+          </p>
+
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            This program is not currently available to your account.
+          </p>
+
+          <Link
+            to="/app/programs"
+            className="mt-4 inline-block text-sm text-foreground underline underline-offset-4"
+          >
+            Back to My Programs
+          </Link>
+        </div>
+      )}
+
+      {isError && !isAccessDenied && (
         <div className="border border-border p-5 sm:p-6">
           <p className="text-sm text-foreground">
             We couldn't load this program.
@@ -63,6 +95,30 @@ function MemberProgramOverviewPage() {
                 {program.description}
               </p>
             )}
+
+            <div className="mt-6 flex flex-wrap gap-x-8 gap-y-4 border-t border-border pt-5">
+              <div>
+                <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                  Current attempt
+                </p>
+
+                <p className="mt-1 text-sm text-foreground">
+                  Started {formatAccessDate(program.accessStartsAt)}
+                </p>
+              </div>
+
+              {program.accessExpiresAt && (
+                <div>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                    Access
+                  </p>
+
+                  <p className="mt-1 text-sm text-foreground">
+                    Until {formatAccessDate(program.accessExpiresAt)}
+                  </p>
+                </div>
+              )}
+            </div>
           </header>
 
           <section aria-labelledby="program-weeks-heading">
