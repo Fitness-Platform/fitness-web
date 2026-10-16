@@ -11,6 +11,7 @@ import MemberGroupsPage from "../../features/member/pages/MemberGroupsPage";
 import MemberHomePage from "../../features/member/pages/MemberHomePage";
 import MemberProgramsPage from "../../features/member/pages/MemberProgramsPage";
 import MemberProgramOverviewPage from "../../features/member/pages/MemberProgramOverviewPage";
+import MemberWeekOverviewPage from '../../features/member/pages/MemberWeekOverviewPage'
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
           {
             path: "coaching",
             element: <MemberCoachingPage />,
+          },
+          {
+            path: "programs/:programId/weeks/:weekId",
+            element: <MemberWeekOverviewPage />,
           },
         ],
       },
