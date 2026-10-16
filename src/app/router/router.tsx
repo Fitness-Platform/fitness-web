@@ -11,7 +11,8 @@ import MemberGroupsPage from "../../features/member/pages/MemberGroupsPage";
 import MemberHomePage from "../../features/member/pages/MemberHomePage";
 import MemberProgramsPage from "../../features/member/pages/MemberProgramsPage";
 import MemberProgramOverviewPage from "../../features/member/pages/MemberProgramOverviewPage";
-import MemberWeekOverviewPage from '../../features/member/pages/MemberWeekOverviewPage'
+import MemberWeekOverviewPage from "../../features/member/pages/MemberWeekOverviewPage";
+import MemberWorkoutPage from "../../features/member/pages/MemberWorkoutPage";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
           {
             path: "programs/:programId/weeks/:weekId",
             element: <MemberWeekOverviewPage />,
+          },
+          {
+            path: "programs/:programId/weeks/:weekId/workouts/:programWeekWorkoutId",
+            element: <MemberWorkoutPage />,
           },
         ],
       },
