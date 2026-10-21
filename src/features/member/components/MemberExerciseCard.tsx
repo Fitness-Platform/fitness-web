@@ -71,6 +71,18 @@ function MemberExerciseCard({
     createSetDrafts(exercise),
   );
 
+  const [editingSetNumber, setEditingSetNumber] = useState<number | null>(null);
+
+  const nextPendingSetNumber =
+    Array.from({ length: exercise.sets }, (_, index) => index + 1).find(
+      (setNumber) =>
+        !exercise.completedSets.some((set) => set.setNumber === setNumber),
+    ) ?? null;
+
+  const activeSetNumber = isWorkoutCompleted
+    ? null
+    : (editingSetNumber ?? nextPendingSetNumber);
+
   function updateSetDraft(
     setNumber: number,
     field: keyof SetDraft,
@@ -245,89 +257,135 @@ function MemberExerciseCard({
         </div>
 
         <div className="mt-4 space-y-3">
-          {Array.from({ length: exercise.sets }, (_, index) => {
-            const setNumber = index + 1;
-
-            const completedSet = exercise.completedSets.find(
-              (set) => set.setNumber === setNumber,
-            );
-
-            const draft = setDrafts[setNumber] ?? {
-              reps: "",
-              weightLb: "",
-            };
-
-            const isThisSetSaving = savingSetNumber === setNumber;
-
-            const isValid =
-              draft.reps.trim() !== "" &&
-              draft.weightLb.trim() !== "" &&
-              Number.isInteger(Number(draft.reps)) &&
-              Number(draft.reps) >= 0 &&
-              Number.isFinite(Number(draft.weightLb)) &&
-              Number(draft.weightLb) >= 0;
-
-            return (
-              <div key={setNumber} className="border border-border p-4">
-                <div className="flex items-center justify-between gap-4">
+          {[...exercise.completedSets]
+            .sort((first, second) => first.setNumber - second.setNumber)
+            .map((completedSet) => (
+              <div
+                key={completedSet.id}
+                className="flex items-center justify-between gap-4 border border-border px-4 py-3"
+              >
+                <div>
                   <p className="text-sm font-medium text-foreground">
-                    Set {setNumber}
+                    Set {completedSet.setNumber}
                   </p>
 
-                  {completedSet && (
-                    <span className="text-xs text-primary-dark">Saved</span>
-                  )}
-                </div>
-
-                <div className="mt-3 grid grid-cols-2 gap-3">
-                  <label className="block">
-                    <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                      Reps
-                    </span>
-
-                    <input
-                      type="number"
-                      min="0"
-                      step="1"
-                      inputMode="numeric"
-                      value={draft.reps}
-                      disabled={isWorkoutCompleted || isSaving}
-                      onChange={(event) =>
-                        updateSetDraft(setNumber, "reps", event.target.value)
-                      }
-                      className="mt-1 w-full border border-border bg-background px-3 py-3 text-base text-foreground outline-none transition focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
-                    />
-                  </label>
-
-                  <label className="block">
-                    <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                      Weight (lb)
-                    </span>
-
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      inputMode="decimal"
-                      value={draft.weightLb}
-                      disabled={isWorkoutCompleted || isSaving}
-                      onChange={(event) =>
-                        updateSetDraft(
-                          setNumber,
-                          "weightLb",
-                          event.target.value,
-                        )
-                      }
-                      className="mt-1 w-full border border-border bg-background px-3 py-3 text-base text-foreground outline-none transition focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
-                    />
-                  </label>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {completedSet.reps} reps ·{" "}
+                    {formatWeight(completedSet.weightLb)}
+                  </p>
                 </div>
 
                 {!isWorkoutCompleted && (
                   <button
                     type="button"
+                    disabled={isSaving}
+                    onClick={() => setEditingSetNumber(completedSet.setNumber)}
+                    className="text-sm text-primary-dark underline underline-offset-4 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Edit
+                  </button>
+                )}
+              </div>
+            ))}
+
+          {activeSetNumber !== null &&
+            (() => {
+              const completedSet = exercise.completedSets.find(
+                (set) => set.setNumber === activeSetNumber,
+              );
+
+              const draft = setDrafts[activeSetNumber] ?? {
+                reps: "",
+                weightLb: "",
+              };
+
+              const isThisSetSaving = savingSetNumber === activeSetNumber;
+
+              const isValid =
+                draft.reps.trim() !== "" &&
+                draft.weightLb.trim() !== "" &&
+                Number.isInteger(Number(draft.reps)) &&
+                Number(draft.reps) >= 0 &&
+                Number.isFinite(Number(draft.weightLb)) &&
+                Number(draft.weightLb) >= 0;
+
+              return (
+                <div className="border border-primary-dark p-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-primary-dark">
+                        {completedSet ? "Editing saved set" : "Current set"}
+                      </p>
+
+                      <p className="mt-1 text-base font-medium text-foreground">
+                        Set {activeSetNumber} of {exercise.sets}
+                      </p>
+                    </div>
+
+                    {completedSet && (
+                      <button
+                        type="button"
+                        disabled={isSaving}
+                        onClick={() => setEditingSetNumber(null)}
+                        className="text-sm text-muted-foreground underline underline-offset-4 disabled:opacity-50"
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    <label className="block">
+                      <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                        Reps
+                      </span>
+
+                      <input
+                        type="number"
+                        min="0"
+                        step="1"
+                        inputMode="numeric"
+                        value={draft.reps}
+                        disabled={isSaving}
+                        onChange={(event) =>
+                          updateSetDraft(
+                            activeSetNumber,
+                            "reps",
+                            event.target.value,
+                          )
+                        }
+                        className="mt-1 w-full border border-border bg-background px-3 py-3 text-base text-foreground outline-none transition focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+                      />
+                    </label>
+
+                    <label className="block">
+                      <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                        Weight (lb)
+                      </span>
+
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        inputMode="decimal"
+                        value={draft.weightLb}
+                        disabled={isSaving}
+                        onChange={(event) =>
+                          updateSetDraft(
+                            activeSetNumber,
+                            "weightLb",
+                            event.target.value,
+                          )
+                        }
+                        className="mt-1 w-full border border-border bg-background px-3 py-3 text-base text-foreground outline-none transition focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+                      />
+                    </label>
+                  </div>
+
+                  <button
+                    type="button"
                     disabled={!isValid || isSaving}
-                    onClick={() => handleSaveSet(setNumber)}
+                    onClick={() => handleSaveSet(activeSetNumber)}
                     className="mt-3 w-full bg-primary px-4 py-3 text-sm font-medium text-white transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isThisSetSaving
@@ -336,10 +394,23 @@ function MemberExerciseCard({
                         ? "Update Set"
                         : "Complete Set"}
                   </button>
-                )}
+                </div>
+              );
+            })()}
+
+          {!isWorkoutCompleted &&
+            nextPendingSetNumber === null &&
+            editingSetNumber === null && (
+              <div className="border border-border p-4">
+                <p className="text-sm font-medium text-foreground">
+                  All sets completed
+                </p>
+
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                  Review your sets above or continue to the next exercise.
+                </p>
               </div>
-            );
-          })}
+            )}
         </div>
       </div>
     </article>

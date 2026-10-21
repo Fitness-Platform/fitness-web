@@ -1,13 +1,26 @@
+import { useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { ApiError } from "../../../services/apiClient";
 import MemberExerciseCard from "../components/MemberExerciseCard";
+import { useCompleteMyWorkoutMutation } from "../hooks/useCompleteMyWorkoutMutation";
 import { useMyProgramWorkoutQuery } from "../hooks/useMyProgramWorkoutQuery";
 import { useSaveMyWorkoutSetMutation } from "../hooks/useSaveMyWorkoutSetMutation";
-import { useCompleteMyWorkoutMutation } from "../hooks/useCompleteMyWorkoutMutation";
 
 function MemberWorkoutPage() {
   const { programId, weekId, programWeekWorkoutId } = useParams();
+
+  const [exerciseNavigation, setExerciseNavigation] = useState({
+    workoutId: programWeekWorkoutId,
+    index: 0,
+  });
+
+  const currentExerciseIndex =
+    exerciseNavigation.workoutId === programWeekWorkoutId
+      ? exerciseNavigation.index
+      : 0;
+
+  const exerciseSectionRef = useRef<HTMLElement>(null);
 
   const {
     data: workout,
@@ -31,13 +44,47 @@ function MemberWorkoutPage() {
 
   const isAccessDenied = error instanceof ApiError && error.status === 403;
 
+  const currentExercise = workout?.exercises[currentExerciseIndex] ?? null;
+
+  const hasPreviousExercise = currentExerciseIndex > 0;
+
+  const hasNextExercise =
+    workout !== undefined &&
+    currentExerciseIndex < workout.exercises.length - 1;
+
   const areAllSetsSaved =
-    workout?.exercises.every((exercise) =>
+    workout !== undefined &&
+    workout.exercises.length > 0 &&
+    workout.exercises.every((exercise) =>
       Array.from({ length: exercise.sets }, (_, index) => index + 1).every(
         (setNumber) =>
           exercise.completedSets.some((set) => set.setNumber === setNumber),
       ),
-    ) ?? false;
+    );
+
+  const isSavingCurrentExercise =
+    currentExercise !== null &&
+    saveSetMutation.isPending &&
+    saveSetMutation.variables?.workoutExerciseId ===
+      currentExercise.workoutExerciseId;
+
+  const savingSetNumber = isSavingCurrentExercise
+    ? (saveSetMutation.variables?.setNumber ?? null)
+    : null;
+
+  function navigateToExercise(index: number) {
+    setExerciseNavigation({
+      workoutId: programWeekWorkoutId,
+      index,
+    });
+
+    requestAnimationFrame(() => {
+      exerciseSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }
 
   return (
     <div className="space-y-8">
@@ -63,6 +110,13 @@ function MemberWorkoutPage() {
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
             Return to the week overview to continue your training.
           </p>
+
+          <Link
+            to={`/app/programs/${programId}/weeks/${weekId}`}
+            className="mt-4 inline-block text-sm text-foreground underline underline-offset-4"
+          >
+            Back to week overview
+          </Link>
         </div>
       )}
 
@@ -100,13 +154,25 @@ function MemberWorkoutPage() {
             )}
           </header>
 
-          <section aria-labelledby="workout-exercises-heading">
-            <h2
-              id="workout-exercises-heading"
-              className="text-xl font-medium text-foreground"
-            >
-              Exercises
-            </h2>
+          <section
+            ref={exerciseSectionRef}
+            aria-labelledby="workout-exercises-heading"
+            className="scroll-mt-6"
+          >
+            <div className="flex items-end justify-between gap-4">
+              <h2
+                id="workout-exercises-heading"
+                className="text-xl font-medium text-foreground"
+              >
+                Exercises
+              </h2>
+
+              {workout.exercises.length > 0 && (
+                <p className="text-sm text-muted-foreground">
+                  {currentExerciseIndex + 1} of {workout.exercises.length}
+                </p>
+              )}
+            </div>
 
             {workout.exercises.length === 0 ? (
               <div className="mt-4 border border-border p-5 sm:p-6">
@@ -115,51 +181,66 @@ function MemberWorkoutPage() {
                 </p>
               </div>
             ) : (
-              <div className="mt-4 space-y-4">
-                {workout.exercises.map((exercise) => {
-                  const isSavingThisExercise =
-                    saveSetMutation.isPending &&
+              currentExercise && (
+                <div className="mt-4">
+                  <MemberExerciseCard
+                    key={currentExercise.workoutExerciseId}
+                    exercise={currentExercise}
+                    isWorkoutCompleted={workout.completedAt !== null}
+                    isSaving={isSavingCurrentExercise}
+                    savingSetNumber={savingSetNumber}
+                    onSaveSet={(setNumber, reps, weightLb) => {
+                      saveSetMutation.mutate({
+                        workoutExerciseId: currentExercise.workoutExerciseId,
+                        setNumber,
+                        request: {
+                          reps,
+                          weightLb,
+                        },
+                      });
+                    }}
+                  />
+
+                  {saveSetMutation.isError &&
                     saveSetMutation.variables?.workoutExerciseId ===
-                      exercise.workoutExerciseId;
+                      currentExercise.workoutExerciseId && (
+                      <div className="mt-3 border border-border p-4">
+                        <p className="text-sm text-foreground">
+                          We couldn't save this set. Try again.
+                        </p>
+                      </div>
+                    )}
 
-                  const savingSetNumber = isSavingThisExercise
-                    ? (saveSetMutation.variables?.setNumber ?? null)
-                    : null;
+                  {workout.exercises.length > 1 && (
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        disabled={!hasPreviousExercise}
+                        onClick={() =>
+                          navigateToExercise(currentExerciseIndex - 1)
+                        }
+                        className="border border-border px-4 py-3 text-sm text-foreground transition hover:border-foreground disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        ← Previous
+                      </button>
 
-                  return (
-                    <div key={exercise.workoutExerciseId}>
-                      <MemberExerciseCard
-                        exercise={exercise}
-                        isWorkoutCompleted={workout.completedAt !== null}
-                        isSaving={isSavingThisExercise}
-                        savingSetNumber={savingSetNumber}
-                        onSaveSet={(setNumber, reps, weightLb) => {
-                          saveSetMutation.mutate({
-                            workoutExerciseId: exercise.workoutExerciseId,
-                            setNumber,
-                            request: {
-                              reps,
-                              weightLb,
-                            },
-                          });
-                        }}
-                      />
-
-                      {saveSetMutation.isError &&
-                        saveSetMutation.variables?.workoutExerciseId ===
-                          exercise.workoutExerciseId && (
-                          <div className="mt-3 border border-border p-4">
-                            <p className="text-sm text-foreground">
-                              We couldn't save this set. Try again.
-                            </p>
-                          </div>
-                        )}
+                      <button
+                        type="button"
+                        disabled={!hasNextExercise}
+                        onClick={() =>
+                          navigateToExercise(currentExerciseIndex + 1)
+                        }
+                        className="border border-foreground px-4 py-3 text-sm text-foreground transition hover:bg-foreground hover:text-background disabled:cursor-not-allowed disabled:border-border disabled:text-muted-foreground disabled:opacity-40"
+                      >
+                        Next →
+                      </button>
                     </div>
-                  );
-                })}
-              </div>
+                  )}
+                </div>
+              )
             )}
           </section>
+
           {workout.completedAt !== null ? (
             <div className="border border-primary-dark p-5 sm:p-6">
               <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-primary-dark">
@@ -175,37 +256,39 @@ function MemberWorkoutPage() {
               </p>
             </div>
           ) : (
-            <div className="border-t border-border pt-6">
-              {!areAllSetsSaved && (
-                <p className="mb-3 text-sm text-muted-foreground">
-                  Complete every prescribed set before finishing the workout.
-                </p>
-              )}
-
-              <button
-                type="button"
-                disabled={
-                  !areAllSetsSaved ||
-                  saveSetMutation.isPending ||
-                  completeWorkoutMutation.isPending
-                }
-                onClick={() => completeWorkoutMutation.mutate()}
-                className="w-full bg-primary px-5 py-4 text-sm font-medium text-white transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {completeWorkoutMutation.isPending
-                  ? "Completing..."
-                  : "Complete Workout"}
-              </button>
-
-              {completeWorkoutMutation.isError && (
-                <div className="mt-3 border border-border p-4">
-                  <p className="text-sm text-foreground">
-                    We couldn't complete this workout. Make sure every set is
-                    saved and try again.
+            workout.exercises.length > 0 && (
+              <div className="border-t border-border pt-6">
+                {!areAllSetsSaved && (
+                  <p className="mb-3 text-sm text-muted-foreground">
+                    Complete every prescribed set before finishing the workout.
                   </p>
-                </div>
-              )}
-            </div>
+                )}
+
+                <button
+                  type="button"
+                  disabled={
+                    !areAllSetsSaved ||
+                    saveSetMutation.isPending ||
+                    completeWorkoutMutation.isPending
+                  }
+                  onClick={() => completeWorkoutMutation.mutate()}
+                  className="w-full bg-primary px-5 py-4 text-sm font-medium text-white transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {completeWorkoutMutation.isPending
+                    ? "Completing..."
+                    : "Complete Workout"}
+                </button>
+
+                {completeWorkoutMutation.isError && (
+                  <div className="mt-3 border border-border p-4">
+                    <p className="text-sm text-foreground">
+                      We couldn't complete this workout. Make sure every set is
+                      saved and try again.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )
           )}
         </>
       )}
