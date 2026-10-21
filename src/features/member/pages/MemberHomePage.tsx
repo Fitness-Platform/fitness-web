@@ -1,76 +1,79 @@
-import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
-import MemberProgramCard from '../components/MemberProgramCard'
-import { useMyProgramsQuery } from '../hooks/useMyProgramsQuery'
+import MemberPhotoPlaceholder from "../components/MemberPhotoPlaceholder";
+import MemberProgramCard from "../components/MemberProgramCard";
+import { useMyProgramsQuery } from "../hooks/useMyProgramsQuery";
 
 function MemberHomePage() {
-  const {
-    data: programs,
-    isPending,
-    isError,
-    refetch,
-  } = useMyProgramsQuery()
+  const { data: programs, isPending, isError, refetch } = useMyProgramsQuery();
 
-  const dashboardPrograms = programs?.slice(0, 3) ?? []
+  const dashboardPrograms = programs?.slice(0, 2) ?? [];
 
-  const hasPrograms =
-    !isPending &&
-    !isError &&
-    dashboardPrograms.length > 0
+  const hasPrograms = !isPending && !isError && dashboardPrograms.length > 0;
 
   return (
-    <div className="space-y-10">
-      <section>
-        <p className="text-sm text-muted-foreground">
-          Welcome back
-        </p>
+    <div className="space-y-9 sm:space-y-10">
+      {/* Welcome section */}
+      <section aria-labelledby="training-heading">
+        <p className="text-sm text-muted-foreground">Welcome back</p>
 
-        <h1 className="mt-1 text-3xl font-semibold tracking-tight">
-          Your training
+        <h1
+          id="training-heading"
+          className="mt-1 text-[30px] font-bold uppercase leading-tight tracking-tight text-foreground sm:text-4xl"
+        >
+          Your <span className="text-primary-dark">Training</span>
         </h1>
 
+        {/* Training hero */}
         {hasPrograms && (
-          <div className="mt-6 border border-primary bg-primary p-6 text-background sm:p-8">
-            <p className="text-[10px] font-medium uppercase tracking-[0.2em]">
-              Your training
-            </p>
+          <div className="mt-6 overflow-hidden">
+            <MemberPhotoPlaceholder
+              variant="hero"
+              className="h-24 w-full sm:h-36"
+            />
 
-            <h2 className="mt-3 text-2xl font-medium tracking-tight">
-              Choose your program
-            </h2>
+            <div className="bg-primary-dark p-5 text-background sm:p-7">
+              <h2 className="text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
+                Choose your program
+              </h2>
 
-            <p className="mt-2 max-w-xl text-sm leading-6">
-              View the training programs currently available to you and choose
-              where you want to start.
-            </p>
+              <p className="mt-2 max-w-xl text-sm leading-6">
+                View the training programs currently available to you and choose
+                where you want to start.
+              </p>
 
-            <Link
-              to="/app/programs"
-              className="mt-6 inline-flex items-center gap-2 border border-background px-4 py-2.5 text-sm font-medium transition hover:bg-background hover:text-primary-dark"
-            >
-              View my programs
+              <Link
+                to="/app/programs"
+                className="mt-5 flex min-h-12 w-full items-center justify-between gap-4 bg-background px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-foreground transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-primary-dark"
+              >
+                <span>View my programs</span>
 
-              <ArrowRight
-                className="h-4 w-4"
-                strokeWidth={1.7}
-                aria-hidden="true"
-              />
-            </Link>
+                <ArrowRight
+                  className="h-5 w-5 shrink-0"
+                  strokeWidth={1.7}
+                  aria-hidden="true"
+                />
+              </Link>
+            </div>
           </div>
         )}
       </section>
 
-      <section>
+      {/* Programs preview */}
+      <section aria-labelledby="my-programs-heading">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-xl font-medium">
+          <h2
+            id="my-programs-heading"
+            className="text-xl font-semibold tracking-tight text-foreground"
+          >
             My programs
           </h2>
 
-          {programs && programs.length > 0 && (
+          {hasPrograms && (
             <Link
               to="/app/programs"
-              className="text-sm text-muted-foreground transition hover:text-foreground"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-foreground underline underline-offset-4 transition hover:text-primary-dark"
             >
               View all
             </Link>
@@ -102,36 +105,34 @@ function MemberHomePage() {
             </div>
           )}
 
-          {!isPending &&
-            !isError &&
-            programs?.length === 0 && (
-              <div className="border border-border p-5 sm:p-6">
-                <p className="text-sm text-foreground">
-                  No programs available yet.
-                </p>
+          {!isPending && !isError && programs?.length === 0 && (
+            <div className="border border-border p-5 sm:p-6">
+              <p className="text-sm text-foreground">
+                No programs available yet.
+              </p>
 
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                  Your programs will appear here when they become available.
-                </p>
-              </div>
-            )}
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                Your programs will appear here when they become available.
+              </p>
+            </div>
+          )}
 
-          {!isPending &&
-            !isError &&
-            dashboardPrograms.length > 0 && (
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {dashboardPrograms.map((program) => (
-                  <MemberProgramCard
-                    key={program.programId}
-                    program={program}
-                  />
-                ))}
-              </div>
-            )}
+          {hasPrograms && (
+            <div className="grid gap-3 lg:grid-cols-2">
+              {dashboardPrograms.map((program) => (
+                <MemberProgramCard
+                  key={program.programId}
+                  program={program}
+                  variant="dashboard"
+                  to={`/app/programs/${program.programId}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>
-  )
+  );
 }
 
-export default MemberHomePage
+export default MemberHomePage;
