@@ -1,3 +1,12 @@
+export type MemberWorkoutSet = {
+  id: string
+  workoutExerciseId: string
+  setNumber: number
+  reps: number
+  weightLb: number
+  completedAt: string
+}
+
 export type MemberWorkoutExercise = {
   workoutExerciseId: string
   exerciseId: string
@@ -12,6 +21,7 @@ export type MemberWorkoutExercise = {
   restSeconds: number | null
   notes: string
   position: number
+  completedSets: MemberWorkoutSet[]
 }
 
 export type MemberProgramWorkoutDetail = {
@@ -20,5 +30,7 @@ export type MemberProgramWorkoutDetail = {
   name: string
   description: string
   position: number
+  startedAt: string | null
+  completedAt: string | null
   exercises: MemberWorkoutExercise[]
 }
