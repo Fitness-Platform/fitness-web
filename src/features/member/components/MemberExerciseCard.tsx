@@ -1,33 +1,116 @@
-import { ExternalLink, Play } from 'lucide-react'
+import { useState } from "react";
 
-import type { MemberWorkoutExercise } from '../types/memberProgramWorkoutDetail'
+import type { MemberWorkoutExercise } from "../types/memberProgramWorkoutDetail";
 
 type MemberExerciseCardProps = {
-  exercise: MemberWorkoutExercise
-}
+  exercise: MemberWorkoutExercise;
+  isWorkoutCompleted: boolean;
+  isSaving: boolean;
+  savingSetNumber: number | null;
+  onSaveSet: (setNumber: number, reps: number, weightLb: number) => void;
+};
+
+type SetDraft = {
+  reps: string;
+  weightLb: string;
+};
 
 function formatWeight(weight: number) {
-  return `${weight} lb`
+  return `${weight} lb`;
 }
 
 function formatRest(seconds: number) {
   if (seconds < 60) {
-    return `${seconds} sec`
+    return `${seconds} sec`;
   }
 
-  const minutes = Math.floor(seconds / 60)
-  const remainingSeconds = seconds % 60
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
 
   if (remainingSeconds === 0) {
-    return `${minutes} min`
+    return `${minutes} min`;
   }
 
-  return `${minutes} min ${remainingSeconds} sec`
+  return `${minutes} min ${remainingSeconds} sec`;
+}
+
+function createSetDrafts(
+  exercise: MemberWorkoutExercise,
+): Record<number, SetDraft> {
+  const drafts: Record<number, SetDraft> = {};
+
+  for (let setNumber = 1; setNumber <= exercise.sets; setNumber += 1) {
+    const completedSet = exercise.completedSets.find(
+      (set) => set.setNumber === setNumber,
+    );
+
+    drafts[setNumber] = {
+      reps: completedSet !== undefined ? String(completedSet.reps) : "",
+      weightLb:
+        completedSet !== undefined
+          ? String(completedSet.weightLb)
+          : exercise.currentWeightLb !== null
+            ? String(exercise.currentWeightLb)
+            : exercise.suggestedWeightLb !== null
+              ? String(exercise.suggestedWeightLb)
+              : "",
+    };
+  }
+
+  return drafts;
 }
 
 function MemberExerciseCard({
   exercise,
+  isWorkoutCompleted,
+  isSaving,
+  savingSetNumber,
+  onSaveSet,
 }: MemberExerciseCardProps) {
+  const [setDrafts, setSetDrafts] = useState<Record<number, SetDraft>>(() =>
+    createSetDrafts(exercise),
+  );
+
+  function updateSetDraft(
+    setNumber: number,
+    field: keyof SetDraft,
+    value: string,
+  ) {
+    setSetDrafts((current) => ({
+      ...current,
+      [setNumber]: {
+        ...current[setNumber],
+        [field]: value,
+      },
+    }));
+  }
+
+  function handleSaveSet(setNumber: number) {
+    const draft = setDrafts[setNumber];
+
+    if (!draft) {
+      return;
+    }
+
+    if (draft.reps.trim() === "" || draft.weightLb.trim() === "") {
+      return;
+    }
+
+    const reps = Number(draft.reps);
+    const weightLb = Number(draft.weightLb);
+
+    if (
+      !Number.isInteger(reps) ||
+      reps < 0 ||
+      !Number.isFinite(weightLb) ||
+      weightLb < 0
+    ) {
+      return;
+    }
+
+    onSaveSet(setNumber, reps, weightLb);
+  }
+
   return (
     <article className="border border-border p-5 sm:p-6">
       <div>
@@ -52,9 +135,7 @@ function MemberExerciseCard({
             Sets
           </p>
 
-          <p className="mt-1 text-sm text-foreground">
-            {exercise.sets}
-          </p>
+          <p className="mt-1 text-sm text-foreground">{exercise.sets}</p>
         </div>
 
         <div>
@@ -62,9 +143,7 @@ function MemberExerciseCard({
             Reps
           </p>
 
-          <p className="mt-1 text-sm text-foreground">
-            {exercise.reps}
-          </p>
+          <p className="mt-1 text-sm text-foreground">{exercise.reps}</p>
         </div>
 
         {exercise.restSeconds !== null && (
@@ -129,29 +208,142 @@ function MemberExerciseCard({
       )}
 
       {exercise.videoUrl && (
-        <a
-          href={exercise.videoUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground underline-offset-4 transition hover:underline"
-        >
-          <Play
-            className="h-4 w-4"
-            strokeWidth={1.7}
-            aria-hidden="true"
-          />
+        <div className="mt-5">
+          <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+            Demo
+          </p>
 
-          Watch demo
-
-          <ExternalLink
-            className="h-3.5 w-3.5"
-            strokeWidth={1.7}
-            aria-hidden="true"
-          />
-        </a>
+          <video
+            controls
+            playsInline
+            preload="metadata"
+            className="mt-2 aspect-video w-full bg-black"
+            src={exercise.videoUrl}
+          >
+            Your browser does not support video playback.
+          </video>
+        </div>
       )}
+
+      <div className="mt-6 border-t border-border pt-5">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+              Set tracking
+            </p>
+
+            <p className="mt-1 text-sm text-muted-foreground">
+              {exercise.completedSets.length} of {exercise.sets} sets saved
+            </p>
+          </div>
+
+          {isWorkoutCompleted && (
+            <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-dark">
+              Workout completed
+            </p>
+          )}
+        </div>
+
+        <div className="mt-4 space-y-3">
+          {Array.from({ length: exercise.sets }, (_, index) => {
+            const setNumber = index + 1;
+
+            const completedSet = exercise.completedSets.find(
+              (set) => set.setNumber === setNumber,
+            );
+
+            const draft = setDrafts[setNumber] ?? {
+              reps: "",
+              weightLb: "",
+            };
+
+            const isThisSetSaving = savingSetNumber === setNumber;
+
+            const isValid =
+              draft.reps.trim() !== "" &&
+              draft.weightLb.trim() !== "" &&
+              Number.isInteger(Number(draft.reps)) &&
+              Number(draft.reps) >= 0 &&
+              Number.isFinite(Number(draft.weightLb)) &&
+              Number(draft.weightLb) >= 0;
+
+            return (
+              <div key={setNumber} className="border border-border p-4">
+                <div className="flex items-center justify-between gap-4">
+                  <p className="text-sm font-medium text-foreground">
+                    Set {setNumber}
+                  </p>
+
+                  {completedSet && (
+                    <span className="text-xs text-primary-dark">Saved</span>
+                  )}
+                </div>
+
+                <div className="mt-3 grid grid-cols-2 gap-3">
+                  <label className="block">
+                    <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                      Reps
+                    </span>
+
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      inputMode="numeric"
+                      value={draft.reps}
+                      disabled={isWorkoutCompleted || isSaving}
+                      onChange={(event) =>
+                        updateSetDraft(setNumber, "reps", event.target.value)
+                      }
+                      className="mt-1 w-full border border-border bg-background px-3 py-3 text-base text-foreground outline-none transition focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                      Weight (lb)
+                    </span>
+
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      inputMode="decimal"
+                      value={draft.weightLb}
+                      disabled={isWorkoutCompleted || isSaving}
+                      onChange={(event) =>
+                        updateSetDraft(
+                          setNumber,
+                          "weightLb",
+                          event.target.value,
+                        )
+                      }
+                      className="mt-1 w-full border border-border bg-background px-3 py-3 text-base text-foreground outline-none transition focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+                    />
+                  </label>
+                </div>
+
+                {!isWorkoutCompleted && (
+                  <button
+                    type="button"
+                    disabled={!isValid || isSaving}
+                    onClick={() => handleSaveSet(setNumber)}
+                    className="mt-3 w-full bg-primary px-4 py-3 text-sm font-medium text-white transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {isThisSetSaving
+                      ? "Saving..."
+                      : completedSet
+                        ? "Update Set"
+                        : "Complete Set"}
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </article>
-  )
+  );
 }
 
-export default MemberExerciseCard
+export default MemberExerciseCard;
