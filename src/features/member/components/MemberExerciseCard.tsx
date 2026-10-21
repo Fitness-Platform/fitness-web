@@ -238,6 +238,38 @@ function MemberExerciseCard({
       )}
 
       <div className="mt-6 border-t border-border pt-5">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+          Previous performance
+        </p>
+
+        {exercise.previousSets.length > 0 ? (
+          <div className="mt-3 divide-y divide-border border-y border-border">
+            {[...exercise.previousSets]
+              .sort((first, second) => first.setNumber - second.setNumber)
+              .map((previousSet) => (
+                <div
+                  key={previousSet.setNumber}
+                  className="flex items-center justify-between gap-4 py-3"
+                >
+                  <p className="text-sm text-foreground">
+                    Set {previousSet.setNumber}
+                  </p>
+
+                  <p className="text-sm text-muted-foreground">
+                    {previousSet.reps} reps ·{" "}
+                    {formatWeight(previousSet.weightLb)}
+                  </p>
+                </div>
+              ))}
+          </div>
+        ) : (
+          <p className="mt-2 text-sm text-muted-foreground">
+            No previous performance yet.
+          </p>
+        )}
+      </div>
+
+      <div className="mt-6 border-t border-border pt-5">
         <div className="flex items-end justify-between gap-4">
           <div>
             <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
