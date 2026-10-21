@@ -22,6 +22,7 @@ export type MemberWorkoutExercise = {
   notes: string
   position: number
   completedSets: MemberWorkoutSet[]
+  previousSets: MemberWorkoutPreviousSet[]
 }
 
 export type MemberProgramWorkoutDetail = {
@@ -33,4 +34,10 @@ export type MemberProgramWorkoutDetail = {
   startedAt: string | null
   completedAt: string | null
   exercises: MemberWorkoutExercise[]
+}
+
+export type MemberWorkoutPreviousSet = {
+  setNumber: number
+  reps: number
+  weightLb: number
 }
