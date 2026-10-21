@@ -1,6 +1,8 @@
+import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 
 import { ApiError } from '../../../services/apiClient'
+
 import MemberWorkoutCard from '../components/MemberWorkoutCard'
 import { useMyProgramWeekQuery } from '../hooks/useMyProgramWeekQuery'
 
@@ -19,14 +21,22 @@ function MemberWeekOverviewPage() {
     error instanceof ApiError && error.status === 403
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 sm:space-y-10">
+      {/* Back navigation */}
       <Link
         to={`/app/programs/${programId}`}
-        className="text-sm text-muted-foreground transition hover:text-foreground"
+        className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition hover:text-primary-dark"
       >
-        ← Program overview
+        <ArrowLeft
+          className="h-4 w-4"
+          strokeWidth={1.7}
+          aria-hidden="true"
+        />
+
+        Program overview
       </Link>
 
+      {/* Loading state */}
       {isPending && (
         <div className="border border-border p-5 sm:p-6">
           <p className="text-sm text-muted-foreground">
@@ -35,6 +45,7 @@ function MemberWeekOverviewPage() {
         </div>
       )}
 
+      {/* Access denied */}
       {isAccessDenied && (
         <div className="border border-border p-5 sm:p-6">
           <p className="font-medium text-foreground">
@@ -42,11 +53,20 @@ function MemberWeekOverviewPage() {
           </p>
 
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            Return to the program overview to see when it unlocks.
+            Return to the program overview to see
+            when it unlocks.
           </p>
+
+          <Link
+            to={`/app/programs/${programId}`}
+            className="mt-4 inline-block text-sm text-foreground underline underline-offset-4 transition hover:text-primary-dark"
+          >
+            Back to Program Overview
+          </Link>
         </div>
       )}
 
+      {/* Error state */}
       {isError && !isAccessDenied && (
         <div className="border border-border p-5 sm:p-6">
           <p className="text-sm text-foreground">
@@ -63,32 +83,36 @@ function MemberWeekOverviewPage() {
         </div>
       )}
 
+      {/* Week content */}
       {!isPending && !isError && week && (
         <>
+          {/* Week header */}
           <header className="max-w-2xl">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
               Week {week.position}
             </p>
 
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h1 className="mt-2 text-[30px] font-bold leading-tight tracking-tight text-foreground sm:text-4xl">
               {week.title}
             </h1>
 
             {week.description && (
-              <p className="mt-4 text-sm leading-6 text-muted-foreground sm:text-base">
+              <p className="mt-4 text-sm leading-6 text-muted-foreground sm:text-base sm:leading-7">
                 {week.description}
               </p>
             )}
           </header>
 
+          {/* Workouts section */}
           <section aria-labelledby="week-workouts-heading">
             <h2
               id="week-workouts-heading"
-              className="text-xl font-medium"
+              className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl"
             >
               Workouts
             </h2>
 
+            {/* Empty state */}
             {week.workouts.length === 0 ? (
               <div className="mt-4 border border-border p-5 sm:p-6">
                 <p className="text-sm text-muted-foreground">
@@ -96,7 +120,8 @@ function MemberWeekOverviewPage() {
                 </p>
               </div>
             ) : (
-              <div className="mt-4 grid gap-4 md:grid-cols-2">
+              /* Workout cards */
+              <div className="mt-4 grid gap-3 md:grid-cols-2 md:gap-4">
                 {week.workouts.map((workout) => (
                   <MemberWorkoutCard
                     key={workout.programWeekWorkoutId}

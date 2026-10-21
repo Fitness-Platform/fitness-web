@@ -13,32 +13,33 @@ function MemberProgramResourceCard({
     <a
       href={resource.url}
       target="_blank"
-      rel="noreferrer"
-      className="block border border-border p-5 transition hover:border-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-2 sm:p-6"
+      rel="noopener noreferrer"
+      className="group block border-t border-border py-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-2 sm:py-5"
+      aria-label={`${resource.title} (opens in a new tab)`}
     >
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="min-w-0 flex-1">
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
             Resource
           </p>
 
-          <h3 className="mt-2 text-base font-medium text-foreground">
+          <h3 className="mt-1.5 text-base font-semibold leading-6 tracking-tight text-foreground transition group-hover:text-primary-dark">
             {resource.title}
           </h3>
+
+          {resource.description && (
+            <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+              {resource.description}
+            </p>
+          )}
         </div>
 
         <ExternalLink
-          className="h-4 w-4 shrink-0 text-muted-foreground"
+          className="mt-6 h-4 w-4 shrink-0 text-muted-foreground transition group-hover:text-primary-dark"
           strokeWidth={1.7}
           aria-hidden="true"
         />
       </div>
-
-      {resource.description && (
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          {resource.description}
-        </p>
-      )}
     </a>
   )
 }
