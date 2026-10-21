@@ -4,72 +4,85 @@ import {
   MessagesSquare,
   Users,
 } from 'lucide-react'
+
 import { NavLink } from 'react-router-dom'
 
-function getNavLinkClassName({ isActive }: { isActive: boolean }) {
-  return [
-    'flex flex-col items-center justify-center gap-1 transition',
-    isActive
-      ? 'text-foreground'
-      : 'text-muted-foreground hover:text-foreground',
-  ].join(' ')
-}
+const memberLinks = [
+  {
+    to: '/app',
+    label: 'Home',
+    icon: Home,
+    end: true,
+  },
+  {
+    to: '/app/programs',
+    label: 'Programs',
+    icon: Dumbbell,
+    end: false,
+  },
+  {
+    to: '/app/groups',
+    label: 'Groups',
+    icon: Users,
+    end: false,
+  },
+  {
+    to: '/app/coaching',
+    label: 'Coaching',
+    icon: MessagesSquare,
+    end: false,
+  },
+]
 
 function MemberNavigation() {
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background pb-[env(safe-area-inset-bottom)] lg:hidden"
       aria-label="Member navigation"
     >
       <div className="grid h-[72px] grid-cols-4">
-        <NavLink
-          to="/app"
-          end
-          className={getNavLinkClassName}
-        >
-          <Home
-            className="h-5 w-5"
-            strokeWidth={1.7}
-            aria-hidden="true"
-          />
-          <span className="text-[10px]">Home</span>
-        </NavLink>
+        {memberLinks.map(
+          ({ to, label, icon: Icon, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                [
+                  'relative flex min-w-0 flex-col',
+                  'items-center justify-center gap-1',
+                  'px-1 pt-1 text-[10px] transition',
+                  'focus-visible:outline-none',
+                  'focus-visible:ring-2',
+                  'focus-visible:ring-inset',
+                  'focus-visible:ring-primary-dark',
+                  isActive
+                    ? 'font-semibold text-foreground'
+                    : 'text-muted-foreground hover:text-foreground',
+                ].join(' ')
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  {isActive && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-1/2 top-1 h-0.5 w-6 -translate-x-1/2 bg-primary-dark"
+                    />
+                  )}
 
-        <NavLink
-          to="/app/programs"
-          className={getNavLinkClassName}
-        >
-          <Dumbbell
-            className="h-5 w-5"
-            strokeWidth={1.7}
-            aria-hidden="true"
-          />
-          <span className="text-[10px]">Programs</span>
-        </NavLink>
+                  <Icon
+                    className="h-5 w-5"
+                    strokeWidth={1.7}
+                    aria-hidden="true"
+                  />
 
-        <NavLink
-          to="/app/groups"
-          className={getNavLinkClassName}
-        >
-          <Users
-            className="h-5 w-5"
-            strokeWidth={1.7}
-            aria-hidden="true"
-          />
-          <span className="text-[10px]">Groups</span>
-        </NavLink>
-
-        <NavLink
-          to="/app/coaching"
-          className={getNavLinkClassName}
-        >
-          <MessagesSquare
-            className="h-5 w-5"
-            strokeWidth={1.7}
-            aria-hidden="true"
-          />
-          <span className="text-[10px]">Coaching</span>
-        </NavLink>
+                  <span>{label}</span>
+                </>
+              )}
+            </NavLink>
+          ),
+        )}
       </div>
     </nav>
   )
