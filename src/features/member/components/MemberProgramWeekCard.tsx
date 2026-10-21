@@ -1,4 +1,4 @@
-import { Lock } from 'lucide-react'
+import { ArrowRight, CalendarDays, Lock } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import type { MemberProgramWeek } from '../types/memberProgramDetail'
@@ -20,23 +20,25 @@ function MemberProgramWeekCard({
   programId,
   week,
 }: MemberProgramWeekCardProps) {
+  const isUnlocked = week.unlocked
+
   const content = (
-    <>
+    <div className="flex h-full flex-col p-4 sm:p-5">
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="min-w-0 flex-1">
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
             Week {week.position}
           </p>
 
-          <h3 className="mt-2 text-lg font-medium tracking-tight">
+          <h3 className="mt-1.5 text-lg font-semibold leading-6 tracking-tight text-foreground">
             {week.title}
           </h3>
         </div>
 
-        {!week.unlocked && (
+        {!isUnlocked && (
           <Lock
-            className="h-4 w-4 text-muted-foreground"
-            strokeWidth={1.7}
+            className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
+            strokeWidth={1.6}
             aria-hidden="true"
           />
         )}
@@ -48,18 +50,49 @@ function MemberProgramWeekCard({
         </p>
       )}
 
-      {!week.unlocked && (
-        <p className="mt-5 border-t border-border pt-4 text-xs text-muted-foreground">
-          Unlocks {formatUnlockDate(week.unlocksAt)}
-        </p>
-      )}
-    </>
+      <div className="mt-auto pt-5">
+        {isUnlocked ? (
+          <div className="flex items-center justify-between gap-4">
+            <span className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary-dark">
+              <span
+                className="h-2 w-2 rounded-full bg-primary-dark"
+                aria-hidden="true"
+              />
+
+              Available
+            </span>
+
+            <span
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-dark text-background transition group-hover:bg-foreground"
+              aria-hidden="true"
+            >
+              <ArrowRight
+                className="h-4 w-4"
+                strokeWidth={1.7}
+              />
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 text-xs leading-5 text-muted-foreground">
+            <CalendarDays
+              className="h-4 w-4 shrink-0"
+              strokeWidth={1.6}
+              aria-hidden="true"
+            />
+
+            <span>
+              Unlocks {formatUnlockDate(week.unlocksAt)}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
   )
 
-  if (!week.unlocked) {
+  if (!isUnlocked) {
     return (
       <article
-        className="border border-border p-5 opacity-70 sm:p-6"
+        className="min-w-0 border border-border bg-border/20"
         aria-label={`${week.title} locked`}
       >
         {content}
@@ -70,7 +103,8 @@ function MemberProgramWeekCard({
   return (
     <Link
       to={`/app/programs/${programId}/weeks/${week.weekId}`}
-      className="block border border-border p-5 transition hover:border-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-2 sm:p-6"
+      className="group block min-w-0 border border-primary-dark bg-background transition hover:bg-primary-dark/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-2"
+      aria-label={`Open week ${week.position}: ${week.title}`}
     >
       {content}
     </Link>
