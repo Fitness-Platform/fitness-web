@@ -1,6 +1,6 @@
 import { LogOut, Menu } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useAuthSession } from "../../auth/hooks/useAuthSession";
 import { useLogoutMutation } from "../../auth/hooks/useLogoutMutation";
@@ -11,9 +11,16 @@ type AdminHeaderProps = {
 
 function AdminHeader({ onOpenMenu }: AdminHeaderProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { user } = useAuthSession();
   const logoutMutation = useLogoutMutation();
+
   const [isAccountOpen, setIsAccountOpen] = useState(false);
+
+  const pageTitle = location.pathname.startsWith("/admin/programs")
+    ? "Programs"
+    : "Dashboard";
 
   async function handleLogout() {
     try {
@@ -41,9 +48,11 @@ function AdminHeader({ onOpenMenu }: AdminHeaderProps) {
           <p className="text-[11px] uppercase tracking-[0.22em] text-foreground lg:hidden">
             Daniela Brito
           </p>
+
           <p className="hidden text-[10px] uppercase tracking-[0.18em] text-muted-foreground lg:block">
-            Dashboard
+            {pageTitle}
           </p>
+
           <p className="mt-0.5 text-[7px] uppercase tracking-[0.15em] text-muted-foreground lg:hidden">
             Strength for what's next
           </p>
@@ -81,14 +90,17 @@ function AdminHeader({ onOpenMenu }: AdminHeaderProps) {
               <p className="text-sm font-medium text-foreground">
                 Daniela Brito
               </p>
+
               <p className="mt-0.5 text-xs text-muted-foreground">
                 Administrator
               </p>
+
               {user?.email && (
                 <p className="mt-3 break-all border-t border-border pt-3 text-xs text-muted-foreground">
                   {user.email}
                 </p>
               )}
+
               <button
                 type="button"
                 role="menuitem"
@@ -101,8 +113,10 @@ function AdminHeader({ onOpenMenu }: AdminHeaderProps) {
                   strokeWidth={1.7}
                   aria-hidden="true"
                 />
+
                 {logoutMutation.isPending ? "Signing out..." : "Sign out"}
               </button>
+
               {logoutMutation.isError && (
                 <p role="alert" className="mt-2 text-xs text-red-700">
                   Unable to sign out. Please try again.
