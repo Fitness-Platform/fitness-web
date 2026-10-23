@@ -22,6 +22,7 @@ const items = [
   },
   {
     label: "Programs",
+    to: "/admin/programs",
     icon: BookOpen,
   },
   {
