@@ -17,6 +17,8 @@ import MemberWeekOverviewPage from "../../features/member/pages/MemberWeekOvervi
 import MemberWorkoutPage from "../../features/member/pages/MemberWorkoutPage";
 import AdminProgramsPage from "../../features/admin/pages/AdminProgramsPage";
 import AdminProgramDetailPage from "../../features/admin/pages/AdminProgramDetailPage";
+import AdminWorkoutsPage from "../../features/admin/pages/AdminWorkoutsPage";
+import AdminWorkoutDetailPage from "../../features/admin/pages/AdminWorkoutDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -80,6 +82,18 @@ export const router = createBrowserRouter([
           {
             path: "programs/:programId",
             element: <AdminProgramDetailPage />,
+          },
+          {
+            path: "workouts",
+            element: <AdminWorkoutsPage />,
+          },
+          {
+            path: "workouts",
+            element: <AdminWorkoutsPage />,
+          },
+          {
+            path: "workouts/:workoutId",
+            element: <AdminWorkoutDetailPage />,
           },
         ],
       },

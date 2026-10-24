@@ -27,6 +27,7 @@ const items = [
   },
   {
     label: "Workouts",
+    to: "/admin/workouts",
     icon: Dumbbell,
   },
   {
