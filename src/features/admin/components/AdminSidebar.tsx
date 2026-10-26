@@ -32,6 +32,7 @@ const items = [
   },
   {
     label: "Exercises",
+    to: "/admin/exercises",
     icon: ListChecks,
   },
   {
@@ -114,9 +115,6 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
 
               <span>{label}</span>
 
-              <span className="ml-auto text-[9px] uppercase tracking-wider">
-                Soon
-              </span>
             </div>
           );
         })}
