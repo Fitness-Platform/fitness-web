@@ -19,6 +19,8 @@ import AdminProgramsPage from "../../features/admin/pages/AdminProgramsPage";
 import AdminProgramDetailPage from "../../features/admin/pages/AdminProgramDetailPage";
 import AdminWorkoutsPage from "../../features/admin/pages/AdminWorkoutsPage";
 import AdminWorkoutDetailPage from "../../features/admin/pages/AdminWorkoutDetailPage";
+import AdminExercisesPage from "../../features/admin/pages/AdminExercisesPage";
+import AdminExerciseDetailPage from "../../features/admin/pages/AdminExerciseDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -94,6 +96,14 @@ export const router = createBrowserRouter([
           {
             path: "workouts/:workoutId",
             element: <AdminWorkoutDetailPage />,
+          },
+          {
+            path: "exercises",
+            element: <AdminExercisesPage />,
+          },
+          {
+            path: "exercises/:exerciseId",
+            element: <AdminExerciseDetailPage />,
           },
         ],
       },
