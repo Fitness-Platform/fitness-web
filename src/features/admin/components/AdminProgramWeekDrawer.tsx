@@ -1,13 +1,19 @@
+import {
+  positionMutationError,
+  weekPositionMessage,
+} from "../utils/programStructureMessages";
 import { structurePositionSchema } from "../schemas/programStructureSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAdminProgramStructureMutation } from "../hooks/useAdminProgramStructure";
+import {
+  useAdminProgramWeeksQuery,
+  useAdminProgramStructureMutation,
+} from "../hooks/useAdminProgramStructure";
 import type { AdminProgramWeek } from "../types/adminProgramStructure";
 import AdminStructureDialog from "./AdminStructureDialog";
 import {
   structureCancel,
-  structureError,
   structureInput,
   structureLabel,
   structurePrimary,
@@ -29,16 +35,20 @@ export default function AdminProgramWeekDrawer({
   week,
   nextPosition,
   onClose,
+  onCreated,
 }: {
   programId: string;
   week?: AdminProgramWeek;
   nextPosition: number;
   onClose: () => void;
+  onCreated: (position: number) => void;
 }) {
   const mutation = useAdminProgramStructureMutation(programId);
+  const weeks = useAdminProgramWeeksQuery(programId);
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -54,12 +64,28 @@ export default function AdminProgramWeekDrawer({
       description: data.description || null,
       position: Number(data.position),
     };
+    mutation.reset();
+    if (
+      weeks.data?.some(
+        (item) => item.position === request.position && item.id !== week?.id,
+      )
+    ) {
+      setError(
+        "position",
+        {
+          message: weekPositionMessage(request.position, weeks.data, week?.id),
+        },
+        { shouldFocus: true },
+      );
+      return;
+    }
     try {
       await mutation.mutateAsync(
         week
           ? { action: "updateWeek", weekId: week.id, request }
           : { action: "createWeek", request },
       );
+      if (!week) onCreated(request.position);
       onClose();
     } catch {
       /* Mutation errors are rendered in the drawer. */
@@ -136,7 +162,16 @@ export default function AdminProgramWeekDrawer({
           </fieldset>
           {mutation.isError && (
             <p role="alert" className="text-sm text-red-700">
-              {structureError(mutation.error)}
+              {positionMutationError(
+                mutation.error,
+                weekPositionMessage(
+                  mutation.variables && "request" in mutation.variables
+                    ? mutation.variables.request.position
+                    : Number(week?.position ?? nextPosition),
+                  weeks.data ?? [],
+                  week?.id,
+                ),
+              )}
             </p>
           )}
         </div>

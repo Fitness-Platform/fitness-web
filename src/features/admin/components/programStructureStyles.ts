@@ -14,7 +14,16 @@ export const structureCancel =
   "min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] disabled:opacity-50";
 
 export function structureError(error: unknown) {
-  return error instanceof ApiError
-    ? error.message
-    : "Unable to save this change. Please try again.";
+  if (error instanceof ApiError) {
+    if (error.status === 409 && /already in use/i.test(error.message)) {
+      return "This item cannot be removed because it is already in use.";
+    }
+    if (
+      !/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i.test(
+        error.message,
+      )
+    )
+      return error.message;
+  }
+  return "Unable to save this change. Refresh and try again.";
 }

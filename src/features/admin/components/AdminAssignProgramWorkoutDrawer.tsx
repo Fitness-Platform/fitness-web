@@ -1,9 +1,16 @@
+import {
+  positionMutationError,
+  workoutPositionMessage,
+} from "../utils/programStructureMessages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAdminProgramStructureMutation } from "../hooks/useAdminProgramStructure";
+import {
+  useAdminProgramWeekWorkoutsQuery,
+  useAdminProgramStructureMutation,
+} from "../hooks/useAdminProgramStructure";
 import { useAdminWorkoutsQuery } from "../hooks/useAdminWorkoutsQuery";
 import type { AdminProgramWeekWorkout } from "../types/adminProgramStructure";
 import AdminStructureDialog from "./AdminStructureDialog";
@@ -11,7 +18,6 @@ import { structurePositionSchema } from "../schemas/programStructureSchema";
 import {
   structureButton,
   structureCancel,
-  structureError,
   structureInput,
   structureLabel,
   structurePrimary,
@@ -26,22 +32,26 @@ type FormData = z.infer<typeof schema>;
 export default function AdminAssignProgramWorkoutDrawer({
   programId,
   weekId,
+  weekPosition,
   assignment,
   nextPosition,
   onClose,
 }: {
   programId: string;
   weekId: string;
+  weekPosition: number;
   assignment?: AdminProgramWeekWorkout;
   nextPosition: number;
   onClose: () => void;
 }) {
   const mutation = useAdminProgramStructureMutation(programId);
   const library = useAdminWorkoutsQuery();
+  const assignments = useAdminProgramWeekWorkoutsQuery(programId, weekId);
   const [search, setSearch] = useState("");
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -57,6 +67,28 @@ export default function AdminAssignProgramWorkoutDrawer({
         .includes(search.toLowerCase()),
     ) ?? [];
   async function submit(data: FormData) {
+    mutation.reset();
+    if (
+      assignments.data?.some(
+        (item) =>
+          item.position === Number(data.position) && item.id !== assignment?.id,
+      )
+    ) {
+      setError(
+        "position",
+        {
+          message: workoutPositionMessage(
+            Number(data.position),
+            weekPosition,
+            assignments.data,
+            library.data ?? [],
+            assignment?.id,
+          ),
+        },
+        { shouldFocus: true },
+      );
+      return;
+    }
     try {
       await mutation.mutateAsync(
         assignment
@@ -102,7 +134,7 @@ export default function AdminAssignProgramWorkoutDrawer({
             {assignment ? (
               <p className="border border-border p-4 text-sm">
                 {library.data?.find((item) => item.id === assignment.workoutId)
-                  ?.name ?? `Workout ${assignment.workoutId}`}
+                  ?.name ?? "Workout details unavailable"}
               </p>
             ) : (
               <div>
@@ -223,7 +255,18 @@ export default function AdminAssignProgramWorkoutDrawer({
           </fieldset>
           {mutation.isError && (
             <p role="alert" className="text-sm text-red-700">
-              {structureError(mutation.error)}
+              {positionMutationError(
+                mutation.error,
+                workoutPositionMessage(
+                  mutation.variables && "request" in mutation.variables
+                    ? mutation.variables.request.position
+                    : Number(assignment?.position ?? nextPosition),
+                  weekPosition,
+                  assignments.data ?? [],
+                  library.data ?? [],
+                  assignment?.id,
+                ),
+              )}
             </p>
           )}
         </div>

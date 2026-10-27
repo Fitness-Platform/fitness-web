@@ -1,7 +1,9 @@
-import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { ChevronDown, ChevronRight, Plus } from "lucide-react";
+import { useId, useState } from "react";
 import { Link } from "react-router-dom";
 import {
+  adminProgramWeeksQueryKey,
   useAdminProgramWeeksQuery,
   useAdminProgramWeekWorkoutsQuery,
 } from "../hooks/useAdminProgramStructure";
@@ -36,11 +38,16 @@ function Week({
   week,
   workouts,
   onAction,
+  expanded,
+  onToggle,
 }: {
   week: AdminProgramWeek;
   workouts: AdminWorkout[] | undefined;
   onAction: (action: Action) => void;
+  expanded: boolean;
+  onToggle: () => void;
 }) {
+  const contentId = useId();
   const query = useAdminProgramWeekWorkoutsQuery(week.programId, week.id);
   const assignments = query.data ?? [];
   const nextPosition =
@@ -53,17 +60,39 @@ function Week({
             Week {String(week.position).padStart(2, "0")}
           </p>
           <h3 className="mt-2 text-xl font-semibold tracking-tight">
-            {week.title}
+            <button
+              type="button"
+              onClick={onToggle}
+              aria-expanded={expanded}
+              aria-controls={contentId}
+              className="inline-flex min-h-11 max-w-full items-center gap-3 text-left hover:text-primary-dark"
+            >
+              <span className="min-w-0 break-words">{week.title}</span>
+              {expanded ? (
+                <ChevronDown
+                  size={18}
+                  className="shrink-0 text-primary-dark"
+                  aria-hidden="true"
+                />
+              ) : (
+                <ChevronRight
+                  size={18}
+                  className="shrink-0 text-primary-dark"
+                  aria-hidden="true"
+                />
+              )}
+            </button>
           </h3>
-          {week.description && (
-            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
-              {week.description}
-            </p>
-          )}
-          {query.isSuccess && (
+          {query.isSuccess ? (
             <p className="mt-3 text-xs text-muted-foreground">
               {assignments.length}{" "}
               {assignments.length === 1 ? "workout" : "workouts"}
+            </p>
+          ) : (
+            <p className="mt-3 text-xs text-muted-foreground">
+              {query.isPending
+                ? "Loading workout count..."
+                : "Workout count unavailable"}
             </p>
           )}
         </div>
@@ -86,109 +115,116 @@ function Week({
           </button>
         </div>
       </header>
-      {query.isPending ? (
-        <p
-          role="status"
-          className="px-5 pb-6 text-sm text-muted-foreground sm:px-7"
-        >
-          Loading week workouts...
-        </p>
-      ) : query.isError ? (
-        <div role="alert" className="px-5 pb-6 sm:px-7">
-          <p className="text-sm text-red-700">
-            Unable to load this week’s workouts.
+      <div id={contentId} hidden={!expanded}>
+        {week.description && (
+          <p className="px-5 pb-6 whitespace-pre-wrap text-sm leading-6 text-muted-foreground sm:px-7">
+            {week.description}
           </p>
+        )}
+        {query.isPending ? (
+          <p
+            role="status"
+            className="px-5 pb-6 text-sm text-muted-foreground sm:px-7"
+          >
+            Loading week workouts...
+          </p>
+        ) : query.isError ? (
+          <div role="alert" className="px-5 pb-6 sm:px-7">
+            <p className="text-sm text-red-700">
+              Unable to load this week’s workouts.
+            </p>
+            <button
+              type="button"
+              onClick={() => query.refetch()}
+              className={structureButton + " mt-3"}
+            >
+              Try again
+            </button>
+          </div>
+        ) : assignments.length ? (
+          <ol className="divide-y divide-border border-y border-border">
+            {assignments.map((assignment) => {
+              const workout = workouts?.find(
+                (item) => item.id === assignment.workoutId,
+              );
+              const name = workout?.name ?? "Workout details unavailable";
+              return (
+                <li
+                  key={assignment.id}
+                  className="flex flex-wrap items-center gap-x-6 gap-y-3 px-5 py-5 sm:px-7"
+                >
+                  <span
+                    className="text-xs text-muted-foreground"
+                    aria-label={`Position ${assignment.position}`}
+                  >
+                    {String(assignment.position).padStart(2, "0")}
+                  </span>
+                  <div className="min-w-0 flex-1 break-words">
+                    <Link
+                      to={`/admin/workouts/${assignment.workoutId}`}
+                      className="text-sm font-medium hover:text-primary-dark hover:underline"
+                    >
+                      {name}
+                    </Link>
+                    {workout?.description && (
+                      <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                        {workout.description}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-4">
+                    <button
+                      type="button"
+                      className="min-h-11 text-[10px] font-medium uppercase tracking-[0.16em] text-primary-dark"
+                      onClick={() =>
+                        onAction({
+                          kind: "workout",
+                          week,
+                          assignment,
+                          nextPosition,
+                        })
+                      }
+                      aria-label={`Edit position of ${name}`}
+                    >
+                      Edit Position
+                    </button>
+                    <button
+                      type="button"
+                      className="min-h-11 text-[10px] font-medium uppercase tracking-[0.16em] text-red-700"
+                      onClick={() =>
+                        onAction({
+                          kind: "removeWorkout",
+                          week,
+                          assignment,
+                          name,
+                        })
+                      }
+                      aria-label={`Remove ${name} from week ${week.position}`}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        ) : (
+          <p className="px-5 pb-6 text-sm text-muted-foreground sm:px-7">
+            No workouts assigned to this week. Add an existing workout from your
+            library.
+          </p>
+        )}
+        <div className="px-5 py-5 sm:px-7">
           <button
             type="button"
-            onClick={() => query.refetch()}
-            className={structureButton + " mt-3"}
+            className={structureButton}
+            disabled={!query.isSuccess || query.isFetching}
+            onClick={() => onAction({ kind: "workout", week, nextPosition })}
+            aria-label={`Add workout to week ${week.position}`}
           >
-            Try again
+            <Plus size={14} aria-hidden="true" /> Add Workout
           </button>
         </div>
-      ) : assignments.length ? (
-        <ol className="divide-y divide-border border-y border-border">
-          {assignments.map((assignment) => {
-            const workout = workouts?.find(
-              (item) => item.id === assignment.workoutId,
-            );
-            const name = workout?.name ?? `Workout ${assignment.workoutId}`;
-            return (
-              <li
-                key={assignment.id}
-                className="flex flex-wrap items-center gap-x-6 gap-y-3 px-5 py-5 sm:px-7"
-              >
-                <span
-                  className="text-xs text-muted-foreground"
-                  aria-label={`Position ${assignment.position}`}
-                >
-                  {String(assignment.position).padStart(2, "0")}
-                </span>
-                <div className="min-w-0 flex-1 break-words">
-                  <Link
-                    to={`/admin/workouts/${assignment.workoutId}`}
-                    className="text-sm font-medium hover:text-primary-dark hover:underline"
-                  >
-                    {name}
-                  </Link>
-                  {workout?.description && (
-                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                      {workout.description}
-                    </p>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-4">
-                  <button
-                    type="button"
-                    className="min-h-11 text-[10px] font-medium uppercase tracking-[0.16em] text-primary-dark"
-                    onClick={() =>
-                      onAction({
-                        kind: "workout",
-                        week,
-                        assignment,
-                        nextPosition,
-                      })
-                    }
-                    aria-label={`Edit position of ${name}`}
-                  >
-                    Edit Position
-                  </button>
-                  <button
-                    type="button"
-                    className="min-h-11 text-[10px] font-medium uppercase tracking-[0.16em] text-red-700"
-                    onClick={() =>
-                      onAction({
-                        kind: "removeWorkout",
-                        week,
-                        assignment,
-                        name,
-                      })
-                    }
-                    aria-label={`Remove ${name} from week ${week.position}`}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
-      ) : (
-        <p className="px-5 pb-6 text-sm text-muted-foreground sm:px-7">
-          No workouts assigned to this week. Add an existing workout from your
-          library.
-        </p>
-      )}
-      <div className="px-5 py-5 sm:px-7">
-        <button
-          type="button"
-          className={structureButton}
-          disabled={!query.isSuccess || query.isFetching}
-          onClick={() => onAction({ kind: "workout", week, nextPosition })}
-          aria-label={`Add workout to week ${week.position}`}
-        >
-          <Plus size={14} aria-hidden="true" /> Add Workout
-        </button>
       </div>
     </article>
   );
@@ -199,10 +235,36 @@ export default function AdminProgramStructure({
 }: {
   programId: string;
 }) {
+  const queryClient = useQueryClient();
   const query = useAdminProgramWeeksQuery(programId);
   const library = useAdminWorkoutsQuery();
   const [action, setAction] = useState<Action | null>(null);
   const weeks = query.data ?? [];
+  const [expandedWeekIds, setExpandedWeekIds] = useState<Set<string> | null>(
+    null,
+  );
+  if (query.isSuccess && expandedWeekIds === null) {
+    setExpandedWeekIds(new Set(weeks[0] ? [weeks[0].id] : []));
+  }
+  function toggleWeek(weekId: string) {
+    setExpandedWeekIds((current) => {
+      const next = new Set(current);
+      if (next.has(weekId)) next.delete(weekId);
+      else next.add(weekId);
+      return next;
+    });
+  }
+  function expandCreatedWeek(position: number) {
+    // The existing mutation waits for invalidation/refetch before this callback.
+    const refreshed = queryClient.getQueryData<AdminProgramWeek[]>(
+      adminProgramWeeksQueryKey(programId),
+    );
+    const created = refreshed?.find((week) => week.position === position);
+    if (created)
+      setExpandedWeekIds(
+        (current) => new Set([...(current ?? []), created.id]),
+      );
+  }
   const close = () => setAction(null);
   const nextPosition = Math.max(0, ...weeks.map((week) => week.position)) + 1;
   return (
@@ -276,6 +338,8 @@ export default function AdminProgramStructure({
             week={week}
             workouts={library.data}
             onAction={setAction}
+            expanded={expandedWeekIds?.has(week.id) ?? false}
+            onToggle={() => toggleWeek(week.id)}
           />
         ))
       ) : (
@@ -288,6 +352,7 @@ export default function AdminProgramStructure({
           programId={programId}
           week={action.week}
           nextPosition={nextPosition}
+          onCreated={expandCreatedWeek}
           onClose={close}
         />
       )}
@@ -303,6 +368,7 @@ export default function AdminProgramStructure({
         <AdminAssignProgramWorkoutDrawer
           programId={programId}
           weekId={action.week.id}
+          weekPosition={action.week.position}
           assignment={action.assignment}
           nextPosition={action.nextPosition}
           onClose={close}
