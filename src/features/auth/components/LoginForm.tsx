@@ -1,7 +1,10 @@
+import { ArrowRight } from 'lucide-react'
+import { authInput, authLabel, authLink, authSubmit } from './authStyles'
+import PasswordVisibilityButton from './PasswordVisibilityButton'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { ApiError } from '../../../services/apiClient'
 import { useLoginMutation } from '../hooks/useLoginMutation'
@@ -42,14 +45,14 @@ function LoginForm() {
 
   return (
     <form
-      className="space-y-5"
+      className="space-y-7"
       onSubmit={handleSubmit(onSubmit)}
       noValidate
     >
       <div>
         <label
           htmlFor="email"
-          className="mb-2 block text-sm font-medium"
+          className={authLabel}
         >
           Email
         </label>
@@ -62,7 +65,7 @@ function LoginForm() {
           disabled={loginMutation.isPending}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? 'email-error' : undefined}
-          className="w-full border border-border bg-transparent px-3 py-2.5 text-sm outline-none transition placeholder:text-muted-foreground/70 focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+          className={authInput}
           {...register('email')}
         />
 
@@ -79,7 +82,7 @@ function LoginForm() {
       <div>
         <label
           htmlFor="password"
-          className="mb-2 block text-sm font-medium"
+          className={authLabel}
         >
           Password
         </label>
@@ -95,46 +98,11 @@ function LoginForm() {
             aria-describedby={
               errors.password ? 'password-error' : undefined
             }
-            className="w-full border border-border bg-transparent px-3 py-2.5 pr-12 text-sm outline-none transition placeholder:text-muted-foreground/70 focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+            className={authInput + ' pr-12'}
             {...register('password')}
           />
 
-          <button
-            type="button"
-            onClick={() => setShowPassword((current) => !current)}
-            disabled={loginMutation.isPending}
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
-            aria-pressed={showPassword}
-            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-muted-foreground transition hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {showPassword ? (
-              <svg
-                viewBox="0 0 24 24"
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                aria-hidden="true"
-              >
-                <path d="M3 3l18 18" />
-                <path d="M10.6 10.6a2 2 0 002.8 2.8" />
-                <path d="M9.9 4.2A10.8 10.8 0 0112 4c5.5 0 9 5.5 9 5.5a15.6 15.6 0 01-3.2 3.8" />
-                <path d="M6.2 6.2C4.1 7.6 3 9.5 3 9.5S6.5 15 12 15c.7 0 1.4-.1 2-.2" />
-              </svg>
-            ) : (
-              <svg
-                viewBox="0 0 24 24"
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                aria-hidden="true"
-              >
-                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z" />
-                <circle cx="12" cy="12" r="2.5" />
-              </svg>
-            )}
-          </button>
+          <PasswordVisibilityButton shown={showPassword} onToggle={() => setShowPassword(current => !current)} disabled={loginMutation.isPending} />
         </div>
 
         {errors.password && (
@@ -145,6 +113,10 @@ function LoginForm() {
             {errors.password.message}
           </p>
         )}
+      </div>
+
+      <div className="-mt-3 flex justify-end">
+        <Link to="/forgot-password" className={authLink + ' text-sm'}>Forgot password?</Link>
       </div>
 
       {loginMutation.isError && (
@@ -161,9 +133,10 @@ function LoginForm() {
       <button
         type="submit"
         disabled={loginMutation.isPending}
-        className="w-full bg-primary px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-background transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+        className={authSubmit}
       >
-        {loginMutation.isPending ? 'Signing in...' : 'Sign in'}
+        <span className="font-[Georgia,serif] text-xl">{loginMutation.isPending ? 'Signing in...' : 'Sign in'}</span>
+        <ArrowRight size={19} aria-hidden="true" />
       </button>
     </form>
   )

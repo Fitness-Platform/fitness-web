@@ -1,6 +1,10 @@
+import { useState } from 'react'
+import { ArrowRight } from 'lucide-react'
+import { authInput, authLabel, authSubmit } from './authStyles'
+import PasswordVisibilityButton from './PasswordVisibilityButton'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { ApiError } from '../../../services/apiClient'
 import { useRegisterMutation } from '../hooks/useRegisterMutation'
@@ -10,6 +14,8 @@ import {
 } from '../schemas/registerSchema'
 
 function RegisterForm() {
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const navigate = useNavigate()
   const registerMutation = useRegisterMutation()
 
@@ -44,53 +50,53 @@ function RegisterForm() {
     registerMutation.error.status === 409
 
   return (
-    <>
-      <form
-        className="space-y-5"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
-        <div>
-          <label
-            htmlFor="email"
-            className="mb-2 block text-sm font-medium"
+    <form
+      className="space-y-7"
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+    >
+      <div>
+        <label
+          htmlFor="email"
+          className={authLabel}
+        >
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          autoComplete="email"
+          placeholder="you@example.com"
+          disabled={registerMutation.isPending}
+          aria-invalid={Boolean(errors.email)}
+          aria-describedby={errors.email ? 'email-error' : undefined}
+          className={authInput}
+          {...register('email')}
+        />
+
+        {errors.email && (
+          <p
+            id="email-error"
+            className="mt-2 text-sm text-red-700"
           >
-            Email
-          </label>
+            {errors.email.message}
+          </p>
+        )}
+      </div>
 
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            placeholder="you@example.com"
-            disabled={registerMutation.isPending}
-            aria-invalid={Boolean(errors.email)}
-            aria-describedby={errors.email ? 'email-error' : undefined}
-            className="w-full border border-border bg-transparent px-3 py-2.5 text-sm outline-none transition placeholder:text-muted-foreground/70 focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
-            {...register('email')}
-          />
+      <div>
+        <label
+          htmlFor="password"
+          className={authLabel}
+        >
+          Password
+        </label>
 
-          {errors.email && (
-            <p
-              id="email-error"
-              className="mt-2 text-sm text-red-700"
-            >
-              {errors.email.message}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label
-            htmlFor="password"
-            className="mb-2 block text-sm font-medium"
-          >
-            Password
-          </label>
-
+        <div className="relative">
           <input
             id="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             autoComplete="new-password"
             placeholder="Create a password"
             disabled={registerMutation.isPending}
@@ -98,31 +104,34 @@ function RegisterForm() {
             aria-describedby={
               errors.password ? 'password-error' : undefined
             }
-            className="w-full border border-border bg-transparent px-3 py-2.5 text-sm outline-none transition placeholder:text-muted-foreground/70 focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+            className={authInput + ' pr-12'}
             {...register('password')}
           />
-
-          {errors.password && (
-            <p
-              id="password-error"
-              className="mt-2 text-sm text-red-700"
-            >
-              {errors.password.message}
-            </p>
-          )}
+          <PasswordVisibilityButton shown={showPassword} onToggle={() => setShowPassword(current => !current)} disabled={registerMutation.isPending} label="password" />
         </div>
 
-        <div>
-          <label
-            htmlFor="confirmPassword"
-            className="mb-2 block text-sm font-medium"
+        {errors.password && (
+          <p
+            id="password-error"
+            className="mt-2 text-sm text-red-700"
           >
-            Confirm password
-          </label>
+            {errors.password.message}
+          </p>
+        )}
+      </div>
 
+      <div>
+        <label
+          htmlFor="confirmPassword"
+          className={authLabel}
+        >
+          Confirm password
+        </label>
+
+        <div className="relative">
           <input
             id="confirmPassword"
-            type="password"
+            type={showConfirmPassword ? 'text' : 'password'}
             autoComplete="new-password"
             placeholder="Confirm your password"
             disabled={registerMutation.isPending}
@@ -132,52 +141,44 @@ function RegisterForm() {
                 ? 'confirm-password-error'
                 : undefined
             }
-            className="w-full border border-border bg-transparent px-3 py-2.5 text-sm outline-none transition placeholder:text-muted-foreground/70 focus:border-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+            className={authInput + ' pr-12'}
             {...register('confirmPassword')}
           />
-
-          {errors.confirmPassword && (
-            <p
-              id="confirm-password-error"
-              className="mt-2 text-sm text-red-700"
-            >
-              {errors.confirmPassword.message}
-            </p>
-          )}
+          <PasswordVisibilityButton shown={showConfirmPassword} onToggle={() => setShowConfirmPassword(current => !current)} disabled={registerMutation.isPending} label="confirm password" />
         </div>
 
-        {registerMutation.isError && (
+        {errors.confirmPassword && (
           <p
-            role="alert"
-            className="text-sm text-red-700"
+            id="confirm-password-error"
+            className="mt-2 text-sm text-red-700"
           >
-            {conflict
-              ? 'An account with this email already exists.'
-              : 'We could not create your account. Please try again.'}
+            {errors.confirmPassword.message}
           </p>
         )}
+      </div>
 
-        <button
-          type="submit"
-          disabled={registerMutation.isPending}
-          className="w-full bg-primary px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-background transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+      {registerMutation.isError && (
+        <p
+          role="alert"
+          className="text-sm text-red-700"
         >
-          {registerMutation.isPending
-            ? 'Creating account...'
-            : 'Create account'}
-        </button>
-      </form>
+          {conflict
+            ? 'An account with this email already exists.'
+            : 'We could not create your account. Please try again.'}
+        </p>
+      )}
 
-      <p className="mt-8 text-center text-sm text-muted-foreground">
-        Already have an account?{' '}
-        <Link
-          to="/login"
-          className="font-medium text-foreground hover:underline"
-        >
-          Sign in
-        </Link>
-      </p>
-    </>
+      <button
+        type="submit"
+        disabled={registerMutation.isPending}
+        className={authSubmit}
+      >
+        <span className="font-[Georgia,serif] text-xl">{registerMutation.isPending
+          ? 'Creating account...'
+          : 'Create account'}</span>
+        <ArrowRight size={19} aria-hidden="true" />
+      </button>
+    </form>
   )
 }
 
