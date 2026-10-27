@@ -42,6 +42,7 @@ const items = [
   },
   {
     label: "Purchases",
+    to: "/admin/purchases",
     icon: ShoppingBag,
   },
 ];

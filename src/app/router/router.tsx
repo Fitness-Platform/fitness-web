@@ -1,3 +1,4 @@
+import AdminPurchasesPage from "../../features/admin/pages/AdminPurchasesPage";
 import AdminClientsAccessPage from "../../features/admin/pages/AdminClientsAccessPage";
 import ForgotPasswordPage from '../../features/auth/pages/ForgotPasswordPage';
 import ResetPasswordPage from '../../features/auth/pages/ResetPasswordPage';
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <AdminDashboardPage />,
+          },
+          {
+            path: "purchases",
+            element: <AdminPurchasesPage />,
           },
           {
             path: "clients-access",
