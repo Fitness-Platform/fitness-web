@@ -25,9 +25,12 @@ export default function AdminUserPicker({
 }) {
   const id = useId();
 
-  const [search, setSearch] = useState(value?.email ?? "");
+  const [draft, setDraft] = useState("");
   const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const search = isEditing ? draft : (value?.email ?? "");
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -37,23 +40,27 @@ export default function AdminUserPicker({
     return () => window.clearTimeout(timer);
   }, [search]);
 
-  useEffect(() => {
-    if (value && search !== value.email) {
-      setSearch(value.email);
-    }
-  }, [value]);
-
   const query = useAdminUsersQuery(email);
   const results = query.data ?? [];
 
   function selectUser(user: AdminUser) {
-    setSearch(user.email);
-    onChange(user);
+    setDraft(user.email);
+    setIsEditing(false);
     setIsOpen(false);
+    onChange(user);
+  }
+
+  function clearSelection() {
+    setDraft("");
+    setEmail("");
+    setIsEditing(false);
+    setIsOpen(false);
+    onChange(null);
   }
 
   function handleSearchChange(nextValue: string) {
-    setSearch(nextValue);
+    setDraft(nextValue);
+    setIsEditing(true);
     setIsOpen(true);
 
     if (value && nextValue !== value.email) {
@@ -87,10 +94,17 @@ export default function AdminUserPicker({
             optional ? "Search or select a client" : "Search client email"
           }
           value={search}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => {
+            setDraft(value?.email ?? "");
+            setIsEditing(true);
+            setIsOpen(true);
+          }}
           onChange={(event) => handleSearchChange(event.target.value)}
           onBlur={() => {
-            window.setTimeout(() => setIsOpen(false), 150);
+            window.setTimeout(() => {
+              setIsOpen(false);
+              setIsEditing(false);
+            }, 150);
           }}
           className={structureInput}
           aria-invalid={Boolean(error)}
@@ -109,11 +123,7 @@ export default function AdminUserPicker({
               <button
                 type="button"
                 onMouseDown={(event) => event.preventDefault()}
-                onClick={() => {
-                  setSearch("");
-                  onChange(null);
-                  setIsOpen(false);
-                }}
+                onClick={clearSelection}
                 className="flex min-h-12 w-full items-center px-4 text-left text-sm transition hover:bg-border/30"
               >
                 All clients
