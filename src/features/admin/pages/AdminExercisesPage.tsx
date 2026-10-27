@@ -1,3 +1,4 @@
+import { useCreateDrawerQuery } from "../hooks/useCreateDrawerQuery";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -55,10 +56,7 @@ function AdminExercisesPage() {
   const withoutVideoCount =
     exercises.length - withVideoCount;
 
-  const [
-    isCreateExerciseOpen,
-    setIsCreateExerciseOpen,
-  ] = useState(false);
+  const [isCreateExerciseOpen, setIsCreateExerciseOpen] = useCreateDrawerQuery();
 
   if (isPending) {
     return (

@@ -1,3 +1,4 @@
+import { useCreateDrawerQuery } from "../hooks/useCreateDrawerQuery";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -27,7 +28,7 @@ function AdminWorkoutsPage() {
 
   const [search, setSearch] = useState("");
 
-  const [isCreateWorkoutOpen, setIsCreateWorkoutOpen] = useState(false);
+  const [isCreateWorkoutOpen, setIsCreateWorkoutOpen] = useCreateDrawerQuery();
 
   const normalizedSearch = search.trim().toLowerCase();
 

@@ -1,3 +1,4 @@
+import { useCreateDrawerQuery } from "../hooks/useCreateDrawerQuery";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -37,7 +38,7 @@ function AdminProgramsPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<ProgramFilter>("ALL");
 
-  const [isCreateProgramOpen, setIsCreateProgramOpen] = useState(false);
+  const [isCreateProgramOpen, setIsCreateProgramOpen] = useCreateDrawerQuery();
 
   const publishedCount = programs.filter(
     (program) => program.status === "PUBLISHED",
