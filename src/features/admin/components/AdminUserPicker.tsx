@@ -1,4 +1,5 @@
 import { useEffect, useId, useState } from "react";
+
 import { useAdminUsersQuery } from "../hooks/useAdminUsersQuery";
 import type { AdminUser } from "../types/adminUser";
 import {
@@ -23,55 +24,126 @@ export default function AdminUserPicker({
   optional?: boolean;
 }) {
   const id = useId();
-  const [search, setSearch] = useState("");
+
+  const [search, setSearch] = useState(value?.email ?? "");
   const [email, setEmail] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
   useEffect(() => {
-    const timer = window.setTimeout(() => setEmail(search.trim()), 300);
+    const timer = window.setTimeout(() => {
+      setEmail(search.trim());
+    }, 300);
+
     return () => window.clearTimeout(timer);
   }, [search]);
+
+  useEffect(() => {
+    if (value && search !== value.email) {
+      setSearch(value.email);
+    }
+  }, [value]);
+
   const query = useAdminUsersQuery(email);
   const results = query.data ?? [];
-  const options =
-    value && !results.some((user) => user.id === value.id)
-      ? [value, ...results]
-      : results;
+
+  function selectUser(user: AdminUser) {
+    setSearch(user.email);
+    onChange(user);
+    setIsOpen(false);
+  }
+
+  function handleSearchChange(nextValue: string) {
+    setSearch(nextValue);
+    setIsOpen(true);
+
+    if (value && nextValue !== value.email) {
+      onChange(null);
+    }
+
+    if (!nextValue.trim() && optional) {
+      onChange(null);
+    }
+  }
+
+  const showResults =
+    isOpen &&
+    !query.isPending &&
+    !query.isError &&
+    results.length > 0;
+
   return (
     <fieldset disabled={disabled} className="min-w-0">
       <label className={structureLabel} htmlFor={`${id}-search`}>
-        Search clients by email
-      </label>
-      <input
-        id={`${id}-search`}
-        type="search"
-        autoComplete="off"
-        placeholder="Search email"
-        value={search}
-        onChange={(event) => setSearch(event.target.value)}
-        className={structureInput}
-      />
-      <label className={structureLabel + " mt-4"} htmlFor={`${id}-client`}>
         {label}
         {optional ? "" : " *"}
       </label>
-      <select
-        id={`${id}-client`}
-        value={value?.id ?? ""}
-        onChange={(event) =>
-          onChange(
-            options.find((user) => user.id === event.target.value) ?? null,
-          )
-        }
-        className={structureInput}
-        aria-invalid={Boolean(error)}
-        aria-describedby={`${id}-status ${id}-error`}
-      >
-        <option value="">{optional ? "All clients" : "Select a client"}</option>
-        {options.map((user) => (
-          <option key={user.id} value={user.id}>
-            {user.email} · {user.role}
-          </option>
-        ))}
-      </select>
+
+      <div className="relative">
+        <input
+          id={`${id}-search`}
+          type="search"
+          autoComplete="off"
+          placeholder={
+            optional ? "Search or select a client" : "Search client email"
+          }
+          value={search}
+          onFocus={() => setIsOpen(true)}
+          onChange={(event) => handleSearchChange(event.target.value)}
+          onBlur={() => {
+            window.setTimeout(() => setIsOpen(false), 150);
+          }}
+          className={structureInput}
+          aria-invalid={Boolean(error)}
+          aria-describedby={`${id}-status ${id}-error`}
+          aria-expanded={showResults}
+          aria-controls={`${id}-results`}
+          aria-autocomplete="list"
+        />
+
+        {showResults && (
+          <div
+            id={`${id}-results`}
+            className="absolute left-0 right-0 z-40 mt-1 max-h-64 overflow-y-auto border border-border bg-background shadow-sm"
+          >
+            {optional && (
+              <button
+                type="button"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => {
+                  setSearch("");
+                  onChange(null);
+                  setIsOpen(false);
+                }}
+                className="flex min-h-12 w-full items-center px-4 text-left text-sm transition hover:bg-border/30"
+              >
+                All clients
+              </button>
+            )}
+
+            {results.map((user) => (
+              <button
+                key={user.id}
+                type="button"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => selectUser(user)}
+                className={[
+                  "flex min-h-14 w-full items-center justify-between gap-4 border-t border-border px-4 text-left transition hover:bg-border/30",
+                  value?.id === user.id ? "bg-primary/10" : "",
+                ].join(" ")}
+              >
+                <span className="min-w-0 truncate text-sm">
+                  {user.email}
+                </span>
+
+                <span className="shrink-0 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                  {user.role}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       <div
         id={`${id}-status`}
         aria-live="polite"
@@ -81,10 +153,15 @@ export default function AdminUserPicker({
           ? "Searching clients..."
           : query.isError
             ? "Unable to search clients."
-            : !results.length
-              ? "No users match this email search."
-              : `${results.length} ${results.length === 1 ? "client" : "clients"} found.`}
+            : search.trim() && !results.length
+              ? "No users match this email."
+              : value
+                ? `${value.email} selected.`
+                : optional
+                  ? "All clients."
+                  : "Search by email to select a client."}
       </div>
+
       {query.isError && (
         <button
           type="button"
@@ -94,6 +171,7 @@ export default function AdminUserPicker({
           Retry client search
         </button>
       )}
+
       <p id={`${id}-error`} className="mt-2 text-xs text-red-700">
         {error}
       </p>
