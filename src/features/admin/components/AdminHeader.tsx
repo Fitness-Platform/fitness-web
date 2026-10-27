@@ -18,7 +18,9 @@ function AdminHeader({ onOpenMenu }: AdminHeaderProps) {
 
   const [isAccountOpen, setIsAccountOpen] = useState(false);
 
-  const pageTitle = location.pathname.startsWith("/admin/clients-access")
+  const pageTitle = location.pathname.startsWith("/admin/purchases")
+  ? "Purchases"
+  : location.pathname.startsWith("/admin/clients-access")
   ? "Clients & Access"
   : location.pathname.startsWith("/admin/programs")
   ? "Programs"
