@@ -1,3 +1,4 @@
+import { safeExternalUrl } from "../../../utils/safeExternalUrl";
 import type { AdminProgramResource } from "../types/adminProgramResource";
 
 export function resourcePositionMessage(
@@ -6,8 +7,10 @@ export function resourcePositionMessage(
   excludeId?: string,
 ) {
   const occupant = resources.find(
-    (resource) => resource.position === position && resource.id !== excludeId,
+    (resource) =>
+      resource.position === position && resource.id !== excludeId,
   );
+
   return (
     (occupant
       ? `Position ${position} is already used by "${occupant.title}".`
@@ -16,14 +19,6 @@ export function resourcePositionMessage(
   );
 }
 
-// Rendering a link is separate from backend validation. Other values remain visible as text.
 export function resourceLink(url: string): string | null {
-  try {
-    const parsed = new URL(url);
-    return parsed.protocol === "http:" || parsed.protocol === "https:"
-      ? parsed.href
-      : null;
-  } catch {
-    return null;
-  }
+  return safeExternalUrl(url);
 }
