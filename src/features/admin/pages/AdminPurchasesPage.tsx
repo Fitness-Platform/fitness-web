@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useAdminPurchasesQuery } from "../hooks/useAdminPurchases";
 import { useAdminUsersQuery } from "../hooks/useAdminUsersQuery";
@@ -17,7 +18,17 @@ export default function AdminPurchasesPage() {
   const users = useAdminUsersQuery();
   const [client, setClient] = useState<AdminUser | null>(null);
   const [programId, setProgramId] = useState("");
-  const [status, setStatus] = useState<AdminPurchaseStatus | "">("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const status: AdminPurchaseStatus | "" =
+    (["PENDING", "PAID", "EXPIRED"] as const).find(value => value === searchParams.get("status")) ?? "";
+  function setStatus(value: AdminPurchaseStatus | "") {
+    setSearchParams(current => {
+      const next = new URLSearchParams(current);
+      if (value) next.set("status", value);
+      else next.delete("status");
+      return next;
+    });
+  }
   const [detailsId, setDetailsId] = useState<string | null>(null);
   const purchases = query.data ?? [];
   const userMap = new Map(users.data?.map((user) => [user.id, user]));
