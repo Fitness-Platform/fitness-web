@@ -1,9 +1,9 @@
+import { getAdminPurchases } from './adminPurchases'
 import { apiRequest } from '../../../services/apiClient'
 import type {
   AdminDashboardData,
   AdminProgram,
   AdminProgramAccess,
-  AdminPurchase,
 } from '../types/adminDashboard'
 
 export async function getAdminDashboardData(): Promise<AdminDashboardData> {
@@ -15,9 +15,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       apiRequest<AdminProgramAccess[]>(
         '/api/admin/program-accesses',
       ),
-      apiRequest<AdminPurchase[]>(
-        '/api/admin/purchases',
-      ),
+      getAdminPurchases(),
     ])
 
   return {
