@@ -1,3 +1,5 @@
+import ForgotPasswordPage from '../../features/auth/pages/ForgotPasswordPage';
+import ResetPasswordPage from '../../features/auth/pages/ResetPasswordPage';
 import { createBrowserRouter } from "react-router-dom";
 
 import LoginPage from "../../features/auth/pages/LoginPage";
@@ -23,6 +25,8 @@ import AdminExercisesPage from "../../features/admin/pages/AdminExercisesPage";
 import AdminExerciseDetailPage from "../../features/admin/pages/AdminExerciseDetailPage";
 
 export const router = createBrowserRouter([
+  { path: "/forgot-password", element: <ForgotPasswordPage /> },
+  { path: "/reset-password", element: <ResetPasswordPage /> },
   {
     path: "/",
     element: <RootPage />,
