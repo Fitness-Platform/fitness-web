@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useAdminDashboardQuery } from "../hooks/useAdminDashboardQuery";
 
 function formatCurrency(amountCents: number, currency: string) {
@@ -81,21 +82,25 @@ function AdminDashboardPage() {
   const metrics = [
     {
       label: "Total programs",
+      to: "/admin/programs",
       value: programs.length.toString(),
       note: "Across your catalog",
     },
     {
       label: "Active clients",
+      to: "/admin/clients-access",
       value: activeClientIds.size.toString(),
       note: "With current access",
     },
     {
       label: "Recent purchases",
+      to: "/admin/purchases",
       value: recentPurchases.length.toString(),
       note: "Last 30 days",
     },
     {
       label: "Total revenue",
+      to: "/admin/purchases?status=PAID",
       value: totalPaid,
       note: "All time",
     },
@@ -160,9 +165,10 @@ function AdminDashboardPage() {
         className="grid grid-cols-2 gap-3 xl:grid-cols-4"
       >
         {metrics.map((metric) => (
-          <div
+          <Link
+            to={metric.to}
             key={metric.label}
-            className="min-w-0 border border-border bg-background p-4 sm:p-5"
+            className="min-w-0 border border-border bg-background p-4 transition-colors hover:border-primary-dark sm:p-5"
           >
             <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
               {metric.label}
@@ -175,7 +181,7 @@ function AdminDashboardPage() {
             <p className="mt-2 text-xs leading-5 text-muted-foreground">
               {metric.note}
             </p>
-          </div>
+          </Link>
         ))}
       </section>
 
@@ -203,10 +209,9 @@ function AdminDashboardPage() {
             </h2>
 
             <div className="mt-5 grid gap-3 lg:grid-cols-3">
-              <button
-                type="button"
-                disabled
-                className="flex min-h-16 items-center gap-4 border border-border bg-background px-4 py-3 text-left disabled:cursor-default"
+              <Link
+                to="/admin/programs?create=1"
+                className="flex min-h-16 items-center gap-4 border border-border bg-background px-4 py-3 text-left transition-colors hover:border-primary-dark"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center bg-primary-dark text-lg text-background">
                   +
@@ -225,12 +230,11 @@ function AdminDashboardPage() {
                 <span className="text-lg text-foreground" aria-hidden="true">
                   →
                 </span>
-              </button>
+              </Link>
 
-              <button
-                type="button"
-                disabled
-                className="flex min-h-16 items-center gap-4 border border-border bg-background px-4 py-3 text-left disabled:cursor-default"
+              <Link
+                to="/admin/workouts?create=1"
+                className="flex min-h-16 items-center gap-4 border border-border bg-background px-4 py-3 text-left transition-colors hover:border-primary-dark"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center bg-primary-dark text-lg text-background">
                   +
@@ -249,12 +253,11 @@ function AdminDashboardPage() {
                 <span className="text-lg text-foreground" aria-hidden="true">
                   →
                 </span>
-              </button>
+              </Link>
 
-              <button
-                type="button"
-                disabled
-                className="flex min-h-16 items-center gap-4 border border-border bg-background px-4 py-3 text-left disabled:cursor-default"
+              <Link
+                to="/admin/exercises?create=1"
+                className="flex min-h-16 items-center gap-4 border border-border bg-background px-4 py-3 text-left transition-colors hover:border-primary-dark"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center bg-primary-dark text-lg text-background">
                   +
@@ -273,7 +276,7 @@ function AdminDashboardPage() {
                 <span className="text-lg text-foreground" aria-hidden="true">
                   →
                 </span>
-              </button>
+              </Link>
             </div>
           </section>
 
@@ -295,9 +298,9 @@ function AdminDashboardPage() {
                 </h2>
               </div>
 
-              <span className="hidden text-[10px] font-medium uppercase tracking-[0.14em] text-primary-dark sm:inline">
+              <Link to="/admin/programs" className="hidden text-[10px] font-medium uppercase tracking-[0.14em] text-primary-dark hover:underline underline-offset-4 sm:inline">
                 View all programs →
-              </span>
+              </Link>
             </div>
 
             {recentPrograms.length === 0 ? (
@@ -337,21 +340,22 @@ function AdminDashboardPage() {
                       {program.status}
                     </span>
 
-                    <button
-                      type="button"
-                      disabled
-                      className="min-h-10 border border-primary-dark px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-primary-dark disabled:cursor-default"
+                    <Link
+                      to={`/admin/programs/${program.id}`}
+                      aria-label={`Manage ${program.name}`}
+                      style={{ font: "inherit" }}
+                      className="inline-flex min-h-10 items-center justify-center border border-primary-dark px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-primary-dark transition-colors hover:bg-primary/10"
                     >
                       Manage
-                    </button>
+                    </Link>
                   </div>
                 ))}
               </div>
             )}
 
-            <span className="mt-4 inline-block text-[10px] font-medium uppercase tracking-[0.14em] text-primary-dark sm:hidden">
+            <Link to="/admin/programs" className="mt-4 inline-block text-[10px] font-medium uppercase tracking-[0.14em] text-primary-dark hover:underline underline-offset-4 sm:hidden">
               View all programs →
-            </span>
+            </Link>
           </section>
 
           <section
@@ -372,9 +376,9 @@ function AdminDashboardPage() {
                 </h2>
               </div>
 
-              <span className="hidden text-[10px] font-medium uppercase tracking-[0.14em] text-primary-dark sm:inline">
+              <Link to="/admin/purchases" className="hidden text-[10px] font-medium uppercase tracking-[0.14em] text-primary-dark hover:underline underline-offset-4 sm:inline">
                 View all purchases →
-              </span>
+              </Link>
             </div>
 
             {latestPurchases.length === 0 ? (
@@ -491,9 +495,9 @@ function AdminDashboardPage() {
               </>
             )}
 
-            <span className="mt-4 inline-block text-[10px] font-medium uppercase tracking-[0.14em] text-primary-dark sm:hidden">
+            <Link to="/admin/purchases" className="mt-4 inline-block text-[10px] font-medium uppercase tracking-[0.14em] text-primary-dark hover:underline underline-offset-4 sm:hidden">
               View all purchases →
-            </span>
+            </Link>
           </section>
         </>
       )}
