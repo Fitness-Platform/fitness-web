@@ -1,3 +1,4 @@
+import AdminProgramResources from "../components/AdminProgramResources";
 import AdminProgramStructure from '../components/AdminProgramStructure';
 import { ArrowLeft } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
@@ -89,6 +90,8 @@ function AdminProgramDetailPage() {
       </section>
 
       <AdminProgramStructure key={programId} programId={programId} />
+
+      <AdminProgramResources key={`resources-${programId}`} programId={programId} />
 
       <AdminProgramDangerZone program={program} />
     </div>
