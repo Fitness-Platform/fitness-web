@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 
 type Props = {
   title: string;
+  eyebrow?: string;
   description: string;
   pending: boolean;
   drawer?: boolean;
@@ -13,6 +14,7 @@ type Props = {
 // Native modal dialogs provide focus containment and make the background inert.
 export default function AdminStructureDialog({
   title,
+  eyebrow = "Program Structure",
   description,
   pending,
   drawer = false,
@@ -84,7 +86,7 @@ export default function AdminStructureDialog({
             <p
               className={`text-[10px] font-medium uppercase tracking-[0.18em] ${drawer ? "text-primary-dark" : "text-red-700"}`}
             >
-              Program Structure
+              {eyebrow}
             </p>
             <h2
               id={`${id}-title`}
