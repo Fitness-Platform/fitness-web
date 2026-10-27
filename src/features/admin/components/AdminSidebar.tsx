@@ -37,6 +37,7 @@ const items = [
   },
   {
     label: "Clients & Access",
+    to: "/admin/clients-access",
     icon: UsersRound,
   },
   {

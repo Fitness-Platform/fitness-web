@@ -1,3 +1,4 @@
+import AdminClientsAccessPage from "../../features/admin/pages/AdminClientsAccessPage";
 import ForgotPasswordPage from '../../features/auth/pages/ForgotPasswordPage';
 import ResetPasswordPage from '../../features/auth/pages/ResetPasswordPage';
 import { createBrowserRouter } from "react-router-dom";
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <AdminDashboardPage />,
+          },
+          {
+            path: "clients-access",
+            element: <AdminClientsAccessPage />,
           },
           {
             path: "programs",
