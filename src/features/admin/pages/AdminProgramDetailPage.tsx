@@ -1,3 +1,4 @@
+import AdminProgramStructure from '../components/AdminProgramStructure';
 import { ArrowLeft } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
@@ -86,6 +87,8 @@ function AdminProgramDetailPage() {
           <AdminProgramStatusCard program={program} />
         </div>
       </section>
+
+      <AdminProgramStructure key={programId} programId={programId} />
 
       <AdminProgramDangerZone program={program} />
     </div>
