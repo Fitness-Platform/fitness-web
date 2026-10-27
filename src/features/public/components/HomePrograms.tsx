@@ -1,35 +1,192 @@
-import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import editorialImage from '../../../assets/home-editorial.png'
-import strengthImage from '../../../assets/home-strength.png'
-import { container, eyebrow } from './styles'
+import { Link } from 'react-router-dom';
 
-const programs = [
-  { number: '01', duration: '6 WEEKS', title: 'Strength & Structure', description: 'Build strength, improve body composition and feel stronger in everyday life.', image: editorialImage, imageClass: 'h-full w-[200%] max-w-none object-cover object-top', alt: 'A woman practicing a dumbbell curl in a warm studio' },
-  { number: '02', duration: '12 WEEKS', title: 'Rebalance', description: 'A thoughtful approach to strength, energy and the changes that come with midlife.', image: strengthImage, imageClass: 'h-full w-full object-cover object-[73%_center]', alt: 'A woman practicing a weighted squat' },
-  { number: '03', duration: '4 WEEKS', title: 'Mobility & Longevity', description: 'Move better, feel better and build the freedom to keep doing what you love.', image: editorialImage, imageClass: 'h-full w-[200%] max-w-none -translate-x-1/2 object-cover', alt: 'A woman walking along a sunlit garden path' },
-]
+import kettlebellRowBench from '../../../assets/home/daniela-kettlebell-row-bench.jpg';
+import partnerSquat from '../../../assets/home/daniela-partner-squat.jpg';
+import heroDumbbells from '../../../assets/home/hero-daniela-dumbbells.jpg';
+import kettlebellBenchStance from '../../../assets/home/daniela-kettlebell-bench-stance.jpg';
 
-export default function HomePrograms() {
+import { container, eyebrow, textCta } from './styles';
+
+const PROGRAMS_PAGE = '/programs';
+
+interface ProgramTeaser {
+  title: string;
+  duration: string;
+  description: string;
+  image: string;
+  alt: string;
+  position: string;
+}
+
+const PROGRAMS: ProgramTeaser[] = [
+  {
+    title: 'Strength & Structure',
+    duration: '6 weeks',
+    description:
+      'Build strength, improve body composition and feel stronger in everyday life.',
+    image: kettlebellRowBench,
+    alt: 'Daniela Brito performing a kettlebell row supported on a bench',
+    position: 'object-[50%_40%]',
+  },
+  {
+    title: 'Rebalance',
+    duration: '12 weeks',
+    description:
+      'A complete program for menopause and beyond — strength, mobility and lifestyle.',
+    image: partnerSquat,
+    alt: 'Daniela Brito training with another woman in a supported squat',
+    position: 'object-[50%_50%]',
+  },
+  {
+    title: 'Dumbbell Strong',
+    duration: '6 weeks',
+    description:
+      'Effective full-body training you can do anywhere with just dumbbells.',
+    image: heroDumbbells,
+    alt: 'Daniela Brito standing and training with dumbbells',
+    position: 'object-[50%_20%]',
+  },
+  {
+    title: 'Mobility & Longevity',
+    duration: '4 weeks',
+    description:
+      'Move better, feel better and stay independent for decades to come.',
+    image: kettlebellBenchStance,
+    alt: 'Daniela Brito performing a kettlebell exercise supported on a bench',
+    position: 'object-[50%_45%]',
+  },
+];
+
+export function HomePrograms() {
   return (
-    <section id="programs" aria-labelledby="programs-title" className={`${container} scroll-mt-8 pb-16 md:pb-28`}>
-      <div className="border-t border-border pt-12 md:flex md:items-end md:justify-between md:gap-16 md:pt-16">
-        <div><p className={eyebrow}>Your next chapter starts here</p><h2 id="programs-title" className="mt-6 max-w-[540px] text-[42px] font-semibold leading-[1.04] tracking-[-0.05em] sm:text-[54px] md:text-[clamp(54px,6vw,84px)]">Find your<br />strength.</h2></div>
-        <p className="mt-5 max-w-sm text-[16px] leading-[1.8] text-muted-foreground md:max-w-[270px] md:pb-2 md:text-[14px]">Thoughtful programs. Lasting foundations. A place to begin.</p>
-      </div>
-      <div className="mt-9 grid gap-8 md:mt-12 md:grid-cols-[1.18fr_1fr] md:gap-x-12 md:gap-y-10">
-        {programs.map((program, index) => <article key={program.number} className={index === 0 ? 'border-b border-border pb-6 md:row-span-2 md:self-start' : 'grid grid-cols-[0.8fr_1.2fr] gap-5 border-b border-border pb-6 md:block'}>
-          <Link to="/register" aria-label={`Get started with ${program.title}`} className={`relative block overflow-hidden ${index === 0 ? 'aspect-[1.1]' : 'min-h-44 md:aspect-[2.2] md:min-h-0'}`}>
-            <img src={program.image} alt={program.alt} loading="lazy" width={1536} height={1024} className={program.imageClass} />
-            {index === 0 && <span className="absolute left-5 top-5 bg-background px-4 py-3 text-[10px] font-medium uppercase tracking-[0.12em]">Strength</span>}
-          </Link>
-          <div className={index === 0 ? 'pt-6' : 'md:pt-5'}>
-            <p className={`${eyebrow} !text-[9px]`}>{program.number} · {program.duration}</p>
-            <h3 className="mt-3 text-[22px] font-semibold leading-tight tracking-[-0.04em] lg:text-[30px]"><Link to="/register" className="group flex min-h-11 items-start justify-between gap-3 hover:text-primary-dark">{program.title}<ArrowRight size={21} className="mt-1 shrink-0" aria-hidden="true" /></Link></h3>
-            <p className="mt-2 text-[14px] leading-[1.8] text-muted-foreground md:text-[13px] lg:text-[14px]">{program.description}</p>
+    <section
+      id="programs"
+      className="
+        scroll-mt-24
+        border-t
+        border-[#D8D6CF]
+        bg-[#F7F5F0]
+        py-16
+        lg:py-24
+      "
+    >
+      <div className={container}>
+        <div
+          className="
+            flex
+            flex-col
+            gap-6
+            sm:flex-row
+            sm:items-end
+            sm:justify-between
+          "
+        >
+          <div>
+            <p className={eyebrow}>
+              Programs
+            </p>
+
+            <h2
+              className="
+                mt-5
+                text-[2.5rem]
+                font-bold
+                leading-[1.05]
+                tracking-[-0.03em]
+                text-[#202424]
+                sm:text-5xl
+                lg:text-[3.5rem]
+              "
+            >
+              Find your program.
+            </h2>
           </div>
-        </article>)}
+
+          <Link
+            to={PROGRAMS_PAGE}
+            className={`${textCta} hidden sm:inline-flex`}
+          >
+            View all programs →
+          </Link>
+        </div>
+
+        <ul
+          className="
+            mt-10
+            grid
+            gap-x-6
+            gap-y-10
+            sm:grid-cols-2
+            lg:mt-14
+            lg:grid-cols-4
+          "
+        >
+          {PROGRAMS.map((program) => (
+            <li key={program.title}>
+              <Link
+                to={PROGRAMS_PAGE}
+                className="group block"
+              >
+                <img
+                  src={program.image}
+                  alt={program.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className={`
+                    aspect-[4/3]
+                    w-full
+                    object-cover
+                    sm:aspect-[3/4]
+                    ${program.position}
+                  `}
+                />
+
+                <p className={`${eyebrow} mt-5`}>
+                  {program.duration}
+                </p>
+
+                <h3
+                  className="
+                    mt-2
+                    text-xl
+                    font-semibold
+                    tracking-[-0.01em]
+                    text-[#202424]
+                  "
+                >
+                  {program.title}
+                </h3>
+
+                <p
+                  className="
+                    mt-2
+                    text-sm
+                    leading-[1.65]
+                    text-[#686B68]
+                  "
+                >
+                  {program.description}
+                </p>
+
+                <span
+                  className={`${textCta} mt-2 inline-flex`}
+                >
+                  Explore →
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <Link
+          to={PROGRAMS_PAGE}
+          className={`${textCta} mt-10 inline-flex sm:hidden`}
+        >
+          View all programs →
+        </Link>
       </div>
     </section>
-  )
+  );
 }
+
+export default HomePrograms;

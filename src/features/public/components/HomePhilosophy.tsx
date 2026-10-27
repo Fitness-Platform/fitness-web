@@ -1,16 +1,46 @@
-import { container, eyebrow } from './styles'
+import { container, eyebrow } from './styles';
 
-export default function HomePhilosophy() {
+const STATEMENTS = [
+  'Purposeful training, not punishment',
+  'Strength that carries into daily life',
+  'Consistency you can sustain',
+];
+
+export function HomePhilosophy() {
   return (
-    <section id="approach" aria-labelledby="approach-title" className={`${container} scroll-mt-8 py-14 md:py-24 lg:py-32`}>
-      <p className={eyebrow}>Built around your life</p>
-      <div className="mt-6 grid gap-8 md:grid-cols-[1.3fr_1fr] md:gap-16 lg:gap-28">
-        <h2 id="approach-title" className="text-[clamp(38px,9.5vw,56px)] font-semibold leading-[1.04] tracking-[-0.05em] md:text-[clamp(50px,6.3vw,90px)]">More than<span className="hidden md:inline"><br /></span><span className="md:hidden"> </span>a workout.<span className="text-primary-dark"><span className="hidden md:inline"><br /></span><span className="md:hidden"> </span>A stronger<span className="hidden md:inline"><br /></span><span className="md:hidden"> </span>way forward.</span></h2>
-        <div className="md:pt-7">
-          <p className="text-[16px] leading-[1.8] text-muted-foreground md:text-[14px] lg:text-[15px]">Your body changes. Your strength can keep growing. A balanced approach to training, movement and wellbeing helps you feel capable in every chapter.</p>
-          <ol className="mt-8 border-t border-border md:mt-12">{['Purposeful strength training', 'Sustainable, everyday habits', 'Progress at your own pace'].map((principle, index) => <li key={principle} className="flex min-h-16 items-center justify-between gap-5 border-b border-border py-4 text-[16px] leading-snug"><span className="md:max-w-[210px]">{principle}</span><span aria-hidden="true" className="hidden text-[10px] tracking-[0.15em] text-primary-dark md:inline">{['I', 'II', 'III'][index]}</span></li>)}</ol>
+    <section className="border-t border-[#D8D6CF] bg-[#F7F5F0] py-20 lg:py-32">
+      <div
+        className={`${container} grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-24`}
+      >
+        <div>
+          <p className={eyebrow}>Built around your life</p>
+
+          <h2 className="mt-6 text-[2.5rem] font-bold leading-[1.04] tracking-[-0.03em] text-[#202424] sm:text-6xl lg:mt-7 lg:text-[4.75rem]">
+            More than a workout. A stronger way forward.
+          </h2>
+        </div>
+
+        <div className="lg:pt-11">
+          <p className="text-base leading-[1.7] text-[#686B68] sm:text-lg">
+            Daniela’s approach is about sustainable strength, confidence and
+            long-term capability — training that supports how you want to live,
+            not just how you want to look.
+          </p>
+
+          <ul className="mt-9 border-t border-[#D8D6CF]">
+            {STATEMENTS.map((statement) => (
+              <li
+                key={statement}
+                className="border-b border-[#D8D6CF] py-[18px] text-base font-semibold text-[#202424]"
+              >
+                {statement}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
-  )
+  );
 }
+
+export default HomePhilosophy;
