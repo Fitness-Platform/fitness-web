@@ -14,7 +14,7 @@ export default function ProgramSalesContent() {
         className="scroll-mt-6 bg-[#496658] text-[#F7F5F0]"
       >
         <div
-          className={`${container} grid gap-7 py-10 md:grid-cols-[0.8fr_1.2fr] md:gap-10 lg:gap-16 md:py-16`}
+          className={`${container} grid gap-6 pt-8 pb-5 md:grid-cols-[0.8fr_1.2fr] md:gap-x-10 md:gap-y-8 md:pt-12 md:pb-8 lg:gap-x-16`}
         >
           <div>
             <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.18em]">
@@ -42,30 +42,30 @@ export default function ProgramSalesContent() {
               long-term capability — training that supports how you want to
               live, not just how you want to look.
             </p>
-            <dl className="mt-7 grid gap-x-8 md:grid-cols-2">
-              {[
-                ["Structured", "Six weeks, laid out in order."],
-                ["Progressive", "Build strength through consistent training."],
-                ["Strength focused", "Dumbbell training for real life."],
-                ["For women 40+", "Women in their 40s, 50s and beyond."],
-              ].map(([label, copy], i) => (
-                <div key={label} className="border-t border-[#F7F5F0]/35 py-5">
-                  <span
-                    aria-hidden="true"
-                    className="block text-[10px] tracking-[0.15em] text-[#F7F5F0]/75"
-                  >
-                    0{i + 1}
-                  </span>
-                  <dt className="mt-3 text-sm font-semibold uppercase tracking-wide">
-                    {label}
-                  </dt>
-                  <dd className="mt-2 text-sm leading-relaxed text-[#F7F5F0]/85">
-                    {copy}
-                  </dd>
-                </div>
-              ))}
-            </dl>
           </div>
+          <dl className="grid md:col-span-2 md:grid-cols-4 md:gap-x-6 lg:gap-x-8">
+            {[
+              ["Structured", "Six weeks, laid out in order."],
+              ["Progressive", "Build strength through consistent training."],
+              ["Strength focused", "Dumbbell training for real life."],
+              ["For women 40+", "Women in their 40s, 50s and beyond."],
+            ].map(([label, copy], i) => (
+              <div key={label} className="border-t border-[#F7F5F0]/35 py-4">
+                <span
+                  aria-hidden="true"
+                  className="block text-[10px] tracking-[0.15em] text-[#F7F5F0]/75"
+                >
+                  0{i + 1}
+                </span>
+                <dt className="mt-3 text-sm font-semibold uppercase tracking-wide">
+                  {label}
+                </dt>
+                <dd className="mt-2 text-sm leading-relaxed text-[#F7F5F0]/85">
+                  {copy}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
       <section
