@@ -1,46 +1,77 @@
-import { container, eyebrow } from './styles';
-
-const STATEMENTS = [
-  'Purposeful training, not punishment',
-  'Strength that carries into daily life',
-  'Consistency you can sustain',
+import mobility from "../../../assets/home/daniela-sunset-profile.jpg";
+import confidence from "../../../assets/home/daniela-smiling-portrait.jpg";
+import strength from "../../../assets/home/daniela-kettlebell-row-wide.jpg";
+import { container } from "./styles";
+const stories = [
+  {
+    title: "Move better",
+    image: mobility,
+    width: 1106,
+    height: 1119,
+    alt: "Daniela outdoors in the warm evening light",
+    copy: "Improve mobility, reduce stiffness and feel more capable in everyday life.",
+    position: "50% 40%",
+  },
+  {
+    title: "Feel confident",
+    image: confidence,
+    width: 661,
+    height: 994,
+    alt: "Daniela smiling with her arms raised above her head",
+    copy: "Build physical and mental confidence through consistent training.",
+    position: "50% 20%",
+  },
+  {
+    title: "Build strength",
+    image: strength,
+    width: 1760,
+    height: 1159,
+    alt: "Daniela lifting a kettlebell beside a workout bench",
+    copy: "Build muscle, support bone health and protect your independence.",
+    position: "50% 50%",
+  },
 ];
-
-export function HomePhilosophy() {
+export default function HomePhilosophy() {
   return (
-    <section className="border-t border-[#D8D6CF] bg-[#F7F5F0] py-20 lg:py-32">
-      <div
-        className={`${container} grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-24`}
-      >
-        <div>
-          <p className={eyebrow}>Built around your life</p>
-
-          <h2 className="mt-6 text-[2.5rem] font-bold leading-[1.04] tracking-[-0.03em] text-[#202424] sm:text-6xl lg:mt-7 lg:text-[4.75rem]">
-            More than a workout. A stronger way forward.
-          </h2>
-        </div>
-
-        <div className="lg:pt-11">
-          <p className="text-base leading-[1.7] text-[#686B68] sm:text-lg">
-            Daniela’s approach is about sustainable strength, confidence and
-            long-term capability — training that supports how you want to live,
-            not just how you want to look.
-          </p>
-
-          <ul className="mt-9 border-t border-[#D8D6CF]">
-            {STATEMENTS.map((statement) => (
-              <li
-                key={statement}
-                className="border-b border-[#D8D6CF] py-[18px] text-base font-semibold text-[#202424]"
-              >
-                {statement}
-              </li>
-            ))}
-          </ul>
-        </div>
+    <section
+      id="approach"
+      aria-labelledby="approach-title"
+      className={`${container} scroll-mt-6 py-10 md:py-14`}
+    >
+      <div className="mb-7 grid items-end gap-5 md:grid-cols-2">
+        <h2
+          id="approach-title"
+          className="text-4xl font-semibold leading-tight tracking-[-0.045em] lg:text-5xl"
+        >
+          A stronger way forward.
+        </h2>
+        <p className="max-w-md leading-relaxed text-muted-foreground md:ml-auto">
+          Sustainable strength, confidence and long-term capability — training
+          that supports how you want to live.
+        </p>
+      </div>
+      <div className="grid gap-8 md:grid-cols-3 md:gap-6">
+        {stories.map((story) => (
+          <article key={story.title}>
+            <img
+              src={story.image}
+              width={story.width}
+              height={story.height}
+              alt={story.alt}
+              loading="lazy"
+              decoding="async"
+              style={{ objectPosition: story.position }}
+              className={`w-full object-cover ${story.title === "Build strength" ? "aspect-[3/2] md:aspect-square" : "aspect-square"}`}
+            />
+            <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide">
+              {story.title}
+            </h3>
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              {story.copy}
+            </p>
+          </article>
+        ))}
       </div>
     </section>
   );
 }
-
-export default HomePhilosophy;

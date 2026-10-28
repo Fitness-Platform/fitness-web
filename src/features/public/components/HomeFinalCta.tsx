@@ -1,142 +1,51 @@
-import { Link } from 'react-router-dom';
-
-const REGISTER_PAGE = '/register';
-const LOGIN_PAGE = '/login';
-
-const onGreenPrimary =
-  'inline-flex h-12 items-center justify-center rounded-[2px] ' +
-  'border border-[#F7F5F0] bg-[#F7F5F0] px-7 ' +
-  'text-xs font-semibold uppercase tracking-[0.14em] text-[#202424] ' +
-  'transition-colors hover:bg-white ' +
-  'focus-visible:outline focus-visible:outline-2 ' +
-  'focus-visible:outline-offset-2 focus-visible:outline-[#F7F5F0]';
-
-const onGreenOutline =
-  'inline-flex h-12 items-center justify-center rounded-[2px] ' +
-  'border border-[#F7F5F0] px-7 ' +
-  'text-xs font-semibold uppercase tracking-[0.14em] text-[#F7F5F0] ' +
-  'transition-colors hover:bg-[#F7F5F0] hover:text-[#202424] ' +
-  'focus-visible:outline focus-visible:outline-2 ' +
-  'focus-visible:outline-offset-2 focus-visible:outline-[#F7F5F0]';
-
-export function HomeFinalCta() {
+import { Link } from "react-router-dom";
+import photo from "../../../assets/home/daniela-waterfront-portrait.jpg";
+import { container, primaryCta } from "./styles";
+export default function HomeFinalCta() {
   return (
     <section
-      aria-labelledby="home-final-cta"
-      className="bg-[#607A6D] text-[#F7F5F0]"
+      aria-labelledby="final-title"
+      className="relative mt-8 bg-[#202424] text-[#F7F5F0] md:mt-14"
     >
-      <div
-        className="
-          mx-auto
-          flex
-          max-w-[90rem]
-          flex-col
-          justify-between
-          gap-16
-          px-6
-          py-16
-          sm:px-10
-          lg:min-h-[47rem]
-          lg:px-20
-          lg:py-24
-        "
-      >
-        <div>
-          <p
-            className="
-              text-[11px]
-              font-medium
-              uppercase
-              tracking-[0.18em]
-            "
-          >
-            Start here
-          </p>
-
-          <h2
-            id="home-final-cta"
-            className="
-              mt-6
-              text-[3.25rem]
-              font-bold
-              leading-[0.97]
-              tracking-[-0.04em]
-              sm:text-[6rem]
-              lg:mt-8
-              lg:text-[clamp(6rem,12vw,11rem)]
-            "
-          >
-            Let&apos;s build
-            <br />
-            what&apos;s next.
-          </h2>
-        </div>
-
+      <div className="grid md:grid-cols-2">
         <div
-          className="
-            flex
-            flex-col
-            gap-8
-            lg:flex-row
-            lg:items-end
-            lg:justify-between
-          "
+          className={`${container} relative z-10 flex flex-col justify-center py-12 md:col-start-1 md:row-start-1 md:px-10 lg:py-20 lg:pl-20`}
         >
-          <p className="max-w-md text-base leading-[1.65] sm:text-lg">
-            Choose a program, create your account and train with a plan built
-            for real life.
+          <p className="text-[11px] uppercase tracking-[0.18em]">Start here</p>
+          <h2
+            id="final-title"
+            className="mt-4 text-5xl font-semibold leading-none tracking-[-0.05em] lg:text-7xl"
+          >
+            Let’s build
+            <br />
+            what’s next.
+          </h2>
+          <p className="mt-5 max-w-sm leading-relaxed">
+            Join the 6-week dumbbell strength program and start training with a
+            plan built for real life.
           </p>
-
-          <div className="flex flex-col gap-4 lg:items-end">
-            <div
-              className="
-                flex
-                flex-col
-                gap-3
-                sm:flex-row
-                sm:gap-4
-              "
-            >
-              <a
-                href="#programs"
-                className={`${onGreenPrimary} sm:min-w-[12rem]`}
-              >
-                Explore programs
-              </a>
-
-              <Link
-                to={REGISTER_PAGE}
-                className={`${onGreenOutline} sm:min-w-[12rem]`}
-              >
-                Start your journey
-              </Link>
-            </div>
-
+          <div className="mt-7 flex flex-wrap gap-3">
+            <a href="#programs" className={primaryCta}>
+              Explore the program
+            </a>
             <Link
-              to={LOGIN_PAGE}
-              className="
-                inline-flex
-                min-h-11
-                items-center
-                text-xs
-                font-semibold
-                uppercase
-                tracking-[0.14em]
-                underline-offset-4
-                hover:underline
-                focus-visible:outline
-                focus-visible:outline-2
-                focus-visible:outline-offset-2
-                focus-visible:outline-[#F7F5F0]
-              "
+              to="/register"
+              className="inline-flex min-h-12 items-center justify-center border border-current px-7 text-xs font-semibold uppercase tracking-[0.14em] hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             >
-              Already a member? Sign in →
+              Join now
             </Link>
           </div>
         </div>
+        <img
+          src={photo}
+          width="1264"
+          height="1115"
+          alt="Daniela by the waterfront with the city skyline behind her"
+          loading="lazy"
+          decoding="async"
+          className="h-full max-h-[38rem] min-h-72 w-full object-cover object-[50%_30%] md:col-start-2 md:row-start-1"
+        />
       </div>
     </section>
   );
 }
-
-export default HomeFinalCta;

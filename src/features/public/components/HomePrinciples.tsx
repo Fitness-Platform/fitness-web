@@ -1,61 +1,54 @@
-import { container, eyebrow } from './styles';
-
-const PRINCIPLES = [
+import { Dumbbell, Footprints, Leaf, Heart } from "lucide-react";
+import { container } from "./styles";
+const principles = [
   {
-    title: 'Science-backed',
-    text: 'Training grounded in research, not trends.',
+    icon: Dumbbell,
+    title: "Build strength",
+    copy: "Build muscle and support bone health for a stronger, more independent you.",
   },
   {
-    title: 'Real-life focused',
-    text: 'Strength that fits the life you already have.',
+    icon: Footprints,
+    title: "Move better",
+    copy: "Improve mobility and balance for everyday life and the activities you love.",
   },
   {
-    title: 'Long-term results',
-    text: 'Progress designed to last for decades.',
+    icon: Leaf,
+    title: "Support longevity",
+    copy: "Train for the life you want to live, now and for years to come.",
+  },
+  {
+    icon: Heart,
+    title: "Real life focused",
+    copy: "Practical, sustainable training — no extremes, no perfection.",
   },
 ];
-
-export function HomePrinciples() {
+export default function HomePrinciples() {
   return (
     <section
-      aria-label="Our principles"
-      className="border-t border-[#D8D6CF] bg-[#F7F5F0]"
+      aria-label="Our training principles"
+      className={`${container} py-8 md:py-10`}
     >
-      <div className={container}>
-        <ul
-          className="
-            grid
-            divide-y
-            divide-[#D8D6CF]
-            md:grid-cols-3
-            md:divide-x
-            md:divide-y-0
-          "
-        >
-          {PRINCIPLES.map((item) => (
-            <li
-              key={item.title}
-              className="
-                py-8
-                md:px-10
-                md:py-12
-                md:first:pl-0
-                md:last:pr-0
-              "
-            >
-              <p className={eyebrow}>
-                {item.title}
-              </p>
-
-              <p className="mt-3 text-base text-[#202424]">
-                {item.text}
-              </p>
-            </li>
-          ))}
-        </ul>
+      <div className="grid grid-cols-2 gap-y-8 lg:grid-cols-4">
+        {principles.map(({ icon: Icon, title, copy }, index) => (
+          <div
+            key={title}
+            className={`px-4 text-center sm:px-7 ${index % 2 ? "border-l border-border" : ""} ${index === 2 ? "lg:border-l lg:border-border" : ""}`}
+          >
+            <Icon
+              aria-hidden="true"
+              size={29}
+              strokeWidth={1.3}
+              className="mx-auto"
+            />
+            <h2 className="mt-3 text-xs font-semibold uppercase tracking-wide">
+              {title}
+            </h2>
+            <p className="mx-auto mt-2 max-w-56 text-sm leading-relaxed text-muted-foreground">
+              {copy}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );
 }
-
-export default HomePrinciples;
