@@ -1,125 +1,60 @@
-import { Link } from 'react-router-dom';
-import portrait from '../../../assets/home/meet-daniela-portrait.jpg';
-import { container, eyebrow, textCta } from './styles';
-
-// Assumed route for the full About page — adjust if yours differs.
-const ABOUT_PAGE = '/about';
-
-const BELIEFS = [
-  {
-    title: 'Who she helps',
-    text: 'Women who want to feel strong, confident and independent.',
-  },
-  {
-    title: 'What she believes',
-    text: 'Strength supports every part of life, at every stage.',
-  },
-  {
-    title: 'How it fits',
-    text: 'Programs designed around real schedules, not perfect ones.',
-  },
-];
-
-export function HomeAboutDaniela() {
+import { Check } from "lucide-react";
+import portrait from "../../../assets/home/meet-daniela-portrait.jpg";
+import { container, eyebrow, primaryCta } from "./styles";
+export default function HomeAboutDaniela() {
   return (
     <section
       id="about"
-      className="
-        scroll-mt-24
-        border-t
-        border-[#D8D6CF]
-        bg-[#F7F5F0]
-        py-16
-        lg:py-24
-      "
+      aria-labelledby="about-title"
+      className={`${container} scroll-mt-6 py-5 md:py-8`}
     >
-      <div
-        className={`
-          ${container}
-          grid
-          items-center
-          gap-10
-          lg:grid-cols-[minmax(0,32.5rem)_1fr]
-          lg:gap-24
-        `}
-      >
-        <figure>
-          <img
-            src={portrait}
-            alt="Portrait of Daniela Brito smiling with her arms raised"
-            loading="lazy"
-            decoding="async"
-            className="
-              aspect-[4/5]
-              w-full
-              object-cover
-              object-[50%_20%]
-              lg:aspect-[13/18]
-            "
-          />
-        </figure>
-
-        <div className="max-w-xl">
-          <p className={eyebrow}>
-            Meet Daniela
-          </p>
-
+      <div className="grid items-center gap-3 md:grid-cols-2 md:gap-7">
+        <img
+          src={portrait}
+          width="734"
+          height="1036"
+          alt="Daniela smiling with her arms resting above her head"
+          loading="lazy"
+          decoding="async"
+          className="aspect-[3/2] w-full object-cover object-[50%_18%] md:aspect-[5/4] md:object-[50%_22%]"
+        />
+        <div>
+          <p className={eyebrow}>MEET DANIELA</p>
           <h2
-            className="
-              mt-6
-              text-[2.25rem]
-              font-bold
-              leading-[1.06]
-              tracking-[-0.03em]
-              text-[#202424]
-              sm:text-5xl
-              lg:text-[3.75rem]
-            "
+            id="about-title"
+            className="mt-2 max-w-lg text-[1.75rem] md:mt-3 md:text-3xl font-semibold leading-[1.08] tracking-[-0.045em] lg:text-4xl"
           >
             Strength is a practice, not a performance.
           </h2>
-
-          <p
-            className="
-              mt-7
-              text-base
-              leading-[1.7]
-              text-[#686B68]
-              sm:text-[17px]
-            "
-          >
-            Daniela helps women in their 40s, 50s and beyond build strength they
-            can feel in everyday life — with training that is thoughtful,
-            structured and realistic about the life around it.
+          <p className="mt-2 max-w-lg text-sm md:mt-3 leading-relaxed text-muted-foreground">
+            I'm Daniela, a certified personal trainer and menopause coach. I
+            help women in their 40s, 50s and beyond build strength, improve
+            movement and feel confident in their bodies — with practical,
+            evidence-based training and real-life strategies.
           </p>
-
-          <dl className="mt-9 border-t border-[#D8D6CF]">
-            {BELIEFS.map((belief) => (
-              <div
-                key={belief.title}
-                className="border-b border-[#D8D6CF] py-[18px]"
-              >
-                <dt className="text-base font-semibold text-[#202424]">
-                  {belief.title}
-                </dt>
-
-                <dd className="mt-1 text-sm text-[#686B68]">
-                  {belief.text}
-                </dd>
-              </div>
+          <a href="#approach" className={`${primaryCta} mt-3 md:mt-4`}>
+            MY APPROACH
+          </a>
+          <ul className="mt-3 space-y-2 md:mt-4 text-sm text-muted-foreground">
+            {[
+              "Certified Personal Trainer",
+              "Certified Menopause Coach",
+              "Evidence-based, real-life focused",
+              "Helping women feel strong, confident and independent",
+            ].map((point) => (
+              <li key={point} className="flex items-center gap-3">
+                <Check
+                  aria-hidden="true"
+                  size={17}
+                  strokeWidth={1.4}
+                  className="shrink-0 text-primary-dark"
+                />
+                {point}
+              </li>
             ))}
-          </dl>
-
-          <Link
-            to={ABOUT_PAGE}
-            className={`${textCta} mt-6 inline-flex`}
-          >
-            Meet Daniela →
-          </Link>
+          </ul>
         </div>
       </div>
     </section>
   );
 }
-
-export default HomeAboutDaniela;
