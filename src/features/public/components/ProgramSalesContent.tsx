@@ -14,58 +14,55 @@ export default function ProgramSalesContent() {
         className="scroll-mt-6 bg-[#496658] text-[#F7F5F0]"
       >
         <div
-          className={`${container} grid gap-6 pt-8 pb-5 md:grid-cols-[0.8fr_1.2fr] md:gap-x-10 md:gap-y-8 md:pt-12 md:pb-8 lg:gap-x-16`}
+          className={`${container} grid gap-6 pt-8 pb-5 md:grid-cols-[0.84fr_1.16fr] md:gap-x-10 md:gap-y-8 md:pt-12 md:pb-8 lg:gap-x-16`}
         >
           <div>
-            <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.18em]">
-              <span
-                aria-hidden="true"
-                className="h-4 w-8 shrink-0 border-y border-[#F7F5F0]/70 before:mt-[7px] before:block before:border-t before:border-[#F7F5F0]/70"
-              />
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#F7F5F0]/85">
               The program
             </p>
             <h2
               id="overview-title"
               className="mt-4 max-w-[16ch] text-4xl font-semibold leading-[1.05] tracking-[-0.04em] lg:text-5xl"
             >
-              Structured strength for real life.
+              Structured strength <br className="hidden lg:block" />
+              for real life.
             </h2>
-          </div>
-          <div>
-            <p className="text-sm leading-relaxed text-[#F7F5F0]/95 sm:text-base">
+            <p className="mt-5 max-w-[45ch] text-sm leading-relaxed text-[#F7F5F0]/95 sm:text-base">
               A structured, progressive program to help you get stronger, move
               better and feel more capable — using dumbbells. You can do it at
               home or in the gym.
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-[#F7F5F0]/95 sm:text-base">
+          </div>
+          <div>
+            <p className="max-w-[60ch] text-sm leading-relaxed text-[#F7F5F0]/95 sm:text-base">
               This program is about sustainable strength, confidence and
               long-term capability — training that supports how you want to
               live, not just how you want to look.
             </p>
+            <dl className="mt-6 grid gap-x-6 md:grid-cols-2 lg:gap-x-8">
+              {[
+                ["Structured", "Six weeks, laid out in order."],
+                ["Progressive", "Build strength through consistent training."],
+                ["Strength focused", "Dumbbell training for real life."],
+                ["For women 40+", "Women in their 40s, 50s and beyond."],
+              ].map(([label, copy], i) => (
+                <div key={label} className="border-t border-[#F7F5F0]/35 py-4">
+                  <span
+                    aria-hidden="true"
+                    className="block text-[10px] tracking-[0.15em] text-[#F7F5F0]/75"
+                  >
+                    0{i + 1}
+                  </span>
+                  <dt className="mt-3 text-sm font-semibold uppercase tracking-wide">
+                    {label}
+                  </dt>
+                  <dd className="mt-2 text-sm leading-relaxed text-[#F7F5F0]/85">
+                    {copy}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
-          <dl className="grid md:col-span-2 md:grid-cols-4 md:gap-x-6 lg:gap-x-8">
-            {[
-              ["Structured", "Six weeks, laid out in order."],
-              ["Progressive", "Build strength through consistent training."],
-              ["Strength focused", "Dumbbell training for real life."],
-              ["For women 40+", "Women in their 40s, 50s and beyond."],
-            ].map(([label, copy], i) => (
-              <div key={label} className="border-t border-[#F7F5F0]/35 py-4">
-                <span
-                  aria-hidden="true"
-                  className="block text-[10px] tracking-[0.15em] text-[#F7F5F0]/75"
-                >
-                  0{i + 1}
-                </span>
-                <dt className="mt-3 text-sm font-semibold uppercase tracking-wide">
-                  {label}
-                </dt>
-                <dd className="mt-2 text-sm leading-relaxed text-[#F7F5F0]/85">
-                  {copy}
-                </dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
       <section
