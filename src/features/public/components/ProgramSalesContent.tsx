@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import portrait from "../../../assets/home/daniela-smiling-portrait.jpg";
 import { container, eyebrow } from "./styles";
 
@@ -10,10 +11,10 @@ export default function ProgramSalesContent() {
       <section
         id="inside"
         aria-labelledby="overview-title"
-        className="scroll-mt-6 bg-[#789486] text-[#F7F5F0]"
+        className="scroll-mt-6 bg-[#496658] text-[#F7F5F0]"
       >
         <div
-          className={`${container} grid gap-7 py-10 md:grid-cols-[1.05fr_1fr] md:gap-12 md:py-16`}
+          className={`${container} grid gap-7 py-10 md:grid-cols-[0.8fr_1.2fr] md:gap-10 lg:gap-16 md:py-16`}
         >
           <div>
             <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.18em]">
@@ -41,27 +42,24 @@ export default function ProgramSalesContent() {
               long-term capability — training that supports how you want to
               live, not just how you want to look.
             </p>
-            <dl className="mt-6 divide-y divide-[#F7F5F0]/40 border-t border-[#F7F5F0]/30">
+            <dl className="mt-7 grid gap-x-8 md:grid-cols-2">
               {[
                 ["Structured", "Six weeks, laid out in order."],
                 ["Progressive", "Build strength through consistent training."],
                 ["Strength focused", "Dumbbell training for real life."],
                 ["For women 40+", "Women in their 40s, 50s and beyond."],
               ].map(([label, copy], i) => (
-                <div
-                  key={label}
-                  className="grid grid-cols-[1.5rem_1fr] gap-x-3 py-3 sm:grid-cols-[1.5rem_1fr_1.4fr]"
-                >
+                <div key={label} className="border-t border-[#F7F5F0]/35 py-5">
                   <span
                     aria-hidden="true"
-                    className="pt-0.5 text-[10px] text-[#F7F5F0]/85"
+                    className="block text-[10px] tracking-[0.15em] text-[#F7F5F0]/75"
                   >
                     0{i + 1}
                   </span>
-                  <dt className="text-xs font-semibold uppercase tracking-wide">
+                  <dt className="mt-3 text-sm font-semibold uppercase tracking-wide">
                     {label}
                   </dt>
-                  <dd className="col-start-2 mt-1 text-xs leading-relaxed text-[#F7F5F0]/85 sm:col-start-auto sm:mt-0">
+                  <dd className="mt-2 text-sm leading-relaxed text-[#F7F5F0]/85">
                     {copy}
                   </dd>
                 </div>
@@ -210,10 +208,22 @@ export default function ProgramSalesContent() {
               evidence-based training and real-life strategies.
             </p>
             <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
-              <li>Certified Personal Trainer</li>
-              <li>Certified Menopause Coach</li>
-              <li>Evidence-based, real-life focused</li>
-              <li>Helping women feel strong, confident and independent</li>
+              {[
+                "Certified Personal Trainer",
+                "Certified Menopause Coach",
+                "Evidence-based, real-life focused",
+                "Helping women feel strong, confident and independent",
+              ].map((point) => (
+                <li key={point} className="flex items-start gap-3">
+                  <Check
+                    aria-hidden="true"
+                    size={17}
+                    strokeWidth={1.4}
+                    className="mt-0.5 shrink-0 text-primary-dark"
+                  />
+                  <span>{point}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
