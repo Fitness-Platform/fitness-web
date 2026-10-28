@@ -38,7 +38,7 @@ export default function HomePhilosophy() {
       aria-labelledby="approach-title"
       className={`${container} scroll-mt-6 py-5 md:py-8`}
     >
-      <div className="mb-3 md:mb-4">
+      <div className="mb-2.5 md:mb-3">
         <h2
           id="approach-title"
           className="text-[1.75rem] font-semibold md:text-3xl leading-tight tracking-[-0.045em] lg:text-4xl"
@@ -46,8 +46,8 @@ export default function HomePhilosophy() {
           A stronger way forward.
         </h2>
       </div>
-      <div className="grid gap-5 md:grid-cols-3 md:gap-4">
-        {stories.map((story) => (
+      <div className="grid gap-4 md:grid-cols-3">
+        {stories.map((story, index) => (
           <article key={story.title}>
             <img
               src={story.image}
@@ -59,12 +59,20 @@ export default function HomePhilosophy() {
               style={{ objectPosition: story.position }}
               className="aspect-[3/2] w-full object-cover md:aspect-[4/3]"
             />
-            <h3 className="mt-2 text-sm font-semibold uppercase tracking-wide">
-              {story.title}
-            </h3>
-            <p className="mt-1 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              {story.copy}
-            </p>
+            <div className="pt-3">
+              <div aria-hidden="true" className="flex items-center gap-3 text-[#607A6D]">
+                <span className="shrink-0 text-[10px] font-medium leading-4 tracking-[0.14em]">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="min-w-0 flex-1 border-t border-[#607A6D]/40" />
+              </div>
+              <h3 className="mt-2 text-[15px] font-bold uppercase leading-5 tracking-[0.04em]">
+                {story.title}
+              </h3>
+              <p className="mt-1.5 max-w-[32ch] text-sm leading-relaxed text-muted-foreground">
+                {story.copy}
+              </p>
+            </div>
           </article>
         ))}
       </div>
