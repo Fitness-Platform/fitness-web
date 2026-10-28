@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import hero from "../../../assets/home/daniela-dumbbells-fullbody.jpg";
 import { container, eyebrow, textCta } from "./styles";
+import type { PublicProgram } from "../api/getPublicProgram";
 import ProgramEnrollmentButton from "./ProgramEnrollmentButton";
 
 const programFacts = [
@@ -16,6 +17,9 @@ const programFacts = [
   { icon: CirclePlay, title: "On-demand", description: "Workouts anytime" },
 ];
 type Props = {
+  program: PublicProgram;
+  price: string | null;
+  unavailable: boolean;
   onEnroll: () => void;
   busy: boolean;
   checking: boolean;
@@ -23,31 +27,37 @@ type Props = {
   message: string | null;
 };
 export default function ProgramSalesHero(props: Props) {
+  const audience = props.program.name.match(/^(.*?)(Women 40\+\.?)$/);
   return (
     <section aria-labelledby="sales-title" className="border-b border-border">
       <div className={`${container} grid md:grid-cols-[1fr_0.9fr] md:gap-6`}>
-        <div className="order-2 py-7 md:order-1 md:py-12 lg:py-16">
+        <div className="order-2 min-w-0 py-7 md:order-1 md:py-12 lg:py-16">
           <p className={eyebrow}>6-week program · Women 40+</p>
           <h1
             id="sales-title"
-            className="mt-4 max-w-xl text-[2.25rem] font-semibold leading-[1.06] tracking-[-0.045em] lg:text-[3.5rem]"
+            className="mt-4 max-w-xl break-words text-[2.25rem] font-semibold leading-[1.06] tracking-[-0.045em] lg:text-[3.5rem]"
           >
-            The 6-Week Dumbbell Strength Program for{" "}
-            <span className="text-primary-dark">Women 40+.</span>
+            {audience ? (
+              <>
+                {audience[1]}
+                <span className="text-primary-dark">{audience[2]}</span>
+              </>
+            ) : (
+              props.program.name
+            )}
           </h1>
-          <p className="mt-5 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
-            A structured, progressive program to help you build strength, move
-            better and feel more capable — using dumbbells, at home or in the
-            gym.
+          <p className="mt-5 max-w-lg break-words text-sm leading-relaxed text-muted-foreground sm:text-base">
+            {props.program.description}
           </p>
-          <p className="mt-6 text-sm font-medium">
-            Current price shown at secure checkout.
+          <p className="mt-6 text-3xl font-semibold tracking-tight">
+            {props.price ?? "Enrollment unavailable"}
           </p>
           <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
             <ProgramEnrollmentButton
               onEnroll={props.onEnroll}
               busy={props.busy}
               checking={props.checking}
+              unavailable={props.unavailable}
             />
             <a
               href="#inside"

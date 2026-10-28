@@ -7,7 +7,15 @@ const features = [
   { icon: CalendarDays, text: "6-week structured plan" },
   { icon: CirclePlay, text: "On-demand video workouts" },
 ];
-export default function HomePrograms() {
+export default function HomePrograms({
+  programHref,
+  price,
+  loading,
+}: {
+  programHref?: string;
+  price: string | null;
+  loading: boolean;
+}) {
   return (
     <section
       id="programs"
@@ -33,9 +41,28 @@ export default function HomePrograms() {
             capability — training that supports how you want to live, not just
             how you want to look.
           </p>
-          <a href="#approach" className={`${primaryCta} mt-3 md:mt-4`}>
-            LEARN MORE &amp; ENROLL — $89
-          </a>
+          {programHref ? (
+            <a href={programHref} className={`${primaryCta} mt-3 md:mt-4`}>
+              LEARN MORE &amp; ENROLL{price ? ` — ${price}` : ""}
+            </a>
+          ) : (
+            <>
+              <button
+                type="button"
+                disabled
+                className={`${primaryCta} mt-3 md:mt-4 cursor-not-allowed opacity-60`}
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.14em]">
+                  LEARN MORE &amp; ENROLL
+                </span>
+              </button>
+              <p role="status" className="mt-2 text-xs text-muted-foreground">
+                {loading
+                  ? "Loading program details…"
+                  : "Program details are currently unavailable."}
+              </p>
+            </>
+          )}
           <ul className="mt-4 grid grid-cols-2 gap-y-3 md:mt-5 md:gap-y-4 lg:grid-cols-4">
             {features.map(({ icon: Icon, text }) => (
               <li

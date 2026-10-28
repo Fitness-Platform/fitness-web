@@ -1,3 +1,5 @@
+import { usePublicPrograms } from "../hooks/usePublicProgram";
+import { formatProgramPrice } from "../utils/programPrice";
 import PublicHeader from "../components/PublicHeader";
 import HomeHero from "../components/HomeHero";
 import HomePrinciples from "../components/HomePrinciples";
@@ -8,6 +10,14 @@ import HomeFinalCta from "../components/HomeFinalCta";
 import PublicFooter from "../components/PublicFooter";
 
 export default function HomePage() {
+  const programs = usePublicPrograms();
+  // Home has one featured product. Multiple results need an explicit product-selection rule.
+  const featured =
+    programs.isSuccess && programs.data.length === 1
+      ? programs.data[0]
+      : undefined;
+  const programHref = featured ? `/programs/${featured.id}` : undefined;
+  const price = featured ? formatProgramPrice(featured) : null;
   return (
     <div className="bg-background text-foreground">
       <a
@@ -18,12 +28,16 @@ export default function HomePage() {
       </a>
       <PublicHeader />
       <main id="main-content">
-        <HomeHero />
+        <HomeHero programHref={programHref} />
         <HomePrinciples />
-        <HomePrograms />
+        <HomePrograms
+          programHref={programHref}
+          price={price}
+          loading={programs.isPending}
+        />
         <HomePhilosophy />
         <HomeAboutDaniela />
-        <HomeFinalCta />
+        <HomeFinalCta programHref={programHref} price={price} />
       </main>
       <PublicFooter />
     </div>

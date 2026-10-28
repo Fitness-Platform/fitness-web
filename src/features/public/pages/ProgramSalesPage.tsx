@@ -1,4 +1,9 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { ApiError } from "../../../services/apiClient";
+import type { PublicProgram } from "../api/getPublicProgram";
+import { usePublicProgram } from "../hooks/usePublicProgram";
+import { formatProgramPrice } from "../utils/programPrice";
+import ProgramSalesState from "../components/ProgramSalesState";
 import PublicHeader from "../components/PublicHeader";
 import PublicFooter from "../components/PublicFooter";
 import ProgramSalesHero from "../components/ProgramSalesHero";
@@ -8,10 +13,12 @@ import { container } from "../components/styles";
 import { useProgramEnrollment } from "../hooks/useProgramEnrollment";
 import { programIdPattern } from "../utils/programDestination";
 
-function SalesContent({ programId }: { programId: string }) {
-  const enrollment = useProgramEnrollment(programId);
+function SalesContent({ program }: { program: PublicProgram }) {
+  const price = formatProgramPrice(program);
+  const enrollment = useProgramEnrollment(program.id);
   const buttonProps = {
     onEnroll: enrollment.enroll,
+    unavailable: price === null,
     busy: enrollment.busy,
     checking: enrollment.session.isPending,
   };
@@ -19,6 +26,8 @@ function SalesContent({ programId }: { programId: string }) {
     <>
       <ProgramSalesHero
         {...buttonProps}
+        program={program}
+        price={price}
         authenticated={enrollment.session.isAuthenticated}
         message={enrollment.message}
       />
@@ -30,23 +39,23 @@ function SalesContent({ programId }: { programId: string }) {
         <div
           className={`${container} grid items-center gap-7 py-10 md:grid-cols-[1.2fr_0.8fr] md:py-14`}
         >
-          <div>
+          <div className="min-w-0">
             <p className="text-[11px] uppercase tracking-[0.18em] text-[#B6C7BC]">
               Your stronger way forward
             </p>
             <h2
               id="enroll-title"
-              className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.04em] lg:text-4xl"
+              className="mt-3 break-words text-3xl font-semibold leading-tight tracking-[-0.04em] lg:text-4xl"
             >
-              The 6-Week Dumbbell Strength Program for Women 40+
+              {program.name}
             </h2>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/75">
               Dumbbell workouts. A structured plan. At home or in the gym.
             </p>
           </div>
           <div className="md:border-l md:border-white/20 md:pl-8">
-            <p className="mb-4 text-sm">
-              Current price shown at secure checkout.
+            <p className="mb-4 text-3xl font-semibold tracking-tight">
+              {price ?? "Enrollment unavailable"}
             </p>
             <ProgramEnrollmentButton {...buttonProps} />
             <p className="mt-3 text-xs leading-relaxed text-white/75">
@@ -68,6 +77,7 @@ function SalesContent({ programId }: { programId: string }) {
 
 export default function ProgramSalesPage() {
   const { programId = "" } = useParams();
+  const query = usePublicProgram(programId);
   return (
     <div className="bg-background text-foreground">
       <a
@@ -83,21 +93,15 @@ export default function ProgramSalesPage() {
         }
       />
       <main id="sales-content">
-        {programIdPattern.test(programId) ? (
-          <SalesContent programId={programId} />
+        {!programIdPattern.test(programId) ||
+        (query.error instanceof ApiError && query.error.status === 404) ? (
+          <ProgramSalesState state="unavailable" />
+        ) : query.isPending ? (
+          <ProgramSalesState state="loading" />
+        ) : query.isError ? (
+          <ProgramSalesState state="error" retry={() => void query.refetch()} />
         ) : (
-          <div className={`${container} py-20`}>
-            <h1 className="text-3xl font-semibold">Program not found</h1>
-            <p className="mt-4 text-muted-foreground">
-              Please check your program link.
-            </p>
-            <Link
-              to="/"
-              className="mt-6 inline-flex min-h-11 items-center underline"
-            >
-              Back to Home
-            </Link>
-          </div>
+          <SalesContent key={query.data.id} program={query.data} />
         )}
       </main>
       <PublicFooter />
