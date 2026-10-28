@@ -6,9 +6,9 @@ export default function HomeAboutDaniela() {
     <section
       id="about"
       aria-labelledby="about-title"
-      className={`${container} scroll-mt-6 py-10 md:py-14`}
+      className={`${container} scroll-mt-6 py-6 md:py-8`}
     >
-      <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-16">
+      <div className="grid items-center gap-5 md:grid-cols-2 md:gap-7">
         <img
           src={portrait}
           width="734"
@@ -16,25 +16,25 @@ export default function HomeAboutDaniela() {
           alt="Daniela smiling with her arms resting above her head"
           loading="lazy"
           decoding="async"
-          className="mx-auto max-h-[36rem] w-full object-contain"
+          className="aspect-[4/3] w-full object-cover object-[50%_22%] md:aspect-[5/4]"
         />
         <div>
           <p className={eyebrow}>Meet Daniela</p>
           <h2
             id="about-title"
-            className="mt-4 max-w-lg text-4xl font-semibold leading-[1.08] tracking-[-0.045em] lg:text-5xl"
+            className="mt-3 max-w-lg text-3xl font-semibold leading-[1.08] tracking-[-0.045em] lg:text-4xl"
           >
             Strength is a practice, not a performance.
           </h2>
-          <p className="mt-5 max-w-lg leading-relaxed text-muted-foreground">
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground">
             I’m Daniela. I help women in their 40s, 50s and beyond build
             sustainable strength, move with confidence and feel more capable in
             their bodies — with practical training and real-life strategies.
           </p>
-          <a href="#approach" className={`${primaryCta} mt-6`}>
+          <a href="#approach" className={`${primaryCta} mt-4`}>
             My approach
           </a>
-          <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
+          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             {[
               "Strength that supports everyday life",
               "Consistent training that fits real schedules",
