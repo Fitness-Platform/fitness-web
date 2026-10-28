@@ -1,7 +1,13 @@
 import photo from "../../../assets/home/daniela-waterfront-portrait.jpg";
 import { container, primaryCta } from "./styles";
 
-export default function HomeFinalCta() {
+export default function HomeFinalCta({
+  programHref = "#programs",
+  price,
+}: {
+  programHref?: string;
+  price: string | null;
+}) {
   return (
     <section
       aria-labelledby="final-title"
@@ -38,8 +44,8 @@ export default function HomeFinalCta() {
             plan built for real life.
           </p>
           <div className="mt-4 flex flex-wrap gap-2 md:mt-5 md:gap-3">
-            <a href="#programs" className={primaryCta}>
-              EXPLORE THE PROGRAM — $89
+            <a href={programHref} className={primaryCta}>
+              EXPLORE THE PROGRAM{price ? ` — ${price}` : ""}
             </a>
             <button
               type="button"

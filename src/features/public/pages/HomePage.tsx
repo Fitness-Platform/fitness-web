@@ -1,3 +1,9 @@
+import {
+  salesProgramId,
+  isConfiguredSalesProgram,
+} from "../config/salesProgram";
+import { usePublicProgram } from "../hooks/usePublicProgram";
+import { formatProgramPrice } from "../utils/programPrice";
 import PublicHeader from "../components/PublicHeader";
 import HomeHero from "../components/HomeHero";
 import HomePrinciples from "../components/HomePrinciples";
@@ -8,6 +14,13 @@ import HomeFinalCta from "../components/HomeFinalCta";
 import PublicFooter from "../components/PublicFooter";
 
 export default function HomePage() {
+  const program = usePublicProgram(salesProgramId ?? "");
+  const featured =
+    program.isSuccess && isConfiguredSalesProgram(program.data.id)
+      ? program.data
+      : undefined;
+  const programHref = featured ? `/programs/${featured.id}` : undefined;
+  const price = featured ? formatProgramPrice(featured) : null;
   return (
     <div className="bg-background text-foreground">
       <a
@@ -18,12 +31,16 @@ export default function HomePage() {
       </a>
       <PublicHeader />
       <main id="main-content">
-        <HomeHero />
+        <HomeHero programHref={programHref} />
         <HomePrinciples />
-        <HomePrograms />
+        <HomePrograms
+          programHref={programHref}
+          price={price}
+          loading={salesProgramId !== null && program.isPending}
+        />
         <HomePhilosophy />
         <HomeAboutDaniela />
-        <HomeFinalCta />
+        <HomeFinalCta programHref={programHref} price={price} />
       </main>
       <PublicFooter />
     </div>

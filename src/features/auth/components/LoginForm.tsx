@@ -1,10 +1,11 @@
+import { programReturnTo } from '../../public/utils/programDestination'
 import { ArrowRight } from 'lucide-react'
 import { authInput, authLabel, authLink, authSubmit } from './authStyles'
 import PasswordVisibilityButton from './PasswordVisibilityButton'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { ApiError } from '../../../services/apiClient'
 import { useLoginMutation } from '../hooks/useLoginMutation'
@@ -15,6 +16,7 @@ import {
 
 function LoginForm() {
   const navigate = useNavigate()
+  const returnTo = programReturnTo(useLocation().search)
   const loginMutation = useLoginMutation()
   const [showPassword, setShowPassword] = useState(false)
 
@@ -33,7 +35,7 @@ function LoginForm() {
   async function onSubmit(data: LoginFormData) {
     try {
       await loginMutation.mutateAsync(data)
-      navigate('/')
+      navigate(returnTo ?? '/')
     } catch {
       // Mutation state handles the error presentation below.
     }

@@ -1,3 +1,5 @@
+import ProgramSalesPage from "../../features/public/pages/ProgramSalesPage";
+import CheckoutReturnPage from "../../features/public/pages/CheckoutReturnPage";
 import AdminPurchasesPage from "../../features/admin/pages/AdminPurchasesPage";
 import AdminClientsAccessPage from "../../features/admin/pages/AdminClientsAccessPage";
 import ForgotPasswordPage from '../../features/auth/pages/ForgotPasswordPage';
@@ -27,6 +29,9 @@ import AdminExercisesPage from "../../features/admin/pages/AdminExercisesPage";
 import AdminExerciseDetailPage from "../../features/admin/pages/AdminExerciseDetailPage";
 
 export const router = createBrowserRouter([
+  { path: "/programs/:programId", element: <ProgramSalesPage /> },
+  { path: "/checkout/success", element: <CheckoutReturnPage outcome="success" /> },
+  { path: "/checkout/cancel", element: <CheckoutReturnPage outcome="cancel" /> },
   { path: "/forgot-password", element: <ForgotPasswordPage /> },
   { path: "/reset-password", element: <ResetPasswordPage /> },
   {

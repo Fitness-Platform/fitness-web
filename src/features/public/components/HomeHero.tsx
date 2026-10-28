@@ -1,7 +1,11 @@
 import hero from "../../../assets/home/daniela-dumbbells-fullbody.jpg";
 import { container, eyebrow, primaryCta, textCta } from "./styles";
 
-export default function HomeHero() {
+export default function HomeHero({
+  programHref = "#programs",
+}: {
+  programHref?: string;
+}) {
   return (
     <section aria-labelledby="hero-title" className="border-b border-border">
       <div
@@ -26,7 +30,7 @@ export default function HomeHero() {
           </p>
           <div className="mt-3 flex flex-wrap gap-2 md:mt-5 md:gap-3">
             <a
-              href="#programs"
+              href={programHref}
               className={`${primaryCta} h-auto min-h-12 py-3 text-center`}
             >
               EXPLORE THE 6-WEEK PROGRAM
