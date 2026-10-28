@@ -5,13 +5,13 @@ export default function HomeHero() {
   return (
     <section aria-labelledby="hero-title" className="border-b border-border">
       <div
-        className={`${container} grid items-center gap-5 pt-6 md:grid-cols-[0.95fr_1.05fr] md:gap-5 md:pt-0`}
+        className={`${container} grid items-center gap-3 pt-3 md:grid-cols-[0.95fr_1.05fr] md:gap-5 md:pt-0`}
       >
-        <div className="py-3 md:py-7">
+        <div className="py-2 md:py-7">
           <p className={eyebrow}>STRONGER. HEALTHIER. MORE CAPABLE.</p>
           <h1
             id="hero-title"
-            className="mt-3 text-[clamp(3.25rem,5.5vw,5.25rem)] font-semibold leading-[0.96] tracking-[-0.06em]"
+            className="mt-2 text-5xl md:mt-3 md:text-[clamp(3.25rem,5.5vw,5.25rem)] font-semibold leading-[0.96] tracking-[-0.06em]"
           >
             Stronger
             <br />
@@ -19,12 +19,12 @@ export default function HomeHero() {
             <br />
             <span className="text-primary-dark">next.</span>
           </h1>
-          <p className="mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
+          <p className="mt-3 max-w-md text-sm leading-relaxed md:mt-4 md:text-base text-muted-foreground">
             A 6-week dumbbell strength program for women 40+ designed to help
             you build strength, move better and feel more capable — at home or
             in the gym.
           </p>
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-3 flex flex-wrap gap-2 md:mt-5 md:gap-3">
             <a
               href="#programs"
               className={`${primaryCta} h-auto min-h-12 py-3 text-center`}
@@ -33,7 +33,7 @@ export default function HomeHero() {
             </a>
             <a
               href="#about"
-              className={`${textCta} inline-flex border border-foreground px-6`}
+              className={`${textCta} inline-flex px-1 md:border md:border-foreground md:px-6`}
             >
               MEET DANIELA
             </a>

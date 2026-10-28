@@ -26,24 +26,24 @@ export default function HomePrinciples() {
   return (
     <section
       aria-label="Our training principles"
-      className={`${container} py-5 md:py-6`}
+      className={`${container} py-4 md:py-6`}
     >
-      <div className="grid grid-cols-2 gap-y-5 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-y-4 md:gap-y-5 lg:grid-cols-4">
         {principles.map(({ icon: Icon, title, copy }, index) => (
           <div
             key={title}
-            className={`px-4 text-center sm:px-5 ${index % 2 ? "border-l border-border" : ""} ${index === 2 ? "lg:border-l lg:border-border" : ""}`}
+            className={`px-3 text-center sm:px-5 ${index % 2 ? "border-l border-border" : ""} ${index === 2 ? "lg:border-l lg:border-border" : ""}`}
           >
             <Icon
               aria-hidden="true"
               size={25}
               strokeWidth={1.3}
-              className="mx-auto"
+              className="mx-auto size-[23px] md:size-[25px]"
             />
-            <h2 className="mt-2 text-xs font-semibold uppercase tracking-wide">
+            <h2 className="mt-1 text-xs md:mt-2 font-semibold uppercase tracking-wide">
               {title}
             </h2>
-            <p className="mx-auto mt-1 max-w-56 text-sm leading-relaxed text-muted-foreground">
+            <p className="mx-auto mt-1 max-w-56 text-[13px] leading-snug text-muted-foreground md:text-sm md:leading-relaxed">
               {copy}
             </p>
           </div>

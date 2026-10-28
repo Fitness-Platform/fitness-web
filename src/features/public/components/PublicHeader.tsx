@@ -13,7 +13,7 @@ export default function PublicHeader() {
   return (
     <header className="border-b border-border">
       <div
-        className={`${container} flex min-h-16 flex-wrap items-center justify-between gap-x-6 py-2 lg:min-h-16`}
+        className={`${container} relative flex min-h-16 flex-wrap items-center justify-between gap-x-6 py-2 lg:min-h-16`}
         onKeyDown={(event) => {
           if (event.key === "Escape" && open) {
             closeMenu();
@@ -50,7 +50,7 @@ export default function PublicHeader() {
         <nav
           id="public-navigation"
           aria-label="Main navigation"
-          className={`${open ? "flex" : "hidden"} order-3 w-full flex-col gap-1 border-t border-border pt-5 md:order-none md:flex md:w-auto md:flex-row md:items-center md:gap-5 md:border-0 md:pt-0 lg:gap-7`}
+          className={`${open ? "grid" : "hidden"} absolute inset-x-0 top-full z-40 grid-cols-2 gap-x-5 gap-y-0 border-y border-border bg-background px-6 py-3 sm:px-10 md:static md:order-none md:flex md:w-auto md:flex-row md:items-center md:gap-5 md:border-0 md:p-0 lg:gap-7`}
         >
           {[
             ["PROGRAM", "#programs"],
@@ -76,7 +76,7 @@ export default function PublicHeader() {
           <Link
             to="/register"
             onClick={closeMenu}
-            className={`${primaryCta} mt-2 w-fit md:mt-0 md:h-10 md:px-6`}
+            className={`${primaryCta} col-span-2 mt-2 w-full md:mt-0 md:h-10 md:w-fit md:px-6`}
           >
             JOIN NOW
           </Link>

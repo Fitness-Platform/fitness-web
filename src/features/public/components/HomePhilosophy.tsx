@@ -36,22 +36,17 @@ export default function HomePhilosophy() {
     <section
       id="approach"
       aria-labelledby="approach-title"
-      className={`${container} scroll-mt-6 py-6 md:py-8`}
+      className={`${container} scroll-mt-6 py-5 md:py-8`}
     >
-      <div className="mb-4 grid items-end gap-3 md:grid-cols-2">
+      <div className="mb-3 md:mb-4">
         <h2
           id="approach-title"
-          className="text-3xl font-semibold leading-tight tracking-[-0.045em] lg:text-4xl"
+          className="text-[1.75rem] font-semibold md:text-3xl leading-tight tracking-[-0.045em] lg:text-4xl"
         >
           A stronger way forward.
         </h2>
-        <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:ml-auto">
-          This program is about sustainable strength, confidence and long-term
-          capability — training that supports how you want to live, not just how
-          you want to look.
-        </p>
       </div>
-      <div className="grid gap-6 md:grid-cols-3 md:gap-4">
+      <div className="grid gap-5 md:grid-cols-3 md:gap-4">
         {stories.map((story) => (
           <article key={story.title}>
             <img
@@ -62,7 +57,7 @@ export default function HomePhilosophy() {
               loading="lazy"
               decoding="async"
               style={{ objectPosition: story.position }}
-              className="aspect-[4/3] w-full object-cover"
+              className="aspect-[3/2] w-full object-cover md:aspect-[4/3]"
             />
             <h3 className="mt-2 text-sm font-semibold uppercase tracking-wide">
               {story.title}
