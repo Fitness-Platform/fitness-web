@@ -18,35 +18,39 @@ export default function HomePhilosophy() {
     <section
       id="approach"
       aria-labelledby="approach-title"
-      className="my-5 scroll-mt-6 bg-[#EFF1ED] text-[#202424] md:my-8"
+      className="my-5 scroll-mt-6 bg-[#789486] text-[#F7F5F0] md:my-8"
     >
-      <div className={`${container} py-8 md:py-12`}>
-        <h2
-          id="approach-title"
-          className="text-[1.75rem] font-semibold leading-tight tracking-[-0.045em] md:text-3xl lg:text-4xl"
-        >
-          A stronger way forward.
-        </h2>
-        <div className="mt-6 grid gap-5 md:mt-8 md:grid-cols-3 md:gap-8">
-          {stories.map((story, index) => (
+      <div
+        className={`${container} py-10 md:py-16 lg:grid lg:grid-cols-[1.6fr_3fr] lg:items-center lg:gap-10 lg:py-24`}
+      >
+        <div>
+          <span
+            aria-hidden="true"
+            className="mb-7 block h-px w-14 bg-[#F7F5F0]/80 lg:mb-10"
+          />
+          <h2
+            id="approach-title"
+            className="max-w-[11ch] text-[2.5rem] font-normal leading-[1.05] tracking-[-0.045em] md:text-5xl lg:text-[clamp(3rem,4.7vw,4.25rem)]"
+          >
+            A stronger way forward.
+          </h2>
+        </div>
+        <div className="mt-8 grid md:grid-cols-3 lg:mt-8">
+          {stories.map((story) => (
             <article
               key={story.title}
-              className="grid grid-cols-[2.75rem_1fr] gap-x-4 border-t border-[#607A6D]/30 pt-5 md:block md:pt-6"
+              className="border-t border-[#F7F5F0]/40 py-5 md:border-l md:border-t-0 md:px-5 md:py-6 lg:px-7"
             >
               <span
                 aria-hidden="true"
-                className="text-[40px] font-light leading-none tracking-[-0.06em] text-[#607A6D]/55 md:text-[64px]"
-              >
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <h3 className="text-base font-semibold uppercase leading-6 tracking-[0.04em] md:mt-4">
-                  {story.title}
-                </h3>
-                <p className="mt-2 max-w-[32ch] text-sm leading-relaxed text-muted-foreground">
-                  {story.copy}
-                </p>
-              </div>
+                className="mb-5 hidden h-px w-8 bg-[#F7F5F0]/80 md:block"
+              />
+              <h3 className="text-sm font-semibold uppercase leading-6 tracking-[0.12em]">
+                {story.title}
+              </h3>
+              <p className="mt-3 max-w-[32ch] text-sm leading-relaxed text-[#F7F5F0]/90 lg:text-base">
+                {story.copy}
+              </p>
             </article>
           ))}
         </div>
