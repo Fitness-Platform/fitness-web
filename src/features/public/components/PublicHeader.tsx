@@ -1,9 +1,16 @@
 import { useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { authDestination } from "../utils/programDestination";
 import { container, primaryCta } from "./styles";
 
-export default function PublicHeader() {
+export default function PublicHeader({
+  homeAnchors = true,
+  authReturnTo = null,
+}: {
+  homeAnchors?: boolean;
+  authReturnTo?: string | null;
+}) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
   function closeMenu() {
@@ -59,7 +66,7 @@ export default function PublicHeader() {
           ].map(([label, href]) => (
             <a
               key={href}
-              href={href}
+              href={homeAnchors ? href : `/${href}`}
               onClick={closeMenu}
               className="flex min-h-11 items-center text-[10px] tracking-[0.16em] hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             >
@@ -67,14 +74,14 @@ export default function PublicHeader() {
             </a>
           ))}
           <Link
-            to="/login"
+            to={authDestination("/login", authReturnTo)}
             onClick={closeMenu}
             className="flex min-h-11 items-center text-[10px] tracking-[0.16em] hover:text-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
           >
             MEMBER LOGIN
           </Link>
           <Link
-            to="/register"
+            to={authDestination("/register", authReturnTo)}
             onClick={closeMenu}
             className={`${primaryCta} mt-2 w-fit md:mt-0 md:h-10 md:px-6`}
           >

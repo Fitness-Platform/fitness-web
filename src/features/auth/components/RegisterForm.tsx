@@ -1,10 +1,11 @@
+import { authDestination, programReturnTo } from '../../public/utils/programDestination'
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { authInput, authLabel, authSubmit } from './authStyles'
 import PasswordVisibilityButton from './PasswordVisibilityButton'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { ApiError } from '../../../services/apiClient'
 import { useRegisterMutation } from '../hooks/useRegisterMutation'
@@ -17,6 +18,7 @@ function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const navigate = useNavigate()
+  const returnTo = programReturnTo(useLocation().search)
   const registerMutation = useRegisterMutation()
 
   const {
@@ -39,7 +41,7 @@ function RegisterForm() {
         password: data.password,
       })
 
-      navigate('/login')
+      navigate(authDestination('/login', returnTo))
     } catch {
       // Mutation state handles the error presentation below.
     }
