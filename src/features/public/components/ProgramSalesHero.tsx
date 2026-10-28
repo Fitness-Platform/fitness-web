@@ -1,20 +1,14 @@
-import {
-  CalendarDays,
-  Dumbbell,
-  House,
-  CirclePlay,
-  ArrowDown,
-} from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import hero from "../../../assets/home/daniela-dumbbells-fullbody.jpg";
 import { container, eyebrow, textCta } from "./styles";
 import type { PublicProgram } from "../api/getPublicProgram";
 import ProgramEnrollmentButton from "./ProgramEnrollmentButton";
 
 const programFacts = [
-  { icon: CalendarDays, title: "6 weeks", description: "Structured plan" },
-  { icon: Dumbbell, title: "Dumbbells", description: "Strength focused" },
-  { icon: House, title: "Home or gym", description: "Train where you are" },
-  { icon: CirclePlay, title: "On-demand", description: "Workouts anytime" },
+  { title: "6 weeks", description: "Structured plan" },
+  { title: "Dumbbells", description: "Strength focused" },
+  { title: "Home or gym", description: "Train where you are" },
+  { title: "On-demand", description: "Workouts anytime" },
 ];
 type Props = {
   program: PublicProgram;
@@ -30,8 +24,10 @@ export default function ProgramSalesHero(props: Props) {
   const audience = props.program.name.match(/^(.*?)(Women 40\+\.?)$/);
   return (
     <section aria-labelledby="sales-title" className="border-b border-border">
-      <div className={`${container} grid md:grid-cols-[1fr_0.9fr] md:gap-6`}>
-        <div className="order-2 min-w-0 py-7 md:order-1 md:py-12 lg:py-16">
+      <div
+        className={`${container} grid md:grid-cols-[1.15fr_0.85fr] md:grid-rows-[auto_1fr] md:gap-x-6`}
+      >
+        <div className="min-w-0 pt-8 md:pt-12 lg:pt-16">
           <p className={eyebrow}>6-week program · Women 40+</p>
           <h1
             id="sales-title"
@@ -77,29 +73,8 @@ export default function ProgramSalesHero(props: Props) {
               {props.message}
             </p>
           )}
-          <ul
-            aria-label="Program at a glance"
-            className="mt-7 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-border pt-5"
-          >
-            {programFacts.map(({ icon: Icon, title, description }) => (
-              <li key={title} className="flex gap-3">
-                <Icon
-                  size={22}
-                  strokeWidth={1.3}
-                  aria-hidden="true"
-                  className="shrink-0"
-                />
-                <div>
-                  <p className="text-xs font-semibold">{title}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {description}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
-        <div className="relative order-1 -mx-6 h-64 overflow-hidden sm:-mx-10 sm:h-80 md:order-2 md:mx-0 md:h-auto md:min-h-[38rem]">
+        <div className="mt-6 h-[28rem] min-w-0 sm:h-[34rem] md:col-start-2 md:row-span-2 md:row-start-1 md:mt-0 md:h-full md:min-h-[36rem]">
           <img
             src={hero}
             width="927"
@@ -107,9 +82,31 @@ export default function ProgramSalesHero(props: Props) {
             fetchPriority="high"
             decoding="async"
             alt="Daniela standing alone holding dumbbells"
-            className="absolute inset-y-0 -left-[2%] h-full w-[104%] max-w-none object-cover object-top"
+            className="h-full w-full object-contain object-bottom [clip-path:inset(0_2px)]"
           />
         </div>
+        <ul
+          aria-label="Program at a glance"
+          className="mb-8 grid self-start grid-cols-2 gap-y-5 border-t border-border pt-5 md:col-start-1 md:row-start-2 md:mt-8 md:mb-12 lg:grid-cols-4 lg:mb-16"
+        >
+          {programFacts.map(({ title, description }, index) => (
+            <li
+              key={title}
+              className={`min-w-0 pr-4 ${index % 2 === 1 ? "border-l border-border pl-4" : "pl-0"} ${index > 0 ? "lg:border-l lg:border-border lg:pl-4" : ""}`}
+            >
+              <span
+                aria-hidden="true"
+                className="text-[10px] tracking-widest text-primary-dark"
+              >
+                0{index + 1}
+              </span>
+              <p className="mt-2 text-xs font-semibold uppercase">{title}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                {description}
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

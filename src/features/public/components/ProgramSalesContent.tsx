@@ -1,4 +1,3 @@
-import closeRow from "../../../assets/home/daniela-kettlebell-row-close.jpg";
 import portrait from "../../../assets/home/daniela-smiling-portrait.jpg";
 import { container, eyebrow } from "./styles";
 
@@ -11,35 +10,38 @@ export default function ProgramSalesContent() {
       <section
         id="inside"
         aria-labelledby="overview-title"
-        className={`${container} scroll-mt-6 py-8 md:py-12`}
+        className="scroll-mt-6 bg-[#789486] text-[#F7F5F0]"
       >
-        <div className="grid items-center gap-6 md:grid-cols-[0.95fr_1.05fr] lg:gap-12">
-          <img
-            src={closeRow}
-            width="1764"
-            height="1158"
-            alt="Daniela performing a close kettlebell row on a bench"
-            loading="lazy"
-            decoding="async"
-            className="aspect-[4/3] w-full object-cover"
-          />
+        <div
+          className={`${container} grid gap-7 py-10 md:grid-cols-[1.05fr_1fr] md:gap-12 md:py-16`}
+        >
           <div>
-            <p className={eyebrow}>The program</p>
-            <h2 id="overview-title" className={`${title} mt-3`}>
-              Structured strength
-              <br className="hidden lg:block" /> for real life.
+            <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.18em]">
+              <span
+                aria-hidden="true"
+                className="h-4 w-8 shrink-0 border-y border-[#F7F5F0]/70 before:mt-[7px] before:block before:border-t before:border-[#F7F5F0]/70"
+              />
+              The program
+            </p>
+            <h2
+              id="overview-title"
+              className="mt-4 max-w-[16ch] text-4xl font-semibold leading-[1.05] tracking-[-0.04em] lg:text-5xl"
+            >
+              Structured strength for real life.
             </h2>
-            <p className={`${body} mt-4`}>
+          </div>
+          <div>
+            <p className="text-sm leading-relaxed text-[#F7F5F0]/95 sm:text-base">
               A structured, progressive program to help you get stronger, move
               better and feel more capable — using dumbbells. You can do it at
               home or in the gym.
             </p>
-            <p className={`${body} mt-3`}>
+            <p className="mt-3 text-sm leading-relaxed text-[#F7F5F0]/95 sm:text-base">
               This program is about sustainable strength, confidence and
               long-term capability — training that supports how you want to
               live, not just how you want to look.
             </p>
-            <dl className="mt-6 divide-y divide-border">
+            <dl className="mt-6 divide-y divide-[#F7F5F0]/40 border-t border-[#F7F5F0]/30">
               {[
                 ["Structured", "Six weeks, laid out in order."],
                 ["Progressive", "Build strength through consistent training."],
@@ -52,14 +54,14 @@ export default function ProgramSalesContent() {
                 >
                   <span
                     aria-hidden="true"
-                    className="pt-0.5 text-[10px] text-primary-dark"
+                    className="pt-0.5 text-[10px] text-[#F7F5F0]/85"
                   >
                     0{i + 1}
                   </span>
                   <dt className="text-xs font-semibold uppercase tracking-wide">
                     {label}
                   </dt>
-                  <dd className="col-start-2 mt-1 text-xs leading-relaxed text-muted-foreground sm:col-start-auto sm:mt-0">
+                  <dd className="col-start-2 mt-1 text-xs leading-relaxed text-[#F7F5F0]/85 sm:col-start-auto sm:mt-0">
                     {copy}
                   </dd>
                 </div>
