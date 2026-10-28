@@ -11,7 +11,6 @@ import HomePhilosophy from "../components/HomePhilosophy";
 import HomePrograms from "../components/HomePrograms";
 import HomeAboutDaniela from "../components/HomeAboutDaniela";
 import HomeFinalCta from "../components/HomeFinalCta";
-import PublicFooter from "../components/PublicFooter";
 
 export default function HomePage() {
   const program = usePublicProgram(salesProgramId ?? "");
@@ -40,9 +39,8 @@ export default function HomePage() {
         />
         <HomePhilosophy />
         <HomeAboutDaniela />
-        <HomeFinalCta programHref={programHref} price={price} />
       </main>
-      <PublicFooter />
+      <HomeFinalCta programHref={programHref} price={price} />
     </div>
   );
 }

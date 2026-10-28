@@ -1,34 +1,10 @@
 import closeRow from "../../../assets/home/daniela-kettlebell-row-close.jpg";
-import wideRow from "../../../assets/home/daniela-kettlebell-row-wide.jpg";
 import portrait from "../../../assets/home/daniela-smiling-portrait.jpg";
-import { CalendarDays, Dumbbell, CirclePlay, House } from "lucide-react";
 import { container, eyebrow } from "./styles";
 
 const title =
   "text-3xl font-semibold leading-[1.1] tracking-[-0.04em] lg:text-4xl";
 const body = "text-sm leading-relaxed text-muted-foreground sm:text-base";
-const inclusions = [
-  {
-    icon: CalendarDays,
-    title: "6-week structured plan",
-    copy: "A structured, progressive plan to follow from week one to week six.",
-  },
-  {
-    icon: Dumbbell,
-    title: "Dumbbell workouts",
-    copy: "Strength sessions built around dumbbells.",
-  },
-  {
-    icon: CirclePlay,
-    title: "On-demand workouts",
-    copy: "Video workouts you can open whenever it suits your day.",
-  },
-  {
-    icon: House,
-    title: "At home or in the gym",
-    copy: "Train where it works for your life.",
-  },
-];
 export default function ProgramSalesContent() {
   return (
     <>
@@ -92,35 +68,14 @@ export default function ProgramSalesContent() {
           </div>
         </div>
       </section>
-      <section
-        aria-labelledby="included-title"
-        className="border-y border-border"
-      >
+      <section aria-labelledby="steps-title" className="border-y border-border">
         <div className={`${container} py-8 md:py-12`}>
-          <p className={eyebrow}>What you'll get</p>
-          <h2 id="included-title" className={`${title} mt-3`}>
-            Everything you need to get stronger.
-          </h2>
-          <ul className="mt-7 grid grid-cols-2 gap-y-7 lg:grid-cols-4">
-            {inclusions.map(({ icon: Icon, title, copy }, i) => (
-              <li
-                key={title}
-                className={`pr-4 ${i % 2 ? "border-l border-border pl-4" : ""} ${i === 2 ? "lg:border-l lg:border-border lg:pl-4" : ""}`}
-              >
-                <Icon size={27} strokeWidth={1.3} aria-hidden="true" />
-                <h3 className="mt-3 text-xs font-semibold uppercase leading-relaxed tracking-wide">
-                  {title}
-                </h3>
-                <p className="mt-2 max-w-[28ch] text-sm leading-relaxed text-muted-foreground">
-                  {copy}
-                </p>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-9 grid gap-6 border-t border-border pt-8 md:grid-cols-[0.8fr_1.2fr]">
+          <div className="grid gap-6 md:grid-cols-[0.8fr_1.2fr]">
             <div>
               <p className={eyebrow}>How it works</p>
-              <h2 className={`${title} mt-3`}>Three steps to start.</h2>
+              <h2 id="steps-title" className={`${title} mt-3`}>
+                Three steps to start.
+              </h2>
               <p className={`${body} mt-3`}>
                 Anyone can read about the program.
                 <br />
@@ -168,31 +123,24 @@ export default function ProgramSalesContent() {
         aria-labelledby="philosophy-title"
         className={`${container} py-8 md:py-12`}
       >
-        <div className="grid items-center gap-6 md:grid-cols-[1fr_1.1fr] lg:gap-12">
-          <div>
+        <div className="grid items-start gap-6 md:grid-cols-[1fr_1.1fr] lg:gap-16">
+          <div className="border-l-2 border-[#607A6D] pl-5 md:border-l-4 md:pl-7">
             <p className={eyebrow}>A stronger way forward</p>
             <h2 id="philosophy-title" className={`${title} mt-3`}>
               Strength that supports how you want to live.
             </h2>
-            <p className={`${body} mt-4`}>
+          </div>
+          <div className="space-y-5 border-t border-border pt-5 md:border-t-0 md:pt-1">
+            <p className="max-w-lg text-xl font-medium leading-relaxed tracking-[-0.02em] lg:text-2xl">
               Increase muscle, support bone health and protect your
               independence.
             </p>
-            <p className={`${body} mt-3`}>
+            <p className={`${body} max-w-lg`}>
               Move better, reduce stiffness and feel more capable in daily life.
               Develop physical and mental strength that carries into everything
               you do.
             </p>
           </div>
-          <img
-            src={wideRow}
-            width="1760"
-            height="1159"
-            alt="Daniela training with a kettlebell beside a bench"
-            loading="lazy"
-            decoding="async"
-            className="aspect-[3/2] w-full object-cover"
-          />
         </div>
         <div className="mt-8 grid gap-4 border-t border-border pt-7 md:grid-cols-2">
           <div>

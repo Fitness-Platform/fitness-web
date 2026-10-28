@@ -1,3 +1,4 @@
+import PublicFooter from "./PublicFooter";
 import photo from "../../../assets/home/daniela-waterfront-portrait.jpg";
 import { container, primaryCta } from "./styles";
 
@@ -9,7 +10,7 @@ export default function HomeFinalCta({
   price: string | null;
 }) {
   return (
-    <section
+    <footer
       aria-labelledby="final-title"
       className="relative mt-5 isolate overflow-hidden bg-[#202424] text-[#F7F5F0] md:mt-7"
     >
@@ -61,6 +62,11 @@ export default function HomeFinalCta({
           </div>
         </div>
       </div>
-    </section>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 bg-[linear-gradient(to_top,#202424,rgba(32,36,36,0.9)_55%,transparent)]"
+      />
+      <PublicFooter inverted embedded />
+    </footer>
   );
 }
