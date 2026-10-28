@@ -68,7 +68,10 @@ export default function ProgramSalesContent() {
           </div>
         </div>
       </section>
-      <section aria-labelledby="steps-title" className="border-y border-border">
+      <section
+        aria-labelledby="steps-title"
+        className="border-y border-border bg-[#F0EEE8]"
+      >
         <div className={`${container} py-8 md:py-12`}>
           <div className="grid gap-6 md:grid-cols-[0.8fr_1.2fr]">
             <div>
@@ -119,33 +122,39 @@ export default function ProgramSalesContent() {
           </div>
         </div>
       </section>
-      <section
-        aria-labelledby="philosophy-title"
-        className={`${container} py-8 md:py-12`}
-      >
-        <div className="grid items-start gap-6 md:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <div className="border-l-2 border-[#607A6D] pl-5 md:border-l-4 md:pl-7">
-            <p className={eyebrow}>A stronger way forward</p>
-            <h2 id="philosophy-title" className={`${title} mt-3`}>
-              Strength that supports how you want to live.
-            </h2>
-          </div>
-          <div className="space-y-5 border-t border-border pt-5 md:border-t-0 md:pt-1">
-            <p className="max-w-lg text-xl font-medium leading-relaxed tracking-[-0.02em] lg:text-2xl">
-              Increase muscle, support bone health and protect your
-              independence.
-            </p>
-            <p className={`${body} max-w-lg`}>
-              Move better, reduce stiffness and feel more capable in daily life.
-              Develop physical and mental strength that carries into everything
-              you do.
-            </p>
+      <section aria-labelledby="philosophy-title" className="bg-[#EFF1ED]">
+        <div className={`${container} py-8 md:py-12`}>
+          <div className="grid items-start gap-6 md:grid-cols-[1fr_1.1fr] lg:gap-16">
+            <div className="border-l-2 border-[#607A6D] pl-5 md:border-l-4 md:pl-7">
+              <p className={eyebrow}>A stronger way forward</p>
+              <h2 id="philosophy-title" className={`${title} mt-3`}>
+                Strength that supports how you want to live.
+              </h2>
+            </div>
+            <div className="space-y-5 border-t border-border pt-5 md:border-t-0 md:pt-1">
+              <p className="max-w-lg text-xl font-medium leading-relaxed tracking-[-0.02em] lg:text-2xl">
+                Increase muscle, support bone health and protect your
+                independence.
+              </p>
+              <p className={`${body} max-w-lg`}>
+                Move better, reduce stiffness and feel more capable in daily
+                life. Develop physical and mental strength that carries into
+                everything you do.
+              </p>
+            </div>
           </div>
         </div>
-        <div className="mt-8 grid gap-4 border-t border-border pt-7 md:grid-cols-2">
+      </section>
+      <section
+        aria-labelledby="audience-title"
+        className="border-t border-border bg-[#F7F5F0]"
+      >
+        <div className={`${container} grid gap-4 py-7 md:grid-cols-2 md:py-10`}>
           <div>
             <p className={eyebrow}>Who it's for</p>
-            <h2 className={`${title} mt-3`}>Women 40+. Real life focused.</h2>
+            <h2 id="audience-title" className={`${title} mt-3`}>
+              Women 40+. Real life focused.
+            </h2>
           </div>
           <p className={`${body} self-center`}>
             For women in their 40s, 50s and beyond who want to build strength,

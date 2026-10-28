@@ -48,17 +48,6 @@ export default function HomeFinalCta({
             <a href={programHref} className={primaryCta}>
               EXPLORE THE PROGRAM{price ? ` — ${price}` : ""}
             </a>
-            <button
-              type="button"
-              disabled
-              title="Preview is not available yet"
-              className="inline-flex min-h-12 cursor-not-allowed items-center justify-center border border-white/60 px-7 text-white/70"
-            >
-              <span className="text-xs font-semibold uppercase tracking-[0.14em]">
-                WATCH PREVIEW
-              </span>
-              <span className="sr-only"> — not available yet</span>
-            </button>
           </div>
         </div>
       </div>
