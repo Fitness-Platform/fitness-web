@@ -70,22 +70,27 @@ export default function ProgramSalesContent() {
       </section>
       <section
         aria-labelledby="steps-title"
-        className="border-y border-border bg-[#F0EEE8]"
+        className="border-t border-border bg-[#F7F5F0]"
       >
-        <div className={`${container} py-8 md:py-12`}>
-          <div className="grid gap-6 md:grid-cols-[0.8fr_1.2fr]">
-            <div>
-              <p className={eyebrow}>How it works</p>
-              <h2 id="steps-title" className={`${title} mt-3`}>
-                Three steps to start.
-              </h2>
+        <div className={`${container} py-12 md:py-16`}>
+          <div className="grid gap-8">
+            <div className="grid gap-4 md:grid-cols-[1.6fr_1fr] md:items-end">
+              <div>
+                <p className={eyebrow}>How it works</p>
+                <h2
+                  id="steps-title"
+                  className="mt-3 text-4xl font-semibold leading-[1.05] tracking-[-0.04em] lg:text-5xl"
+                >
+                  Three steps to start.
+                </h2>
+              </div>
               <p className={`${body} mt-3`}>
                 Anyone can read about the program.
                 <br />
                 An account is needed to enroll.
               </p>
             </div>
-            <ol className="divide-y divide-border">
+            <ol className="grid md:grid-cols-3 md:gap-8">
               {[
                 [
                   "Create your account",
@@ -102,16 +107,16 @@ export default function ProgramSalesContent() {
               ].map(([label, copy], i) => (
                 <li
                   key={label}
-                  className="grid grid-cols-[1.5rem_1fr] gap-3 py-4"
+                  className="grid grid-cols-[1.5rem_1fr] gap-4 border-t border-border py-6 md:block"
                 >
                   <span
-                    className="text-xs text-primary-dark"
+                    className="block text-xs tracking-[0.15em] text-primary-dark md:mb-6"
                     aria-hidden="true"
                   >
                     0{i + 1}
                   </span>
                   <div>
-                    <h3 className="font-medium">{label}</h3>
+                    <h3 className="text-lg font-semibold">{label}</h3>
                     <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                       {copy}
                     </p>
@@ -122,41 +127,52 @@ export default function ProgramSalesContent() {
           </div>
         </div>
       </section>
-      <section aria-labelledby="philosophy-title" className="bg-[#EFF1ED]">
-        <div className={`${container} py-8 md:py-12`}>
-          <div className="grid items-start gap-6 md:grid-cols-[1fr_1.1fr] lg:gap-16">
-            <div className="border-l-2 border-[#607A6D] pl-5 md:border-l-4 md:pl-7">
-              <p className={eyebrow}>A stronger way forward</p>
-              <h2 id="philosophy-title" className={`${title} mt-3`}>
-                Strength that supports how you want to live.
-              </h2>
-            </div>
-            <div className="space-y-5 border-t border-border pt-5 md:border-t-0 md:pt-1">
-              <p className="max-w-lg text-xl font-medium leading-relaxed tracking-[-0.02em] lg:text-2xl">
-                Increase muscle, support bone health and protect your
-                independence.
-              </p>
-              <p className={`${body} max-w-lg`}>
-                Move better, reduce stiffness and feel more capable in daily
-                life. Develop physical and mental strength that carries into
-                everything you do.
-              </p>
-            </div>
+      <section
+        aria-labelledby="philosophy-title"
+        className="bg-[#496658] text-[#F7F5F0]"
+      >
+        <div className={`${container} py-14 md:py-20 lg:py-24`}>
+          <p className="flex items-center gap-4 text-[11px] font-medium uppercase tracking-[0.18em] text-[#F7F5F0]/90">
+            <span aria-hidden="true" className="h-px w-8 bg-[#F7F5F0]/50" />A
+            stronger way forward
+          </p>
+          <h2
+            id="philosophy-title"
+            className="mt-8 max-w-[20ch] text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.05em] md:text-6xl lg:text-[5.5rem]"
+          >
+            Strength that supports <br className="hidden md:block" />
+            how you want to live.
+          </h2>
+          <div className="mt-9 grid gap-6 border-t border-[#F7F5F0]/35 pt-7 md:mt-12 md:grid-cols-[1.3fr_1fr] md:gap-16 md:pt-8">
+            <p className="max-w-lg text-xl font-medium leading-snug tracking-[-0.02em] lg:text-3xl">
+              Increase muscle, support bone health and protect your
+              independence.
+            </p>
+            <p className="max-w-lg text-sm leading-relaxed text-[#F7F5F0]/90 lg:text-base">
+              Move better, reduce stiffness and feel more capable in daily life.
+              Develop physical and mental strength that carries into everything
+              you do.
+            </p>
           </div>
         </div>
       </section>
       <section
         aria-labelledby="audience-title"
-        className="border-t border-border bg-[#F7F5F0]"
+        className="bg-[#F7F5F0] text-center"
       >
-        <div className={`${container} grid gap-4 py-7 md:grid-cols-2 md:py-10`}>
-          <div>
-            <p className={eyebrow}>Who it's for</p>
-            <h2 id="audience-title" className={`${title} mt-3`}>
-              Women 40+. Real life focused.
-            </h2>
-          </div>
-          <p className={`${body} self-center`}>
+        <div className={`${container} py-14 md:py-20 lg:py-24`}>
+          <p className={eyebrow}>Who it's for</p>
+          <h2
+            id="audience-title"
+            className="mx-auto mt-5 max-w-[22ch] text-3xl font-semibold leading-[1.1] tracking-[-0.04em] md:max-w-none md:text-4xl lg:text-5xl"
+          >
+            Women 40+. Real life focused.
+          </h2>
+          <span
+            aria-hidden="true"
+            className="mx-auto my-7 block h-px w-8 bg-[#607A6D] md:my-9"
+          />
+          <p className={`${body} mx-auto max-w-[65ch]`}>
             For women in their 40s, 50s and beyond who want to build strength,
             improve movement and feel confident in their bodies — with
             practical, evidence-based training and real-life strategies.
