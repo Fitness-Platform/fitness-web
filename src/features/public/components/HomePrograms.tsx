@@ -28,6 +28,11 @@ export default function HomePrograms() {
             better and feel more capable — using dumbbells. You can do it at
             home or in the gym.
           </p>
+          <p className="mt-2 max-w-lg md:mt-3 text-sm leading-relaxed text-muted-foreground">
+            This program is about sustainable strength, confidence and long-term
+            capability — training that supports how you want to live, not just
+            how you want to look.
+          </p>
           <a href="#approach" className={`${primaryCta} mt-3 md:mt-4`}>
             LEARN MORE &amp; ENROLL — $89
           </a>
@@ -58,11 +63,6 @@ export default function HomePrograms() {
             decoding="async"
             className="w-full object-cover aspect-[3/2]"
           />
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            This program is about sustainable strength, confidence and long-term
-            capability — training that supports how you want to live, not just
-            how you want to look.
-          </p>
         </div>
       </div>
     </section>
