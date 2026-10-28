@@ -25,15 +25,17 @@ function SalesContent({ program }: { program: PublicProgram }) {
   };
   return (
     <>
-      <ProgramSalesHero
-        {...buttonProps}
-        program={program}
-        price={price}
-        authenticated={enrollment.session.isAuthenticated}
-        message={enrollment.message}
-      />
-      <ProgramSalesContent />
-      <section
+      <main id="sales-content">
+        <ProgramSalesHero
+          {...buttonProps}
+          program={program}
+          price={price}
+          authenticated={enrollment.session.isAuthenticated}
+          message={enrollment.message}
+        />
+        <ProgramSalesContent />
+      </main>
+      <footer
         aria-labelledby="enroll-title"
         className="bg-[#202424] text-[#F7F5F0]"
       >
@@ -71,7 +73,8 @@ function SalesContent({ program }: { program: PublicProgram }) {
             )}
           </div>
         </div>
-      </section>
+        <PublicFooter inverted embedded />
+      </footer>
     </>
   );
 }
@@ -92,21 +95,28 @@ export default function ProgramSalesPage() {
         homeAnchors={false}
         authReturnTo={allowed ? `/programs/${programId}` : null}
       />
-      <main id="sales-content">
-        {!allowed ||
-        (query.error instanceof ApiError && query.error.status === 404) ? (
-          <ProgramSalesState state="unavailable" />
-        ) : query.isPending ? (
-          <ProgramSalesState state="loading" />
-        ) : query.isError ? (
-          <ProgramSalesState state="error" retry={() => void query.refetch()} />
-        ) : !isConfiguredSalesProgram(query.data.id) ? (
-          <ProgramSalesState state="unavailable" />
-        ) : (
-          <SalesContent key={query.data.id} program={query.data} />
-        )}
-      </main>
-      <PublicFooter />
+      {allowed && query.isSuccess && isConfiguredSalesProgram(query.data.id) ? (
+        <SalesContent key={query.data.id} program={query.data} />
+      ) : (
+        <>
+          <main id="sales-content">
+            {!allowed ||
+            (query.error instanceof ApiError && query.error.status === 404) ? (
+              <ProgramSalesState state="unavailable" />
+            ) : query.isPending ? (
+              <ProgramSalesState state="loading" />
+            ) : query.isError ? (
+              <ProgramSalesState
+                state="error"
+                retry={() => void query.refetch()}
+              />
+            ) : (
+              <ProgramSalesState state="unavailable" />
+            )}
+          </main>
+          <PublicFooter />
+        </>
+      )}
     </div>
   );
 }
