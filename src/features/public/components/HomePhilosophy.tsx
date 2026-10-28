@@ -18,7 +18,7 @@ export default function HomePhilosophy() {
     <section
       id="approach"
       aria-labelledby="approach-title"
-      className="my-5 scroll-mt-6 bg-[#789486] text-[#F7F5F0] md:my-8"
+      className="my-5 scroll-mt-6 bg-[#496658] text-[#F7F5F0] md:my-8"
     >
       <div
         className={`${container} py-10 md:py-16 lg:grid lg:grid-cols-[1.6fr_3fr] lg:items-center lg:gap-10 lg:py-24`}
