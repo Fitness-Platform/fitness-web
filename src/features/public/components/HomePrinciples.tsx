@@ -3,23 +3,23 @@ import { container } from "./styles";
 const principles = [
   {
     icon: Dumbbell,
-    title: "Build strength",
-    copy: "Build muscle and support bone health for a stronger, more independent you.",
+    title: "BUILD STRENGTH",
+    copy: "Increase muscle and bone health for a stronger, more independent you.",
   },
   {
     icon: Footprints,
-    title: "Move better",
-    copy: "Improve mobility and balance for everyday life and the activities you love.",
+    title: "MOVE BETTER",
+    copy: "Improve mobility, stability and balance for everyday life and the activities you love.",
   },
   {
     icon: Leaf,
-    title: "Support longevity",
-    copy: "Train for the life you want to live, now and for years to come.",
+    title: "SUPPORT LONGEVITY",
+    copy: "Train for the life you want to live.",
   },
   {
     icon: Heart,
-    title: "Real life focused",
-    copy: "Practical, sustainable training — no extremes, no perfection.",
+    title: "REAL LIFE FOCUSED",
+    copy: "Practical, effective and sustainable — no extremes, no perfection.",
   },
 ];
 export default function HomePrinciples() {

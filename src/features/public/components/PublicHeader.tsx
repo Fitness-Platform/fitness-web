@@ -29,7 +29,7 @@ export default function PublicHeader() {
         >
           DANIELA BRITO
           <span className="mt-1 block text-[7px] tracking-[0.28em] text-primary-dark sm:text-[8px]">
-            STRENGTH FOR WHAT’S NEXT
+            STRENGTH FOR WHAT'S NEXT
           </span>
         </Link>
         <button

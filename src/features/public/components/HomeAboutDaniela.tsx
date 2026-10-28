@@ -19,7 +19,7 @@ export default function HomeAboutDaniela() {
           className="aspect-[4/3] w-full object-cover object-[50%_22%] md:aspect-[5/4]"
         />
         <div>
-          <p className={eyebrow}>Meet Daniela</p>
+          <p className={eyebrow}>MEET DANIELA</p>
           <h2
             id="about-title"
             className="mt-3 max-w-lg text-3xl font-semibold leading-[1.08] tracking-[-0.045em] lg:text-4xl"
@@ -27,18 +27,20 @@ export default function HomeAboutDaniela() {
             Strength is a practice, not a performance.
           </h2>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground">
-            I’m Daniela. I help women in their 40s, 50s and beyond build
-            sustainable strength, move with confidence and feel more capable in
-            their bodies — with practical training and real-life strategies.
+            I'm Daniela, a certified personal trainer and menopause coach. I
+            help women in their 40s, 50s and beyond build strength, improve
+            movement and feel confident in their bodies — with practical,
+            evidence-based training and real-life strategies.
           </p>
           <a href="#approach" className={`${primaryCta} mt-4`}>
-            My approach
+            MY APPROACH
           </a>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             {[
-              "Strength that supports everyday life",
-              "Consistent training that fits real schedules",
-              "Confidence, capability and independence",
+              "Certified Personal Trainer",
+              "Certified Menopause Coach",
+              "Evidence-based, real-life focused",
+              "Helping women feel strong, confident and independent",
             ].map((point) => (
               <li key={point} className="flex items-center gap-3">
                 <Check

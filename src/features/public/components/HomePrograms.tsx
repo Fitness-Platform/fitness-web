@@ -16,7 +16,7 @@ export default function HomePrograms() {
     >
       <div className="grid items-center gap-6 md:grid-cols-[0.95fr_1.05fr] md:gap-7">
         <div>
-          <p className={eyebrow}>Featured program</p>
+          <p className={eyebrow}>FEATURED PROGRAM</p>
           <h2
             id="program-title"
             className="mt-3 max-w-xl text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.045em] lg:text-[2.5rem]"
@@ -24,11 +24,12 @@ export default function HomePrograms() {
             The 6-Week Dumbbell Strength Program for Women 40+
           </h2>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground">
-            A structured, progressive plan to help you get stronger, move better
-            and feel more capable — using dumbbells, at home or in the gym.
+            A structured, progressive program to help you get stronger, move
+            better and feel more capable — using dumbbells. You can do it at
+            home or in the gym.
           </p>
           <a href="#approach" className={`${primaryCta} mt-4`}>
-            Learn more — $89
+            LEARN MORE &amp; ENROLL — $89
           </a>
           <ul className="mt-5 grid grid-cols-2 gap-y-4 lg:grid-cols-4">
             {features.map(({ icon: Icon, text }) => (

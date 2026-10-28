@@ -4,30 +4,30 @@ import strength from "../../../assets/home/daniela-kettlebell-row-wide.jpg";
 import { container } from "./styles";
 const stories = [
   {
-    title: "Move better",
+    title: "IMPROVE MOBILITY",
     image: mobility,
     width: 1106,
     height: 1119,
     alt: "Daniela outdoors in the warm evening light",
-    copy: "Improve mobility, reduce stiffness and feel more capable in everyday life.",
+    copy: "Move better, reduce stiffness and feel more capable in daily life.",
     position: "50% 40%",
   },
   {
-    title: "Feel confident",
+    title: "FEEL CONFIDENT",
     image: confidence,
     width: 1118,
     height: 1214,
     alt: "Daniela and a training partner practicing a supported squat",
-    copy: "Build physical and mental confidence through consistent training.",
+    copy: "Develop physical and mental strength that carries into everything you do.",
     position: "50% 35%",
   },
   {
-    title: "Build strength",
+    title: "BUILD STRENGTH",
     image: strength,
     width: 1760,
     height: 1159,
     alt: "Daniela lifting a kettlebell beside a workout bench",
-    copy: "Build muscle, support bone health and protect your independence.",
+    copy: "Increase muscle, support bone health and protect your independence.",
     position: "50% 50%",
   },
 ];
@@ -46,8 +46,9 @@ export default function HomePhilosophy() {
           A stronger way forward.
         </h2>
         <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:ml-auto">
-          Sustainable strength, confidence and long-term capability — training
-          that supports how you want to live.
+          This program is about sustainable strength, confidence and long-term
+          capability — training that supports how you want to live, not just how
+          you want to look.
         </p>
       </div>
       <div className="grid gap-6 md:grid-cols-3 md:gap-4">

@@ -8,34 +8,34 @@ export default function HomeHero() {
         className={`${container} grid items-center gap-5 pt-6 md:grid-cols-[0.95fr_1.05fr] md:gap-5 md:pt-0`}
       >
         <div className="py-3 md:py-7">
-          <p className={eyebrow}>Stronger. Healthier. More capable.</p>
+          <p className={eyebrow}>STRONGER. HEALTHIER. MORE CAPABLE.</p>
           <h1
             id="hero-title"
-            className="mt-3 text-[clamp(3.25rem,5.8vw,5.5rem)] font-semibold leading-[0.96] tracking-[-0.06em]"
+            className="mt-3 text-[clamp(3.25rem,5.5vw,5.25rem)] font-semibold leading-[0.96] tracking-[-0.06em]"
           >
             Stronger
             <br />
-            for what’s
+            for what's
             <br />
             <span className="text-primary-dark">next.</span>
           </h1>
           <p className="mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
-            A 6-week dumbbell strength program for women 40+. Build strength,
-            move better and feel more confident — with sustainable training that
-            fits real life.
+            A 6-week dumbbell strength program for women 40+ designed to help
+            you build strength, move better and feel more capable — at home or
+            in the gym.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <a
               href="#programs"
               className={`${primaryCta} h-auto min-h-12 py-3 text-center`}
             >
-              Explore the 6-week program
+              EXPLORE THE 6-WEEK PROGRAM
             </a>
             <a
               href="#about"
               className={`${textCta} inline-flex border border-foreground px-6`}
             >
-              Meet Daniela
+              MEET DANIELA
             </a>
           </div>
         </div>
