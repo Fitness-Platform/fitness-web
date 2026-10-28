@@ -1,4 +1,8 @@
-import { usePublicPrograms } from "../hooks/usePublicProgram";
+import {
+  salesProgramId,
+  isConfiguredSalesProgram,
+} from "../config/salesProgram";
+import { usePublicProgram } from "../hooks/usePublicProgram";
 import { formatProgramPrice } from "../utils/programPrice";
 import PublicHeader from "../components/PublicHeader";
 import HomeHero from "../components/HomeHero";
@@ -10,11 +14,10 @@ import HomeFinalCta from "../components/HomeFinalCta";
 import PublicFooter from "../components/PublicFooter";
 
 export default function HomePage() {
-  const programs = usePublicPrograms();
-  // Home has one featured product. Multiple results need an explicit product-selection rule.
+  const program = usePublicProgram(salesProgramId ?? "");
   const featured =
-    programs.isSuccess && programs.data.length === 1
-      ? programs.data[0]
+    program.isSuccess && isConfiguredSalesProgram(program.data.id)
+      ? program.data
       : undefined;
   const programHref = featured ? `/programs/${featured.id}` : undefined;
   const price = featured ? formatProgramPrice(featured) : null;
@@ -33,7 +36,7 @@ export default function HomePage() {
         <HomePrograms
           programHref={programHref}
           price={price}
-          loading={programs.isPending}
+          loading={salesProgramId !== null && program.isPending}
         />
         <HomePhilosophy />
         <HomeAboutDaniela />

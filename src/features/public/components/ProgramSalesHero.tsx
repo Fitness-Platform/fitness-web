@@ -54,6 +54,7 @@ export default function ProgramSalesHero(props: Props) {
           </p>
           <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
             <ProgramEnrollmentButton
+              price={props.price}
               onEnroll={props.onEnroll}
               busy={props.busy}
               checking={props.checking}

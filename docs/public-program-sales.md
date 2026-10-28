@@ -1,6 +1,6 @@
 # F-PUBLIC.0 — integration boundary
 
-The frontend route is `/programs/:programId`. Supply a real program UUID; none is hard-coded. The page uses approved six-week-program marketing copy and existing photographs. It does not query Admin or private Member content to populate a public sales page.
+The frontend route is `/programs/:programId`. Use the configured Sales Program UUID; none is hard-coded. The page uses approved six-week-program marketing copy and existing photographs. It does not query Admin or private Member content to populate a public sales page.
 
 ## Verified backend contracts
 
@@ -13,7 +13,19 @@ The frontend route is `/programs/:programId`. Supply a real program UUID; none i
 
 `GET /api/programs` and `GET /api/programs/{programId}` are anonymous published-only reads returning `{ id, name, description, priceCents, currency }`. The sales page uses the detail response for product identity, the hero description and pricing and formats cents with `Intl.NumberFormat`. No price or ID is hard-coded. Null/invalid/non-positive pricing disables enrollment rather than inventing a price. Loading, 404/unavailable and retryable public error states do not expose raw backend errors.
 
-Home requests the public list once through TanStack Query. When exactly one program is returned, its UUID supplies the Hero, Featured Program and final program-exploration links; the price-bearing CTA labels use its API price. Header PROGRAM remains the Home section anchor and JOIN NOW remains account registration. With zero/multiple results or a list failure, no product is selected: exploration links fall back to the existing Home program section, and the direct enrollment link is unavailable. Selecting among multiple published products requires a product-selection/featured-program rule; this task does not create one or add a catalog. Approved static editorial copy and photography remain unchanged.
+## Sales product configuration
+
+Set `VITE_SALES_PROGRAM_ID` in your ignored local `.env` and in the deployment build environment to the backend UUID for Daniela's 6-week product. `.env.example` intentionally leaves it blank. Vite embeds this public product identifier at build time; restart the dev server after changing it and rebuild for deployment. It is not a secret or an authentication token.
+
+A centralized configuration validates the UUID. The sales route accepts only that identity (UUID letter casing is equivalent); other UUIDs are unavailable and are never redirected/substituted. The returned API identity is checked as well. Missing, empty, or malformed configuration fails closed without crashing or displaying configuration details.
+
+Home fetches only the configured program through the detail endpoint and never infers a featured product from list cardinality, order, name, or another published product. If it cannot load the configured program, direct enrollment is unavailable and exploration links retain the existing Home section fallback. Header PROGRAM remains the Home section anchor and JOIN NOW remains account registration. The public list API remains available for future callers, but this page does not use it to choose a product.
+
+Both sales enrollment buttons include the API-derived formatted price. No price or product UUID is hard-coded in application source. Existing editorial copy, photography, authentication, CSRF and checkout behavior are unchanged.
+
+## Focused tests
+
+Run `npm test` using Node 24 or newer. Node's native test runner/type stripping covers program return destinations, Stripe URL safety, price formatting/CTA labels, and configuration/identity matching without additional test dependencies. Browser checks cover Home's configured-only selection, missing/unavailable configuration and programs, route rejection, enrollment, and responsive layouts.
 
 ## Authentication and checkout
 

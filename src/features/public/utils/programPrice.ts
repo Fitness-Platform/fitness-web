@@ -21,3 +21,7 @@ export function formatProgramPrice(
     return null;
   }
 }
+
+export function programEnrollmentLabel(price: string | null): string {
+  return price ? `Enroll now — ${price}` : "Enrollment unavailable";
+}

@@ -11,13 +11,14 @@ import ProgramSalesContent from "../components/ProgramSalesContent";
 import ProgramEnrollmentButton from "../components/ProgramEnrollmentButton";
 import { container } from "../components/styles";
 import { useProgramEnrollment } from "../hooks/useProgramEnrollment";
-import { programIdPattern } from "../utils/programDestination";
+import { isConfiguredSalesProgram } from "../config/salesProgram";
 
 function SalesContent({ program }: { program: PublicProgram }) {
   const price = formatProgramPrice(program);
   const enrollment = useProgramEnrollment(program.id);
   const buttonProps = {
     onEnroll: enrollment.enroll,
+    price,
     unavailable: price === null,
     busy: enrollment.busy,
     checking: enrollment.session.isPending,
@@ -77,7 +78,8 @@ function SalesContent({ program }: { program: PublicProgram }) {
 
 export default function ProgramSalesPage() {
   const { programId = "" } = useParams();
-  const query = usePublicProgram(programId);
+  const allowed = isConfiguredSalesProgram(programId);
+  const query = usePublicProgram(allowed ? programId : "");
   return (
     <div className="bg-background text-foreground">
       <a
@@ -88,18 +90,18 @@ export default function ProgramSalesPage() {
       </a>
       <PublicHeader
         homeAnchors={false}
-        authReturnTo={
-          programIdPattern.test(programId) ? `/programs/${programId}` : null
-        }
+        authReturnTo={allowed ? `/programs/${programId}` : null}
       />
       <main id="sales-content">
-        {!programIdPattern.test(programId) ||
+        {!allowed ||
         (query.error instanceof ApiError && query.error.status === 404) ? (
           <ProgramSalesState state="unavailable" />
         ) : query.isPending ? (
           <ProgramSalesState state="loading" />
         ) : query.isError ? (
           <ProgramSalesState state="error" retry={() => void query.refetch()} />
+        ) : !isConfiguredSalesProgram(query.data.id) ? (
+          <ProgramSalesState state="unavailable" />
         ) : (
           <SalesContent key={query.data.id} program={query.data} />
         )}
