@@ -1,3 +1,4 @@
+import PublicFooter from "./PublicFooter";
 import photo from "../../../assets/home/daniela-waterfront-portrait.jpg";
 import { container, primaryCta } from "./styles";
 
@@ -9,7 +10,7 @@ export default function HomeFinalCta({
   price: string | null;
 }) {
   return (
-    <section
+    <footer
       aria-labelledby="final-title"
       className="relative mt-5 isolate overflow-hidden bg-[#202424] text-[#F7F5F0] md:mt-7"
     >
@@ -47,20 +48,14 @@ export default function HomeFinalCta({
             <a href={programHref} className={primaryCta}>
               EXPLORE THE PROGRAM{price ? ` — ${price}` : ""}
             </a>
-            <button
-              type="button"
-              disabled
-              title="Preview is not available yet"
-              className="inline-flex min-h-12 cursor-not-allowed items-center justify-center border border-white/60 px-7 text-white/70"
-            >
-              <span className="text-xs font-semibold uppercase tracking-[0.14em]">
-                WATCH PREVIEW
-              </span>
-              <span className="sr-only"> — not available yet</span>
-            </button>
           </div>
         </div>
       </div>
-    </section>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 bg-[linear-gradient(to_top,#202424,rgba(32,36,36,0.9)_55%,transparent)]"
+      />
+      <PublicFooter inverted embedded />
+    </footer>
   );
 }

@@ -1,89 +1,62 @@
-import closeRow from "../../../assets/home/daniela-kettlebell-row-close.jpg";
-import wideRow from "../../../assets/home/daniela-kettlebell-row-wide.jpg";
+import { Check } from "lucide-react";
 import portrait from "../../../assets/home/daniela-smiling-portrait.jpg";
-import { CalendarDays, Dumbbell, CirclePlay, House } from "lucide-react";
 import { container, eyebrow } from "./styles";
 
 const title =
   "text-3xl font-semibold leading-[1.1] tracking-[-0.04em] lg:text-4xl";
 const body = "text-sm leading-relaxed text-muted-foreground sm:text-base";
-const inclusions = [
-  {
-    icon: CalendarDays,
-    title: "6-week structured plan",
-    copy: "A structured, progressive plan to follow from week one to week six.",
-  },
-  {
-    icon: Dumbbell,
-    title: "Dumbbell workouts",
-    copy: "Strength sessions built around dumbbells.",
-  },
-  {
-    icon: CirclePlay,
-    title: "On-demand workouts",
-    copy: "Video workouts you can open whenever it suits your day.",
-  },
-  {
-    icon: House,
-    title: "At home or in the gym",
-    copy: "Train where it works for your life.",
-  },
-];
 export default function ProgramSalesContent() {
   return (
     <>
       <section
         id="inside"
         aria-labelledby="overview-title"
-        className={`${container} scroll-mt-6 py-8 md:py-12`}
+        className="scroll-mt-6 bg-[#496658] text-[#F7F5F0]"
       >
-        <div className="grid items-center gap-6 md:grid-cols-[0.95fr_1.05fr] lg:gap-12">
-          <img
-            src={closeRow}
-            width="1764"
-            height="1158"
-            alt="Daniela performing a close kettlebell row on a bench"
-            loading="lazy"
-            decoding="async"
-            className="aspect-[4/3] w-full object-cover"
-          />
+        <div
+          className={`${container} grid gap-6 pt-8 pb-5 md:grid-cols-[0.84fr_1.16fr] md:gap-x-10 md:gap-y-8 md:pt-12 md:pb-8 lg:gap-x-16`}
+        >
           <div>
-            <p className={eyebrow}>The program</p>
-            <h2 id="overview-title" className={`${title} mt-3`}>
-              Structured strength
-              <br className="hidden lg:block" /> for real life.
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#F7F5F0]/85">
+              The program
+            </p>
+            <h2
+              id="overview-title"
+              className="mt-4 max-w-[16ch] text-4xl font-semibold leading-[1.05] tracking-[-0.04em] lg:text-5xl"
+            >
+              Structured strength <br className="hidden lg:block" />
+              for real life.
             </h2>
-            <p className={`${body} mt-4`}>
+            <p className="mt-5 max-w-[45ch] text-sm leading-relaxed text-[#F7F5F0]/95 sm:text-base">
               A structured, progressive program to help you get stronger, move
               better and feel more capable — using dumbbells. You can do it at
               home or in the gym.
             </p>
-            <p className={`${body} mt-3`}>
+          </div>
+          <div>
+            <p className="max-w-[60ch] text-sm leading-relaxed text-[#F7F5F0]/95 sm:text-base">
               This program is about sustainable strength, confidence and
               long-term capability — training that supports how you want to
               live, not just how you want to look.
             </p>
-            <dl className="mt-6 divide-y divide-border">
+            <dl className="mt-6 grid gap-x-6 md:grid-cols-2 lg:gap-x-8">
               {[
                 ["Structured", "Six weeks, laid out in order."],
                 ["Progressive", "Build strength through consistent training."],
                 ["Strength focused", "Dumbbell training for real life."],
                 ["For women 40+", "Women in their 40s, 50s and beyond."],
               ].map(([label, copy], i) => (
-                <div
-                  key={label}
-                  className="grid grid-cols-[1.5rem_1fr] gap-x-3 py-3 sm:grid-cols-[1.5rem_1fr_1.4fr]"
-                >
+                <div key={label} className="border-t border-[#F7F5F0]/35 py-4">
                   <span
                     aria-hidden="true"
-                    className="pt-0.5 text-[10px] text-primary-dark"
+                    className="block text-[10px] tracking-[0.15em] text-[#F7F5F0]/75"
                   >
                     0{i + 1}
                   </span>
-                  <dt className="text-xs font-semibold uppercase tracking-wide">
+                  <dt className="mt-3 text-sm font-semibold uppercase tracking-wide">
                     {label}
                   </dt>
-                  <dd className="col-start-2 mt-1 text-xs leading-relaxed text-muted-foreground sm:col-start-auto sm:mt-0">
+                  <dd className="mt-2 text-sm leading-relaxed text-[#F7F5F0]/85">
                     {copy}
                   </dd>
                 </div>
@@ -93,41 +66,23 @@ export default function ProgramSalesContent() {
         </div>
       </section>
       <section
-        aria-labelledby="included-title"
-        className="border-y border-border"
+        aria-labelledby="steps-title"
+        className="border-t border-border bg-[#F2F3F0]"
       >
-        <div className={`${container} py-8 md:py-12`}>
-          <p className={eyebrow}>What you'll get</p>
-          <h2 id="included-title" className={`${title} mt-3`}>
-            Everything you need to get stronger.
-          </h2>
-          <ul className="mt-7 grid grid-cols-2 gap-y-7 lg:grid-cols-4">
-            {inclusions.map(({ icon: Icon, title, copy }, i) => (
-              <li
-                key={title}
-                className={`pr-4 ${i % 2 ? "border-l border-border pl-4" : ""} ${i === 2 ? "lg:border-l lg:border-border lg:pl-4" : ""}`}
-              >
-                <Icon size={27} strokeWidth={1.3} aria-hidden="true" />
-                <h3 className="mt-3 text-xs font-semibold uppercase leading-relaxed tracking-wide">
-                  {title}
-                </h3>
-                <p className="mt-2 max-w-[28ch] text-sm leading-relaxed text-muted-foreground">
-                  {copy}
-                </p>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-9 grid gap-6 border-t border-border pt-8 md:grid-cols-[0.8fr_1.2fr]">
+        <div className={`${container} py-12 md:py-16`}>
+          <div className="grid gap-8">
             <div>
-              <p className={eyebrow}>How it works</p>
-              <h2 className={`${title} mt-3`}>Three steps to start.</h2>
-              <p className={`${body} mt-3`}>
-                Anyone can read about the program.
-                <br />
-                An account is needed to enroll.
-              </p>
+              <div>
+                <p className={eyebrow}>How it works</p>
+                <h2
+                  id="steps-title"
+                  className="mt-3 text-4xl font-semibold leading-[1.05] tracking-[-0.04em] lg:text-5xl"
+                >
+                  Three steps to start.
+                </h2>
+              </div>
             </div>
-            <ol className="divide-y divide-border">
+            <ol className="grid md:grid-cols-3 md:gap-8">
               {[
                 [
                   "Create your account",
@@ -144,16 +99,16 @@ export default function ProgramSalesContent() {
               ].map(([label, copy], i) => (
                 <li
                   key={label}
-                  className="grid grid-cols-[1.5rem_1fr] gap-3 py-4"
+                  className="grid grid-cols-[1.5rem_1fr] gap-4 border-t border-border py-6 md:block"
                 >
                   <span
-                    className="text-xs text-primary-dark"
+                    className="block text-xs tracking-[0.15em] text-primary-dark md:mb-6"
                     aria-hidden="true"
                   >
                     0{i + 1}
                   </span>
                   <div>
-                    <h3 className="font-medium">{label}</h3>
+                    <h3 className="text-lg font-semibold">{label}</h3>
                     <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                       {copy}
                     </p>
@@ -166,40 +121,50 @@ export default function ProgramSalesContent() {
       </section>
       <section
         aria-labelledby="philosophy-title"
-        className={`${container} py-8 md:py-12`}
+        className="bg-[#496658] text-[#F7F5F0]"
       >
-        <div className="grid items-center gap-6 md:grid-cols-[1fr_1.1fr] lg:gap-12">
-          <div>
-            <p className={eyebrow}>A stronger way forward</p>
-            <h2 id="philosophy-title" className={`${title} mt-3`}>
-              Strength that supports how you want to live.
-            </h2>
-            <p className={`${body} mt-4`}>
+        <div className={`${container} py-14 md:py-20 lg:py-24`}>
+          <p className="flex items-center gap-4 text-[11px] font-medium uppercase tracking-[0.18em] text-[#F7F5F0]/90">
+            <span aria-hidden="true" className="h-px w-8 bg-[#F7F5F0]/50" />A
+            stronger way forward
+          </p>
+          <h2
+            id="philosophy-title"
+            className="mt-8 max-w-[20ch] text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.05em] md:text-6xl lg:text-[5.5rem]"
+          >
+            Strength that supports <br className="hidden md:block" />
+            how you want to live.
+          </h2>
+          <div className="mt-9 grid gap-6 border-t border-[#F7F5F0]/35 pt-7 md:mt-12 md:grid-cols-[1.3fr_1fr] md:gap-16 md:pt-8">
+            <p className="max-w-lg text-xl font-medium leading-snug tracking-[-0.02em] lg:text-3xl">
               Increase muscle, support bone health and protect your
               independence.
             </p>
-            <p className={`${body} mt-3`}>
+            <p className="max-w-lg text-sm leading-relaxed text-[#F7F5F0]/90 lg:text-base">
               Move better, reduce stiffness and feel more capable in daily life.
               Develop physical and mental strength that carries into everything
               you do.
             </p>
           </div>
-          <img
-            src={wideRow}
-            width="1760"
-            height="1159"
-            alt="Daniela training with a kettlebell beside a bench"
-            loading="lazy"
-            decoding="async"
-            className="aspect-[3/2] w-full object-cover"
-          />
         </div>
-        <div className="mt-8 grid gap-4 border-t border-border pt-7 md:grid-cols-2">
-          <div>
-            <p className={eyebrow}>Who it's for</p>
-            <h2 className={`${title} mt-3`}>Women 40+. Real life focused.</h2>
-          </div>
-          <p className={`${body} self-center`}>
+      </section>
+      <section
+        aria-labelledby="audience-title"
+        className="bg-[#F2F3F0] text-center"
+      >
+        <div className={`${container} py-14 md:py-20 lg:py-24`}>
+          <p className={eyebrow}>Who it's for</p>
+          <h2
+            id="audience-title"
+            className="mx-auto mt-5 max-w-[22ch] text-3xl font-semibold leading-[1.1] tracking-[-0.04em] md:max-w-none md:text-4xl lg:text-5xl"
+          >
+            Women 40+. Real life focused.
+          </h2>
+          <span
+            aria-hidden="true"
+            className="mx-auto my-7 block h-px w-8 bg-[#607A6D] md:my-9"
+          />
+          <p className={`${body} mx-auto max-w-[65ch]`}>
             For women in their 40s, 50s and beyond who want to build strength,
             improve movement and feel confident in their bodies — with
             practical, evidence-based training and real-life strategies.
@@ -235,10 +200,22 @@ export default function ProgramSalesContent() {
               evidence-based training and real-life strategies.
             </p>
             <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
-              <li>Certified Personal Trainer</li>
-              <li>Certified Menopause Coach</li>
-              <li>Evidence-based, real-life focused</li>
-              <li>Helping women feel strong, confident and independent</li>
+              {[
+                "Certified Personal Trainer",
+                "Certified Menopause Coach",
+                "Evidence-based, real-life focused",
+                "Helping women feel strong, confident and independent",
+              ].map((point) => (
+                <li key={point} className="flex items-start gap-3">
+                  <Check
+                    aria-hidden="true"
+                    size={17}
+                    strokeWidth={1.4}
+                    className="mt-0.5 shrink-0 text-primary-dark"
+                  />
+                  <span>{point}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

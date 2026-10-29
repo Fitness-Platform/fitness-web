@@ -1,34 +1,16 @@
-import mobility from "../../../assets/home/daniela-sunset-profile.jpg";
-import confidence from "../../../assets/home/daniela-partner-squat.jpg";
-import strength from "../../../assets/home/daniela-kettlebell-row-wide.jpg";
 import { container } from "./styles";
 const stories = [
   {
     title: "IMPROVE MOBILITY",
-    image: mobility,
-    width: 1106,
-    height: 1119,
-    alt: "Daniela outdoors in the warm evening light",
     copy: "Move better, reduce stiffness and feel more capable in daily life.",
-    position: "50% 40%",
   },
   {
     title: "FEEL CONFIDENT",
-    image: confidence,
-    width: 1118,
-    height: 1214,
-    alt: "Daniela and a training partner practicing a supported squat",
     copy: "Develop physical and mental strength that carries into everything you do.",
-    position: "50% 35%",
   },
   {
     title: "BUILD STRENGTH",
-    image: strength,
-    width: 1760,
-    height: 1159,
-    alt: "Daniela lifting a kettlebell beside a workout bench",
     copy: "Increase muscle, support bone health and protect your independence.",
-    position: "50% 50%",
   },
 ];
 export default function HomePhilosophy() {
@@ -36,45 +18,42 @@ export default function HomePhilosophy() {
     <section
       id="approach"
       aria-labelledby="approach-title"
-      className={`${container} scroll-mt-6 py-5 md:py-8`}
+      className="my-5 scroll-mt-6 bg-[#496658] text-[#F7F5F0] md:my-8"
     >
-      <div className="mb-2.5 md:mb-3">
-        <h2
-          id="approach-title"
-          className="text-[1.75rem] font-semibold md:text-3xl leading-tight tracking-[-0.045em] lg:text-4xl"
-        >
-          A stronger way forward.
-        </h2>
-      </div>
-      <div className="grid gap-4 md:grid-cols-3">
-        {stories.map((story, index) => (
-          <article key={story.title}>
-            <img
-              src={story.image}
-              width={story.width}
-              height={story.height}
-              alt={story.alt}
-              loading="lazy"
-              decoding="async"
-              style={{ objectPosition: story.position }}
-              className="aspect-[3/2] w-full object-cover md:aspect-[4/3]"
-            />
-            <div className="pt-3">
-              <div aria-hidden="true" className="flex items-center gap-3 text-[#607A6D]">
-                <span className="shrink-0 text-[10px] font-medium leading-4 tracking-[0.14em]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="min-w-0 flex-1 border-t border-[#607A6D]/40" />
-              </div>
-              <h3 className="mt-2 text-[15px] font-bold uppercase leading-5 tracking-[0.04em]">
+      <div
+        className={`${container} py-10 md:py-16 lg:grid lg:grid-cols-[1.6fr_3fr] lg:items-center lg:gap-10 lg:py-24`}
+      >
+        <div>
+          <span
+            aria-hidden="true"
+            className="mb-7 block h-px w-14 bg-[#F7F5F0]/80 lg:mb-10"
+          />
+          <h2
+            id="approach-title"
+            className="max-w-[11ch] text-[2.5rem] font-normal leading-[1.05] tracking-[-0.045em] md:text-5xl lg:text-[clamp(3rem,4.7vw,4.25rem)]"
+          >
+            A stronger way forward.
+          </h2>
+        </div>
+        <div className="mt-8 grid md:grid-cols-3 lg:mt-8">
+          {stories.map((story) => (
+            <article
+              key={story.title}
+              className="border-t border-[#F7F5F0]/40 py-5 md:border-l md:border-t-0 md:px-5 md:py-6 lg:px-7"
+            >
+              <span
+                aria-hidden="true"
+                className="mb-5 hidden h-px w-8 bg-[#F7F5F0]/80 md:block"
+              />
+              <h3 className="text-sm font-semibold uppercase leading-6 tracking-[0.12em]">
                 {story.title}
               </h3>
-              <p className="mt-1.5 max-w-[32ch] text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-3 max-w-[32ch] text-sm leading-relaxed text-[#F7F5F0]/90 lg:text-base">
                 {story.copy}
               </p>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

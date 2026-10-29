@@ -43,7 +43,7 @@ export default function HomeHero({
             </a>
           </div>
         </div>
-        <figure className="relative w-full self-stretch overflow-hidden h-[27rem] md:h-[31rem] lg:h-[33rem]">
+        <figure className="relative w-full self-stretch overflow-hidden bg-[#F2F3F0] h-[27rem] md:h-[31rem] lg:h-[33rem]">
           <img
             src={hero}
             width="927"
@@ -51,7 +51,7 @@ export default function HomeHero({
             alt="Daniela standing with dumbbells, ready for strength training"
             fetchPriority="high"
             decoding="async"
-            className="absolute inset-y-0 -left-[2%] h-full w-[104%] max-w-none object-cover object-top"
+            className="mx-auto h-full w-auto max-w-full object-contain object-bottom [clip-path:inset(0_2px)]"
           />
           <figcaption className="absolute right-3 top-5 hidden text-right text-[9px] leading-loose tracking-[0.12em] text-muted-foreground lg:block">
             DISCIPLINE
