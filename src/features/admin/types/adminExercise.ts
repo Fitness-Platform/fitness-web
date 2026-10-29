@@ -1,3 +1,5 @@
+import type { UploadedMedia } from "./adminMedia";
+
 export type AdminExercise = {
   id: string;
   name: string;
@@ -6,4 +8,5 @@ export type AdminExercise = {
   videoUrl: string | null;
   createdAt: string;
   updatedAt: string;
+  uploadedMedia?: UploadedMedia | null;
 };

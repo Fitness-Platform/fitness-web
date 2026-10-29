@@ -7,6 +7,7 @@ export type CreateAdminExerciseRequest = {
   instructions: string | null;
   equipment: string | null;
   videoUrl: string | null;
+  videoMediaId?: string | null;
 };
 
 

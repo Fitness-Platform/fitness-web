@@ -1,3 +1,4 @@
+import AdminMediaMetadata from "./AdminMediaMetadata";
 import { ExternalLink, Plus } from "lucide-react";
 import { useState } from "react";
 import { useAdminProgramResourcesQuery } from "../hooks/useAdminProgramResources";
@@ -93,7 +94,9 @@ export default function AdminProgramResources({
                       {resource.description}
                     </p>
                   )}
-                  {href ? (
+                  {resource.uploadedMedia ? (
+                    <AdminMediaMetadata media={resource.uploadedMedia} />
+                  ) : href ? (
                     <a
                       href={href}
                       target="_blank"

@@ -4,7 +4,9 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { ApiError } from "../../../services/apiClient";
+import AdminMediaInput from "./AdminMediaInput";
+import { useAdminMediaInput } from "../hooks/useAdminMediaInput";
+import { adminMediaErrorMessage } from "../utils/mediaInput";
 import { useCreateAdminExerciseMutation } from "../hooks/useCreateAdminExerciseMutation";
 
 const createExerciseSchema = z.object({
@@ -26,14 +28,6 @@ const createExerciseSchema = z.object({
     ),
 
   instructions: z.string().trim(),
-
-  videoUrl: z
-    .string()
-    .trim()
-    .max(
-      2048,
-      "Video URL must be 2048 characters or fewer.",
-    ),
 });
 
 type CreateExerciseFormData = z.infer<
@@ -47,6 +41,7 @@ type AdminCreateExerciseDrawerProps = {
 function AdminCreateExerciseDrawer({
   onClose,
 }: AdminCreateExerciseDrawerProps) {
+  const media = useAdminMediaInput("EXERCISE_VIDEO");
   const createExerciseMutation =
     useCreateAdminExerciseMutation();
 
@@ -61,7 +56,6 @@ function AdminCreateExerciseDrawer({
       name: "",
       equipment: "",
       instructions: "",
-      videoUrl: "",
     },
   });
 
@@ -104,6 +98,7 @@ function AdminCreateExerciseDrawer({
   async function handleCreateExercise(
     data: CreateExerciseFormData,
   ) {
+    if (!media.canSubmit) return;
     try {
       await createExerciseMutation.mutateAsync({
         name: data.name.trim(),
@@ -111,23 +106,19 @@ function AdminCreateExerciseDrawer({
           data.equipment.trim() || null,
         instructions:
           data.instructions.trim() || null,
-        videoUrl:
-          data.videoUrl.trim() || null,
+        videoUrl: media.fields.url,
+        videoMediaId: media.fields.mediaId,
       });
 
       reset();
       onClose();
-    } catch {
+    } catch (error) {
+      media.handleRequestError(error);
       // Error is displayed in the drawer.
     }
   }
 
-  const errorMessage =
-    createExerciseMutation.error instanceof
-      ApiError &&
-    createExerciseMutation.error.status === 400
-      ? "Review the exercise information and try again."
-      : "Unable to create the exercise. Please try again.";
+  const errorMessage = adminMediaErrorMessage(createExerciseMutation.error);
 
   return (
     <div className="fixed inset-0 z-50">
@@ -257,31 +248,7 @@ function AdminCreateExerciseDrawer({
             </div>
 
             <div className="mt-6">
-              <label
-                htmlFor="exercise-video-url"
-                className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground"
-              >
-                Video URL
-              </label>
-
-              <input
-                id="exercise-video-url"
-                type="text"
-                placeholder="https://..."
-                {...register("videoUrl")}
-                className="mt-2 h-12 w-full border border-border bg-background px-4 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary-dark"
-              />
-
-              <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                Add a video URL for exercise
-                demonstration.
-              </p>
-
-              {errors.videoUrl && (
-                <p className="mt-2 text-xs text-red-700">
-                  {errors.videoUrl.message}
-                </p>
-              )}
+              <AdminMediaInput purpose="EXERCISE_VIDEO" input={media} disabled={createExerciseMutation.isPending} />
             </div>
 
             {createExerciseMutation.isError && (
@@ -311,7 +278,7 @@ function AdminCreateExerciseDrawer({
             <button
               type="submit"
               disabled={
-                createExerciseMutation.isPending
+                createExerciseMutation.isPending || !media.canSubmit
               }
               className="min-h-11 bg-primary-dark px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-background transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
             >

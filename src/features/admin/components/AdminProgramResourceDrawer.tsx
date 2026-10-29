@@ -1,3 +1,7 @@
+import AdminMediaInput from "./AdminMediaInput";
+import { useAdminMediaInput } from "../hooks/useAdminMediaInput";
+import { adminMediaErrorMessage } from "../utils/mediaInput";
+import { ApiError } from "../../../services/apiClient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -30,6 +34,7 @@ export default function AdminProgramResourceDrawer({
   nextPosition: number;
   onClose: () => void;
 }) {
+  const media = useAdminMediaInput("PROGRAM_RESOURCE", resource);
   const mutation = useAdminProgramResourceMutation(programId);
   const resources = useAdminProgramResourcesQuery(programId);
   const {
@@ -42,15 +47,16 @@ export default function AdminProgramResourceDrawer({
     defaultValues: {
       title: resource?.title ?? "",
       description: resource?.description ?? "",
-      url: resource?.url ?? "",
       position: String(resource?.position ?? nextPosition),
     },
   });
   async function submit(data: ProgramResourceFormData) {
+    if (!media.canSubmit) return;
     const request = {
       title: data.title,
       description: data.description || null,
-      url: data.url,
+      url: media.fields.url,
+      mediaId: media.fields.mediaId,
       position: Number(data.position),
     };
     mutation.reset();
@@ -80,7 +86,8 @@ export default function AdminProgramResourceDrawer({
           : { action: "create", request },
       );
       onClose();
-    } catch {
+    } catch (error) {
+      media.handleRequestError(error);
       /* Mutation errors remain visible in the drawer. */
     }
   }
@@ -133,29 +140,7 @@ export default function AdminProgramResourceDrawer({
                 {...register("description")}
               />
             </div>
-            <div>
-              <label className={structureLabel} htmlFor="resource-url">
-                URL *
-              </label>
-              <input
-                id="resource-url"
-                type="text"
-                inputMode="url"
-                className={structureInput}
-                placeholder="https://..."
-                aria-invalid={Boolean(errors.url)}
-                aria-describedby={errors.url ? "resource-url-error" : undefined}
-                {...register("url")}
-              />
-              {errors.url && (
-                <p
-                  id="resource-url-error"
-                  className="mt-2 text-xs text-red-700"
-                >
-                  {errors.url.message}
-                </p>
-              )}
-            </div>
+            <AdminMediaInput purpose="PROGRAM_RESOURCE" input={media} disabled={mutation.isPending} />
             <div>
               <label className={structureLabel} htmlFor="resource-position">
                 Position *
@@ -187,7 +172,9 @@ export default function AdminProgramResourceDrawer({
           </fieldset>
           {mutation.isError && (
             <p role="alert" className="text-sm text-red-700">
-              {positionMutationError(
+              {mutation.error instanceof ApiError && (mutation.error.status !== 409 || (typeof mutation.error.payload === "object" && mutation.error.payload !== null && "code" in mutation.error.payload))
+                ? adminMediaErrorMessage(mutation.error)
+                : positionMutationError(
                 mutation.error,
                 resourcePositionMessage(
                   mutation.variables && "request" in mutation.variables
@@ -212,7 +199,7 @@ export default function AdminProgramResourceDrawer({
           <button
             type="submit"
             className={structurePrimary}
-            disabled={mutation.isPending}
+            disabled={mutation.isPending || !media.canSubmit}
           >
             {mutation.isPending
               ? "Saving..."

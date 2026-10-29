@@ -19,6 +19,6 @@ export function resourcePositionMessage(
   );
 }
 
-export function resourceLink(url: string): string | null {
-  return safeExternalUrl(url);
+export function resourceLink(url: string | null): string | null {
+  return safeExternalUrl(url ?? "");
 }

@@ -50,7 +50,7 @@ function AdminExercisesPage() {
 
   const withVideoCount = exercises.filter(
     (exercise) =>
-      Boolean(exercise.videoUrl?.trim()),
+      Boolean(exercise.videoUrl?.trim() || exercise.uploadedMedia),
   ).length;
 
   const withoutVideoCount =
@@ -236,7 +236,7 @@ function AdminExercisesPage() {
                 (exercise, index) => {
                   const hasVideo =
                     Boolean(
-                      exercise.videoUrl?.trim(),
+                      exercise.videoUrl?.trim() || exercise.uploadedMedia,
                     );
 
                   return (
@@ -304,7 +304,7 @@ function AdminExercisesPage() {
                 (exercise, index) => {
                   const hasVideo =
                     Boolean(
-                      exercise.videoUrl?.trim(),
+                      exercise.videoUrl?.trim() || exercise.uploadedMedia,
                     );
 
                   return (

@@ -9,7 +9,11 @@ import {
 } from "react-router-dom";
 import { z } from "zod";
 
-import { ApiError } from "../../../services/apiClient";
+import AdminMediaInput from "../components/AdminMediaInput";
+import AdminMediaMetadata from "../components/AdminMediaMetadata";
+import { useAdminMediaInput } from "../hooks/useAdminMediaInput";
+import { adminMediaErrorMessage } from "../utils/mediaInput";
+import { safeExternalUrl } from "../../../utils/safeExternalUrl";
 import { useAdminExerciseQuery } from "../hooks/useAdminExerciseQuery";
 import { useUpdateAdminExerciseMutation } from "../hooks/useUpdateAdminExerciseMutation";
 
@@ -34,14 +38,6 @@ const editExerciseSchema = z.object({
     ),
 
   instructions: z.string().trim(),
-
-  videoUrl: z
-    .string()
-    .trim()
-    .max(
-      2048,
-      "Video URL must be 2048 characters or fewer.",
-    ),
 });
 
 type EditExerciseFormData = z.infer<
@@ -58,6 +54,7 @@ function formatDate(value: string) {
 
 function AdminExerciseDetailPage() {
   const { exerciseId = "" } = useParams();
+  const media = useAdminMediaInput("EXERCISE_VIDEO");
 
   const [isEditing, setIsEditing] =
     useState(false);
@@ -94,7 +91,6 @@ function AdminExerciseDetailPage() {
       name: "",
       equipment: "",
       instructions: "",
-      videoUrl: "",
     },
   });
 
@@ -135,7 +131,7 @@ function AdminExerciseDetailPage() {
   const currentExercise = exercise;
 
   const hasVideo =
-    Boolean(exercise.videoUrl?.trim());
+    safeExternalUrl(exercise.videoUrl ?? "") !== null;
 
   function handleStartEdit() {
     reset({
@@ -144,10 +140,12 @@ function AdminExerciseDetailPage() {
         currentExercise.equipment ?? "",
       instructions:
         currentExercise.instructions ?? "",
-      videoUrl:
-        currentExercise.videoUrl ?? "",
     });
 
+    media.reset({
+      url: currentExercise.videoUrl,
+      uploadedMedia: currentExercise.uploadedMedia,
+    });
     updateExerciseMutation.reset();
     setIsEditing(true);
   }
@@ -159,10 +157,12 @@ function AdminExerciseDetailPage() {
         currentExercise.equipment ?? "",
       instructions:
         currentExercise.instructions ?? "",
-      videoUrl:
-        currentExercise.videoUrl ?? "",
     });
 
+    media.reset({
+      url: currentExercise.videoUrl,
+      uploadedMedia: currentExercise.uploadedMedia,
+    });
     updateExerciseMutation.reset();
     setIsEditing(false);
   }
@@ -170,6 +170,7 @@ function AdminExerciseDetailPage() {
   async function handleSaveChanges(
     data: EditExerciseFormData,
   ) {
+    if (!media.canSubmit) return;
     try {
       await updateExerciseMutation.mutateAsync({
         request: {
@@ -178,23 +179,19 @@ function AdminExerciseDetailPage() {
             data.equipment.trim() || null,
           instructions:
             data.instructions.trim() || null,
-          videoUrl:
-            data.videoUrl.trim() || null,
+          videoUrl: media.fields.url,
+          videoMediaId: media.fields.mediaId,
         },
       });
 
       setIsEditing(false);
-    } catch {
+    } catch (error) {
+      media.handleRequestError(error);
       // Error is displayed below the form.
     }
   }
 
-  const updateErrorMessage =
-    updateExerciseMutation.error instanceof
-      ApiError &&
-      updateExerciseMutation.error.status === 400
-      ? "Review the exercise information and try again."
-      : "Unable to update the exercise. Please try again.";
+  const updateErrorMessage = adminMediaErrorMessage(updateExerciseMutation.error);
 
   return (
     <div className="space-y-8 lg:space-y-10">
@@ -276,7 +273,9 @@ function AdminExerciseDetailPage() {
                   Video
                 </p>
 
-                {hasVideo ? (
+                {exercise.uploadedMedia ? (
+                  <AdminMediaMetadata media={exercise.uploadedMedia} />
+                ) : hasVideo ? (
                   <a
                     href={
                       exercise.videoUrl ??
@@ -370,30 +369,7 @@ function AdminExerciseDetailPage() {
                 />
               </div>
 
-              <div>
-                <label
-                  htmlFor="exercise-video-url"
-                  className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground"
-                >
-                  Video URL
-                </label>
-
-                <input
-                  id="exercise-video-url"
-                  type="text"
-                  {...register("videoUrl")}
-                  className="mt-2 h-12 w-full border border-border bg-background px-4 text-sm text-foreground outline-none focus:border-primary-dark"
-                />
-
-                {errors.videoUrl && (
-                  <p className="mt-2 text-xs text-red-700">
-                    {
-                      errors.videoUrl
-                        .message
-                    }
-                  </p>
-                )}
-              </div>
+              <AdminMediaInput purpose="EXERCISE_VIDEO" input={media} disabled={updateExerciseMutation.isPending} />
 
               {updateExerciseMutation.isError && (
                 <div
@@ -421,7 +397,7 @@ function AdminExerciseDetailPage() {
                 <button
                   type="submit"
                   disabled={
-                    updateExerciseMutation.isPending
+                    updateExerciseMutation.isPending || !media.canSubmit
                   }
                   className="min-h-11 bg-primary-dark px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-background transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                 >
