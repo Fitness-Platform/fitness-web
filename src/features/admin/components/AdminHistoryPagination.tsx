@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { paginateHistory } from "../utils/historyPagination";
-import { structureButton } from "./programStructureStyles";
+const navigationLink =
+  "inline-flex min-h-9 items-center gap-2 py-1 text-primary-dark underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-dark disabled:cursor-not-allowed disabled:text-muted-foreground/45 disabled:no-underline";
 
 export default function AdminHistoryPagination<T>({
   items,
@@ -18,33 +19,43 @@ export default function AdminHistoryPagination<T>({
       {renderPage(result.items)}
       <nav
         aria-label="History pagination"
-        className="mt-5 flex flex-wrap items-center justify-between gap-4"
+        className="mt-4 flex flex-wrap items-center justify-between gap-x-5 gap-y-2 text-xs"
       >
         <p
           role="status"
           aria-atomic="true"
-          className="text-sm text-muted-foreground"
+          className="text-xs text-muted-foreground"
         >
           {result.start}–{result.end} of {result.total}
         </p>
-        <div className="flex gap-3">
-          <button
-            type="button"
-            className={structureButton}
-            disabled={result.page === 1}
-            onClick={() => setPage(result.page - 1)}
-          >
-            Previous
-          </button>
-          <button
-            type="button"
-            className={structureButton}
-            disabled={result.page === result.totalPages}
-            onClick={() => setPage(result.page + 1)}
-          >
-            Next
-          </button>
-        </div>
+        {result.totalPages > 1 && (
+          <div className="flex items-center gap-3 sm:gap-5">
+            <button
+              type="button"
+              className={navigationLink}
+              disabled={result.page === 1}
+              onClick={() => setPage(result.page - 1)}
+            >
+              <span aria-hidden="true">←</span>
+              <span className="text-xs">Previous</span>
+            </button>
+            <span
+              aria-label={`Page ${result.page} of ${result.totalPages}`}
+              className="tabular-nums text-muted-foreground"
+            >
+              {result.page} / {result.totalPages}
+            </span>
+            <button
+              type="button"
+              className={navigationLink}
+              disabled={result.page === result.totalPages}
+              onClick={() => setPage(result.page + 1)}
+            >
+              <span className="text-xs">Next</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        )}
       </nav>
     </div>
   );
