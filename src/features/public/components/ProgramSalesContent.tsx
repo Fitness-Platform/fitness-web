@@ -71,7 +71,7 @@ export default function ProgramSalesContent() {
       >
         <div className={`${container} py-12 md:py-16`}>
           <div className="grid gap-8">
-            <div className="grid gap-4 md:grid-cols-[1.6fr_1fr] md:items-end">
+            <div>
               <div>
                 <p className={eyebrow}>How it works</p>
                 <h2
@@ -81,11 +81,6 @@ export default function ProgramSalesContent() {
                   Three steps to start.
                 </h2>
               </div>
-              <p className={`${body} mt-3`}>
-                Anyone can read about the program.
-                <br />
-                An account is needed to enroll.
-              </p>
             </div>
             <ol className="grid md:grid-cols-3 md:gap-8">
               {[
