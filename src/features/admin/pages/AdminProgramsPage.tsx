@@ -225,7 +225,7 @@ function AdminProgramsPage() {
               ) : (
                 <>
                   {/* Desktop */}
-                  <div className="hidden border border-border bg-background lg:block">
+                  <div className="hidden border border-border bg-background xl:block">
                     <div className="grid grid-cols-[40px_1.1fr_1.5fr_120px_110px_120px_110px] items-center gap-4 border-b border-border px-4 py-3">
                       <span />
 
@@ -276,8 +276,8 @@ function AdminProgramsPage() {
                         <span
                           className={
                             program.status === "PUBLISHED"
-                              ? "w-fit bg-primary/10 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-primary-dark"
-                              : "w-fit bg-[#F3EEE1] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#776842]"
+                              ? "w-fit bg-[#E3ECE7] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#496658]"
+                              : "w-fit bg-[#F1E8D5] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#7A6334]"
                           }
                         >
                           {program.status}
@@ -298,7 +298,7 @@ function AdminProgramsPage() {
                   </div>
 
                   {/* Mobile / tablet */}
-                  <div className="space-y-3 lg:hidden">
+                  <div className="space-y-3 xl:hidden">
                     {filteredPrograms.map((program, index) => (
                       <article
                         key={program.id}
@@ -312,8 +312,8 @@ function AdminProgramsPage() {
                           <span
                             className={
                               program.status === "PUBLISHED"
-                                ? "bg-primary/10 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-primary-dark"
-                                : "bg-[#F3EEE1] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#776842]"
+                                ? "bg-[#E3ECE7] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#496658]"
+                                : "bg-[#F1E8D5] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#7A6334]"
                             }
                           >
                             {program.status}

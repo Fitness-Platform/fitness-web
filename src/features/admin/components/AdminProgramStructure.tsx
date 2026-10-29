@@ -16,7 +16,7 @@ import type { AdminWorkout } from "../types/adminWorkout";
 import AdminProgramWeekDrawer from "./AdminProgramWeekDrawer";
 import AdminAssignProgramWorkoutDrawer from "./AdminAssignProgramWorkoutDrawer";
 import AdminStructureDeleteDialog from "./AdminStructureDeleteDialog";
-import { structureButton } from "./programStructureStyles";
+import { structureButton, structurePrimary } from "./programStructureStyles";
 
 type Action =
   | { kind: "week"; week?: AdminProgramWeek }
@@ -270,7 +270,7 @@ export default function AdminProgramStructure({
   return (
     <section
       aria-labelledby="program-structure-heading"
-      className="border border-border"
+      className="admin-surface border border-border"
     >
       <header className="flex flex-wrap items-end justify-between gap-5 px-5 py-7 sm:px-7">
         <div>
@@ -289,7 +289,7 @@ export default function AdminProgramStructure({
         </div>
         <button
           type="button"
-          className={structureButton}
+          className={structurePrimary + " inline-flex items-center justify-center gap-2"}
           disabled={!query.isSuccess || query.isFetching}
           onClick={() => setAction({ kind: "week" })}
         >

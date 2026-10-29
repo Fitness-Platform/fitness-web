@@ -1,3 +1,4 @@
+import "./adminVisualStyles.css";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
@@ -25,7 +26,7 @@ function AdminLayout() {
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div className="admin-shell flex min-h-screen bg-background text-foreground">
       <AdminSidebar
         isMobileOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}

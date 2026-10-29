@@ -26,12 +26,12 @@ const items = [
     icon: BookOpen,
   },
   {
-    label: "Workouts",
+    label: "Workout Library",
     to: "/admin/workouts",
     icon: Dumbbell,
   },
   {
-    label: "Exercises",
+    label: "Exercise Library",
     to: "/admin/exercises",
     icon: ListChecks,
   },
@@ -52,14 +52,14 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
 
   return (
     <>
-      <div className="border-b border-border px-6 py-8">
-        <p className="text-xl font-medium uppercase leading-[1.05] tracking-[0.23em] text-foreground">
+      <div className="border-b border-white/10 px-6 py-8">
+        <p className="text-xl font-medium uppercase leading-[1.05] tracking-[0.23em] text-[#F7F5F0]">
           Daniela
           <br />
           Brito
         </p>
 
-        <p className="mt-2 text-[8px] uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="mt-2 text-[8px] uppercase tracking-[0.18em] text-[#F7F5F0]/70">
           Strength for what's next
         </p>
       </div>
@@ -79,15 +79,15 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
               <NavLink
                 key={label}
                 to={item.to}
-                end
+                end={item.to === "/admin"}
                 onClick={onClose}
                 className={({ isActive }) =>
                   [
-                    "flex min-h-11 items-center gap-3 px-4 text-sm transition-colors",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-dark",
+                    "flex min-h-11 items-center gap-3 rounded-[5px] border-l-2 px-4 text-sm transition-colors",
+                    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F7F5F0]",
                     isDashboardActive || isActive
-                      ? "bg-primary-dark font-medium text-background"
-                      : "text-muted-foreground hover:bg-border/30 hover:text-foreground",
+                      ? "border-[#F7F5F0]/80 bg-[var(--admin-navigation-active)] font-semibold text-[#F7F5F0]"
+                      : "border-transparent text-[#F7F5F0]/85 hover:bg-white/10 hover:text-[#F7F5F0]",
                   ].join(" ")
                 }
               >
@@ -116,11 +116,19 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
               />
 
               <span>{label}</span>
-
             </div>
           );
         })}
       </nav>
+      <div className="mx-5 mt-auto flex items-center gap-3 border-t border-white/15 py-6 text-[#F7F5F0]">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#F7F5F0] text-xs font-semibold text-[var(--admin-navigation)]">
+          DB
+        </span>
+        <div>
+          <p className="text-sm font-medium">Daniela Brito</p>
+          <p className="mt-1 text-xs text-[#F7F5F0]/70">Administrator</p>
+        </div>
+      </div>
     </>
   );
 }
@@ -128,7 +136,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
 function AdminSidebar({ isMobileOpen, onClose }: AdminSidebarProps) {
   return (
     <>
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col overflow-y-auto border-r border-border bg-background lg:flex">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col overflow-y-auto border-r border-white/10 bg-[var(--admin-navigation)] lg:flex">
         <SidebarContent onClose={onClose} />
       </aside>
 
@@ -141,11 +149,11 @@ function AdminSidebar({ isMobileOpen, onClose }: AdminSidebarProps) {
             aria-label="Close admin navigation"
           />
 
-          <aside className="relative flex h-full w-[min(18rem,85vw)] flex-col overflow-y-auto border-r border-border bg-background shadow-lg">
+          <aside className="relative flex h-full w-[min(18rem,85vw)] flex-col overflow-y-auto border-r border-white/10 bg-[var(--admin-navigation)] shadow-lg">
             <button
               type="button"
               onClick={onClose}
-              className="absolute right-4 top-5 flex h-10 w-10 items-center justify-center text-foreground"
+              className="absolute right-4 top-5 flex h-10 w-10 items-center justify-center text-[#F7F5F0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F7F5F0]"
               aria-label="Close navigation"
             >
               <X className="h-5 w-5" strokeWidth={1.6} aria-hidden="true" />

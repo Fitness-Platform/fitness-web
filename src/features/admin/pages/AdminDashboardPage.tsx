@@ -1,3 +1,4 @@
+import { adminManageInteraction } from "../components/programStructureStyles";
 import { Link } from "react-router-dom";
 import { useAdminDashboardQuery } from "../hooks/useAdminDashboardQuery";
 
@@ -333,8 +334,8 @@ function AdminDashboardPage() {
                     <span
                       className={
                         program.status === "PUBLISHED"
-                          ? "w-fit bg-primary/10 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-primary-dark"
-                          : "w-fit bg-[#F3EEE1] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#776842]"
+                          ? "w-fit bg-[#E3ECE7] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#496658]"
+                          : "w-fit bg-[#F1E8D5] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#7A6334]"
                       }
                     >
                       {program.status}
@@ -344,7 +345,7 @@ function AdminDashboardPage() {
                       to={`/admin/programs/${program.id}`}
                       aria-label={`Manage ${program.name}`}
                       style={{ font: "inherit" }}
-                      className="inline-flex min-h-10 items-center justify-center border border-primary-dark px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-primary-dark transition-colors hover:bg-primary/10"
+                      className={"inline-flex min-h-10 items-center justify-center border border-primary-dark px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-primary-dark " + adminManageInteraction}
                     >
                       Manage
                     </Link>
@@ -416,9 +417,9 @@ function AdminDashboardPage() {
                           <span
                             className={
                               purchase.status === "PAID"
-                                ? "mt-2 inline-block bg-primary/10 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-primary-dark"
+                                ? "mt-2 inline-block bg-[#E3ECE7] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#496658]"
                                 : purchase.status === "PENDING"
-                                  ? "mt-2 inline-block bg-[#F3EEE1] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#776842]"
+                                  ? "mt-2 inline-block bg-[#F1E8D5] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#7A6334]"
                                   : "mt-2 inline-block bg-muted px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-muted-foreground"
                             }
                           >
@@ -478,9 +479,9 @@ function AdminDashboardPage() {
                             <span
                               className={
                                 purchase.status === "PAID"
-                                  ? "inline-block bg-primary/10 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-primary-dark"
+                                  ? "inline-block bg-[#E3ECE7] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#496658]"
                                   : purchase.status === "PENDING"
-                                    ? "inline-block bg-[#F3EEE1] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#776842]"
+                                    ? "inline-block bg-[#F1E8D5] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#7A6334]"
                                     : "inline-block bg-muted px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-muted-foreground"
                               }
                             >

@@ -1,3 +1,4 @@
+import { structureDanger } from "./programStructureStyles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -61,7 +62,7 @@ function AdminProgramDangerZone({ program }: AdminProgramDangerZoneProps) {
               deleteProgramMutation.reset();
               setIsConfirmationOpen(true);
             }}
-            className="min-h-11 shrink-0 border border-red-300 px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-red-700 transition hover:bg-red-50"
+            className={structureDanger + " shrink-0"}
           >
             Delete Program
           </button>
@@ -117,7 +118,7 @@ function AdminProgramDangerZone({ program }: AdminProgramDangerZoneProps) {
                 type="button"
                 onClick={() => setIsConfirmationOpen(false)}
                 disabled={deleteProgramMutation.isPending}
-                className="min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground transition hover:border-primary-dark disabled:opacity-50"
+                className="admin-secondary-action min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground transition hover:border-primary-dark disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -126,7 +127,7 @@ function AdminProgramDangerZone({ program }: AdminProgramDangerZoneProps) {
                 type="button"
                 onClick={handleDelete}
                 disabled={deleteProgramMutation.isPending}
-                className="min-h-11 bg-red-700 px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                className={structureDanger}
               >
                 {deleteProgramMutation.isPending
                   ? "Deleting..."

@@ -5,7 +5,7 @@ import type { AdminProgramResource } from "../types/adminProgramResource";
 import { resourceLink } from "../utils/programResourceMessages";
 import AdminProgramResourceDrawer from "./AdminProgramResourceDrawer";
 import AdminDeleteProgramResourceDialog from "./AdminDeleteProgramResourceDialog";
-import { structureButton } from "./programStructureStyles";
+import { structureButton, structurePrimary } from "./programStructureStyles";
 
 type Action =
   | { kind: "edit"; resource?: AdminProgramResource }
@@ -25,7 +25,7 @@ export default function AdminProgramResources({
   return (
     <section
       aria-labelledby="program-resources-heading"
-      className="border border-border"
+      className="admin-surface border border-border"
     >
       <header className="flex flex-wrap items-end justify-between gap-5 px-5 py-7 sm:px-7">
         <div>
@@ -44,7 +44,7 @@ export default function AdminProgramResources({
         </div>
         <button
           type="button"
-          className={structureButton}
+          className={structurePrimary + " inline-flex items-center justify-center gap-2"}
           disabled={!query.isSuccess || query.isFetching}
           onClick={() => setAction({ kind: "edit" })}
         >

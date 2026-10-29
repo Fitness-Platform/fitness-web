@@ -204,7 +204,7 @@ function AdminWorkoutsPage() {
               ) : (
                 <>
                   {/* Desktop */}
-                  <div className="hidden border border-border bg-background lg:block">
+                  <div className="hidden border border-border bg-background xl:block">
                     <div className="grid grid-cols-[56px_1.1fr_1.8fr_160px_140px] items-center border-b border-border px-4 py-3">
                       <span />
 
@@ -255,7 +255,7 @@ function AdminWorkoutsPage() {
                   </div>
 
                   {/* Mobile / Tablet */}
-                  <div className="space-y-3 lg:hidden">
+                  <div className="space-y-3 xl:hidden">
                     {filteredWorkouts.map((workout, index) => (
                       <article
                         key={workout.id}

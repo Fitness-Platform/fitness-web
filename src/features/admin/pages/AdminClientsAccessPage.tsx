@@ -1,3 +1,4 @@
+import AdminHistoryPagination from "../components/AdminHistoryPagination";
 import { useState } from "react";
 import { useAdminProgramAccessesQuery } from "../hooks/useAdminProgramAccesses";
 import { useAdminProgramsQuery } from "../hooks/useAdminProgramsQuery";
@@ -78,7 +79,7 @@ export default function AdminClientsAccessPage() {
       )}
       <section
         aria-label="Access filters"
-        className="grid gap-6 border-y border-border py-6 md:grid-cols-2"
+        className="admin-surface grid gap-6 rounded-[4px] border border-border p-5 sm:p-6 md:grid-cols-2"
       >
         <AdminUserPicker
           value={client}
@@ -171,13 +172,19 @@ export default function AdminClientsAccessPage() {
           </button>
         </section>
       ) : query.data.length ? (
-        <AdminAccessList
-          accesses={query.data}
-          users={resolvedUsers}
-          programs={programs.data ?? []}
-          now={now}
-          onDetails={(access) => setAction({ kind: "details", access })}
-          onRevoke={(access) => setAction({ kind: "revoke", access })}
+        <AdminHistoryPagination
+          key={JSON.stringify([client?.id, programId])}
+          items={query.data}
+          renderPage={(page) => (
+            <AdminAccessList
+              accesses={page}
+              users={resolvedUsers}
+              programs={programs.data ?? []}
+              now={now}
+              onDetails={(access) => setAction({ kind: "details", access })}
+              onRevoke={(access) => setAction({ kind: "revoke", access })}
+            />
+          )}
         />
       ) : (
         <section className="border border-border p-7 text-sm leading-6 text-muted-foreground">

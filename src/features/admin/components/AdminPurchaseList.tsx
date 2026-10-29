@@ -16,7 +16,7 @@ export default function AdminPurchaseList({
   return (
     <ul
       aria-label="Purchases"
-      className="divide-y divide-border border border-border"
+      className="divide-y divide-border"
     >
       {purchases.map((purchase) => {
         const email =

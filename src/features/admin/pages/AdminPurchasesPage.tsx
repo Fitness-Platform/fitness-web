@@ -1,3 +1,4 @@
+import AdminHistoryPagination from "../components/AdminHistoryPagination";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useAdminPurchasesQuery } from "../hooks/useAdminPurchases";
@@ -60,7 +61,7 @@ export default function AdminPurchasesPage() {
       </header>
       <section
         aria-label="Purchase filters"
-        className="grid gap-6 border-y border-border py-6 md:grid-cols-3"
+        className="admin-surface grid gap-6 rounded-[4px] border border-border p-5 sm:p-6 md:grid-cols-3"
       >
         <AdminUserPicker
           value={client}
@@ -157,10 +158,16 @@ export default function AdminPurchasesPage() {
           </button>
         </section>
       ) : filtered.length ? (
-        <AdminPurchaseList
-          purchases={filtered}
-          users={userMap}
-          onDetails={setDetailsId}
+        <AdminHistoryPagination
+          key={JSON.stringify([client?.id, programId, status])}
+          items={filtered}
+          renderPage={(page) => (
+            <AdminPurchaseList
+              purchases={page}
+              users={userMap}
+              onDetails={setDetailsId}
+            />
+          )}
         />
       ) : (
         <section className="border border-border p-7 text-sm leading-6 text-muted-foreground">

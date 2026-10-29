@@ -64,8 +64,8 @@ function AdminProgramStatusCard({ program }: AdminProgramStatusCardProps) {
           <span
             className={
               isPublished
-                ? "inline-block bg-primary/10 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-primary-dark"
-                : "inline-block bg-[#F3EEE1] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#776842]"
+                ? "inline-block bg-[#E3ECE7] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#496658]"
+                : "inline-block bg-[#F1E8D5] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#7A6334]"
             }
           >
             {program.status}
@@ -155,7 +155,7 @@ function AdminProgramStatusCard({ program }: AdminProgramStatusCardProps) {
                 type="button"
                 onClick={() => setIsConfirmOpen(false)}
                 disabled={updateStatusMutation.isPending}
-                className="min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground transition hover:border-primary-dark disabled:opacity-50"
+                className="admin-secondary-action min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground transition hover:border-primary-dark disabled:opacity-50"
               >
                 Cancel
               </button>

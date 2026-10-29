@@ -209,7 +209,7 @@ function AdminExercisesPage() {
           </div>
         ) : (
           <>
-            <div className="mt-8 hidden border border-border lg:block">
+            <div className="admin-surface mt-8 hidden border border-border xl:block">
               <div className="grid grid-cols-[56px_1.35fr_0.9fr_0.8fr_0.8fr_120px] gap-4 border-b border-border px-4 py-4">
                 <span />
 
@@ -299,7 +299,7 @@ function AdminExercisesPage() {
               )}
             </div>
 
-            <div className="mt-8 border border-border lg:hidden">
+            <div className="admin-surface mt-8 border border-border xl:hidden">
               {filteredExercises.map(
                 (exercise, index) => {
                   const hasVideo =

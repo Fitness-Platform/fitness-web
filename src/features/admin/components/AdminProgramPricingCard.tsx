@@ -194,7 +194,7 @@ function AdminProgramPricingCard({ program }: AdminProgramPricingCardProps) {
               type="button"
               onClick={handleCancelEditing}
               disabled={updatePricingMutation.isPending}
-              className="min-h-10 border border-border px-4 text-[9px] font-medium uppercase tracking-[0.15em] text-foreground transition hover:border-primary-dark disabled:opacity-50"
+              className="admin-secondary-action min-h-10 border border-border px-4 text-[9px] font-medium uppercase tracking-[0.15em] text-foreground transition hover:border-primary-dark disabled:opacity-50"
             >
               Cancel
             </button>
