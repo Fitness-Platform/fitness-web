@@ -15,11 +15,11 @@ export default function AdminHistoryPagination<T>({
   // Keep the page valid when a mutation removes the last row of a page.
   if (page !== result.page) setPage(result.page);
   return (
-    <div>
+    <div className="admin-surface overflow-hidden rounded-[4px] border border-border">
       {renderPage(result.items)}
       <nav
         aria-label="History pagination"
-        className="mt-4 flex flex-wrap items-center justify-between gap-x-5 gap-y-2 text-xs"
+        className="flex flex-wrap items-center justify-between gap-x-5 gap-y-2 border-t border-border px-4 py-3 text-xs sm:px-5"
       >
         <p
           role="status"

@@ -79,7 +79,7 @@ export default function AdminClientsAccessPage() {
       )}
       <section
         aria-label="Access filters"
-        className="grid gap-6 border-y border-border py-6 md:grid-cols-2"
+        className="admin-surface grid gap-6 rounded-[4px] border border-border p-5 sm:p-6 md:grid-cols-2"
       >
         <AdminUserPicker
           value={client}

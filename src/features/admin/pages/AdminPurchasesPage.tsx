@@ -61,7 +61,7 @@ export default function AdminPurchasesPage() {
       </header>
       <section
         aria-label="Purchase filters"
-        className="grid gap-6 border-y border-border py-6 md:grid-cols-3"
+        className="admin-surface grid gap-6 rounded-[4px] border border-border p-5 sm:p-6 md:grid-cols-3"
       >
         <AdminUserPicker
           value={client}

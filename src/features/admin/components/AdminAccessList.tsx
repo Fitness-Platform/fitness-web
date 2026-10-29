@@ -27,7 +27,7 @@ export default function AdminAccessList({
   return (
     <table
       aria-label="Program access history"
-      className="block w-full table-fixed border-y border-border text-sm md:table"
+      className="block w-full table-fixed text-sm md:table"
     >
       <colgroup className="hidden md:table-column-group">
         <col className="w-[25%]" />
@@ -36,7 +36,7 @@ export default function AdminAccessList({
         <col className="w-[26%]" />
         <col className="w-[20%]" />
       </colgroup>
-      <thead className="hidden md:table-header-group">
+      <thead className="hidden bg-border/15 md:table-header-group">
         <tr className="border-b border-border text-left text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
           {["Client", "Program", "Status", "Access period", "Actions"].map(
             (label) => (
@@ -54,7 +54,7 @@ export default function AdminAccessList({
           return (
             <tr
               key={access.id}
-              className="block border-b border-border py-5 last:border-b-0 md:table-row md:py-0"
+              className="block border-b border-border px-4 py-5 md:px-0 last:border-b-0 md:table-row md:py-0"
             >
               <td className={cell + " break-words font-medium"}>
                 {client?.email ?? "Client details unavailable"}

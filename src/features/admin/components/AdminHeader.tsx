@@ -19,14 +19,16 @@ function AdminHeader({ onOpenMenu }: AdminHeaderProps) {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
 
   const pageTitle = location.pathname.startsWith("/admin/purchases")
-  ? "Purchases"
-  : location.pathname.startsWith("/admin/clients-access")
-  ? "Clients & Access"
-  : location.pathname.startsWith("/admin/programs")
-  ? "Programs"
-  : location.pathname.startsWith("/admin/workouts")
-    ? "Workouts"
-    : "Dashboard";
+    ? "Purchases"
+    : location.pathname.startsWith("/admin/clients-access")
+      ? "Clients & Access"
+      : location.pathname.startsWith("/admin/programs")
+        ? "Programs"
+        : location.pathname.startsWith("/admin/workouts")
+          ? "Workout Library"
+          : location.pathname.startsWith("/admin/exercises")
+            ? "Exercise Library"
+            : "Dashboard";
 
   async function handleLogout() {
     try {
@@ -39,27 +41,27 @@ function AdminHeader({ onOpenMenu }: AdminHeaderProps) {
   }
 
   return (
-    <header className="relative z-30 border-b border-border bg-background">
+    <header className="relative z-30 border-b border-white/10 bg-[var(--admin-navigation)] text-[#F7F5F0]">
       <div className="grid h-[72px] grid-cols-[40px_minmax(0,1fr)_40px] items-center gap-2 px-5 sm:px-8 lg:flex lg:justify-between lg:px-10">
         <button
           type="button"
           onClick={onOpenMenu}
-          className="flex h-10 w-10 items-center justify-start lg:hidden"
+          className="flex h-10 w-10 items-center justify-start focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F7F5F0] lg:hidden"
           aria-label="Open admin navigation"
         >
           <Menu className="h-5 w-5" strokeWidth={1.7} aria-hidden="true" />
         </button>
 
         <div className="min-w-0 text-center lg:text-left">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-foreground lg:hidden">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-[#F7F5F0] lg:hidden">
             Daniela Brito
           </p>
 
-          <p className="hidden text-[10px] uppercase tracking-[0.18em] text-muted-foreground lg:block">
+          <p className="hidden text-[10px] uppercase tracking-[0.18em] text-[#F7F5F0]/85 lg:block">
             {pageTitle}
           </p>
 
-          <p className="mt-0.5 text-[7px] uppercase tracking-[0.15em] text-muted-foreground lg:hidden">
+          <p className="mt-0.5 text-[7px] uppercase tracking-[0.15em] text-[#F7F5F0]/70 lg:hidden">
             Strength for what's next
           </p>
         </div>
@@ -71,26 +73,26 @@ function AdminHeader({ onOpenMenu }: AdminHeaderProps) {
             aria-label="Open administrator account menu"
             aria-expanded={isAccountOpen}
             aria-haspopup="menu"
-            className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-dark"
+            className="flex items-center gap-3 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F7F5F0]"
           >
             <span className="hidden text-right lg:block">
-              <span className="block text-xs font-medium text-foreground">
+              <span className="block text-xs font-medium text-[#F7F5F0]">
                 Daniela Brito
               </span>
 
-              <span className="mt-0.5 block text-[10px] text-muted-foreground">
+              <span className="mt-0.5 block text-[10px] text-[#F7F5F0]/70">
                 Administrator
               </span>
             </span>
 
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-xs font-medium text-primary-dark">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F7F5F0] text-xs font-medium text-[var(--admin-navigation)]">
               DB
             </span>
           </button>
 
           {isAccountOpen && (
             <div
-              className="absolute right-0 top-12 z-40 w-64 border border-border bg-background p-4 shadow-sm"
+              className="absolute right-0 top-12 z-40 w-64 border border-border bg-background p-4 text-foreground shadow-sm"
               role="menu"
             >
               <p className="text-sm font-medium text-foreground">

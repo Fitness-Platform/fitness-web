@@ -1,0 +1,12 @@
+.admin-shell {
+  --color-background: #f2f3f0;
+  --admin-navigation: #284c43;
+  --admin-navigation-active: #426b5f;
+  --admin-surface: #fafaf8;
+}
+
+/* Keep the canvas cool; existing nested content surfaces get a quiet lift. */
+.admin-shell .bg-background,
+.admin-shell .admin-surface {
+  background-color: var(--admin-surface);
+}
