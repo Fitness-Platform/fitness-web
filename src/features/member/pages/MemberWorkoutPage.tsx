@@ -1,3 +1,4 @@
+import MemberRequestError from '../components/MemberRequestError'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
@@ -8,7 +9,7 @@ import { useCompleteMyWorkoutMutation } from '../hooks/useCompleteMyWorkoutMutat
 import { useMyProgramWorkoutQuery } from '../hooks/useMyProgramWorkoutQuery'
 import { useSaveMyWorkoutSetMutation } from '../hooks/useSaveMyWorkoutSetMutation'
 
-function MemberWorkoutPage() {
+function MemberWorkoutContent() {
   const { programId, weekId, programWeekWorkoutId } = useParams()
 
   const [exerciseNavigation, setExerciseNavigation] = useState({
@@ -72,8 +73,9 @@ function MemberWorkoutPage() {
     setExerciseNavigation({ workoutId: programWeekWorkoutId, index })
 
     requestAnimationFrame(() => {
+      exerciseSectionRef.current?.querySelector<HTMLElement>('h2')?.focus({ preventScroll: true })
       exerciseSectionRef.current?.scrollIntoView({
-        behavior: 'smooth',
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
         block: 'start',
       })
     })
@@ -86,7 +88,7 @@ function MemberWorkoutPage() {
       className="scroll-mt-24"
     >
       <MemberExerciseCard
-        key={currentExercise.workoutExerciseId}
+        key={`${programId}:${weekId}:${programWeekWorkoutId}:${currentExercise.workoutExerciseId}`}
         exercise={currentExercise}
         exerciseNumber={currentExerciseIndex + 1}
         exerciseCount={workout.exercises.length}
@@ -114,11 +116,7 @@ function MemberWorkoutPage() {
 
       {saveSetMutation.isError &&
         saveSetMutation.variables?.workoutExerciseId === currentExercise.workoutExerciseId && (
-          <div className="mt-3 border border-border bg-background p-4" role="alert">
-            <p className="text-sm text-foreground">
-              We couldn't save this set. Check the values and try again.
-            </p>
-          </div>
+          <div className="mt-3"><MemberRequestError error={saveSetMutation.error} subject="set" message="We couldn't save this set. Check the values and try again." /></div>
         )}
     </section>
   ) : null
@@ -155,16 +153,7 @@ function MemberWorkoutPage() {
       )}
 
       {isError && !isAccessDenied && (
-        <div className="border border-border bg-background p-5 sm:p-6" role="alert">
-          <p className="text-sm text-foreground">We couldn't load this workout.</p>
-          <button
-            type="button"
-            onClick={() => refetch()}
-            className="mt-3 min-h-11 text-sm text-primary-dark underline underline-offset-4"
-          >
-            Try again
-          </button>
-        </div>
+        <MemberRequestError error={error} subject="workout" onRetry={refetch} />
       )}
 
       {!isPending && !isError && workout && (
@@ -252,11 +241,7 @@ function MemberWorkoutPage() {
                   </button>
 
                   {completeWorkoutMutation.isError && (
-                    <div className="mt-3 border border-border bg-background p-4" role="alert">
-                      <p className="text-sm text-foreground">
-                        We couldn't complete this workout. Make sure every set is saved and try again.
-                      </p>
-                    </div>
+                    <div className="mt-3"><MemberRequestError error={completeWorkoutMutation.error} subject="workout" message="We couldn't complete this workout. Make sure every set is saved and try again." /></div>
                   )}
                 </section>
               )}
@@ -268,4 +253,7 @@ function MemberWorkoutPage() {
   )
 }
 
-export default MemberWorkoutPage
+export default function MemberWorkoutPage() {
+  const { programId, weekId, programWeekWorkoutId } = useParams()
+  return <MemberWorkoutContent key={`${programId}:${weekId}:${programWeekWorkoutId}`} />
+}

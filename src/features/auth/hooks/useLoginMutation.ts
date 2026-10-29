@@ -11,6 +11,7 @@ export function useLoginMutation() {
     mutationFn: login,
 
     onSuccess: async () => {
+      queryClient.removeQueries({ queryKey: ['member'] })
       await queryClient.fetchQuery({
         queryKey: authSessionQueryKey,
         queryFn: getCurrentUser,

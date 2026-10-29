@@ -10,6 +10,7 @@ export function useLogoutMutation() {
     mutationFn: logout,
 
     onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['member'] })
       queryClient.setQueryData(authSessionQueryKey, null)
     },
   })

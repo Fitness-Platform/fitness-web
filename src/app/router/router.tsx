@@ -1,3 +1,4 @@
+import MemberNotFoundPage from "../../features/member/pages/MemberNotFoundPage";
 import ProgramSalesPage from "../../features/public/pages/ProgramSalesPage";
 import CheckoutReturnPage from "../../features/public/pages/CheckoutReturnPage";
 import AdminPurchasesPage from "../../features/admin/pages/AdminPurchasesPage";
@@ -14,8 +15,6 @@ import ProtectedRoute from "../../features/auth/components/ProtectedRoute";
 import AdminLayout from "../../features/admin/layouts/AdminLayout";
 import AdminDashboardPage from "../../features/admin/pages/AdminDashboardPage";
 import MemberLayout from "../../features/member/layouts/MemberLayout";
-import MemberCoachingPage from "../../features/member/pages/MemberCoachingPage";
-import MemberGroupsPage from "../../features/member/pages/MemberGroupsPage";
 import MemberHomePage from "../../features/member/pages/MemberHomePage";
 import MemberProgramsPage from "../../features/member/pages/MemberProgramsPage";
 import MemberProgramOverviewPage from "../../features/member/pages/MemberProgramOverviewPage";
@@ -54,13 +53,12 @@ export const router = createBrowserRouter([
         element: <MemberLayout />,
         children: [
           { index: true, element: <MemberHomePage /> },
+          { path: "*", element: <MemberNotFoundPage /> },
           { path: "programs", element: <MemberProgramsPage /> },
           {
             path: "programs/:programId",
             element: <MemberProgramOverviewPage />,
           },
-          { path: "groups", element: <MemberGroupsPage /> },
-          { path: "coaching", element: <MemberCoachingPage /> },
           {
             path: "programs/:programId/weeks/:weekId",
             element: <MemberWeekOverviewPage />,

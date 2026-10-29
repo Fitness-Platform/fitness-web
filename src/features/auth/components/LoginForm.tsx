@@ -40,7 +40,7 @@ function LoginForm() {
     try {
       await loginMutation.mutateAsync(data)
       const user = queryClient.getQueryData<AuthUser | null>(authSessionQueryKey)
-      navigate(user?.role === 'ADMIN' ? '/admin' : (returnTo ?? '/'))
+      navigate(user?.role === 'ADMIN' ? '/admin' : (returnTo ?? '/app'))
     } catch {
       // Mutation state handles the error presentation below.
     }

@@ -1,12 +1,12 @@
+import MemberRequestError from '../components/MemberRequestError'
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import MemberPhotoPlaceholder from "../components/MemberPhotoPlaceholder";
 import MemberProgramCard from "../components/MemberProgramCard";
 import { useMyProgramsQuery } from "../hooks/useMyProgramsQuery";
 
 function MemberHomePage() {
-  const { data: programs, isPending, isError, refetch } = useMyProgramsQuery();
+  const { data: programs, isPending, isError, error, refetch } = useMyProgramsQuery();
 
   const dashboardPrograms = programs?.slice(0, 2) ?? [];
 
@@ -28,10 +28,6 @@ function MemberHomePage() {
         {/* Training hero */}
         {hasPrograms && (
           <div className="mt-6 overflow-hidden">
-            <MemberPhotoPlaceholder
-              variant="hero"
-              className="h-24 w-full sm:h-36"
-            />
 
             <div className="bg-primary-dark p-5 text-background sm:p-7">
               <h2 className="text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
@@ -82,7 +78,7 @@ function MemberHomePage() {
 
         <div className="mt-4">
           {isPending && (
-            <div className="border border-border p-5 sm:p-6">
+            <div className="border border-border p-5 sm:p-6" role="status">
               <p className="text-sm text-muted-foreground">
                 Loading your programs...
               </p>
@@ -90,19 +86,7 @@ function MemberHomePage() {
           )}
 
           {isError && (
-            <div className="border border-border p-5 sm:p-6">
-              <p className="text-sm text-foreground">
-                We couldn't load your programs.
-              </p>
-
-              <button
-                type="button"
-                onClick={() => refetch()}
-                className="mt-3 text-sm text-muted-foreground underline underline-offset-4 transition hover:text-foreground"
-              >
-                Try again
-              </button>
-            </div>
+            <MemberRequestError error={error} subject="programs" onRetry={refetch} />
           )}
 
           {!isPending && !isError && programs?.length === 0 && (
