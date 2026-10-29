@@ -225,7 +225,7 @@ function AdminProgramsPage() {
               ) : (
                 <>
                   {/* Desktop */}
-                  <div className="hidden border border-border bg-background lg:block">
+                  <div className="hidden border border-border bg-background xl:block">
                     <div className="grid grid-cols-[40px_1.1fr_1.5fr_120px_110px_120px_110px] items-center gap-4 border-b border-border px-4 py-3">
                       <span />
 
@@ -298,7 +298,7 @@ function AdminProgramsPage() {
                   </div>
 
                   {/* Mobile / tablet */}
-                  <div className="space-y-3 lg:hidden">
+                  <div className="space-y-3 xl:hidden">
                     {filteredPrograms.map((program, index) => (
                       <article
                         key={program.id}

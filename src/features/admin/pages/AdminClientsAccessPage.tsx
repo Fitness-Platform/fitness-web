@@ -1,3 +1,4 @@
+import AdminHistoryPagination from "../components/AdminHistoryPagination";
 import { useState } from "react";
 import { useAdminProgramAccessesQuery } from "../hooks/useAdminProgramAccesses";
 import { useAdminProgramsQuery } from "../hooks/useAdminProgramsQuery";
@@ -171,13 +172,19 @@ export default function AdminClientsAccessPage() {
           </button>
         </section>
       ) : query.data.length ? (
-        <AdminAccessList
-          accesses={query.data}
-          users={resolvedUsers}
-          programs={programs.data ?? []}
-          now={now}
-          onDetails={(access) => setAction({ kind: "details", access })}
-          onRevoke={(access) => setAction({ kind: "revoke", access })}
+        <AdminHistoryPagination
+          key={JSON.stringify([client?.id, programId])}
+          items={query.data}
+          renderPage={(page) => (
+            <AdminAccessList
+              accesses={page}
+              users={resolvedUsers}
+              programs={programs.data ?? []}
+              now={now}
+              onDetails={(access) => setAction({ kind: "details", access })}
+              onRevoke={(access) => setAction({ kind: "revoke", access })}
+            />
+          )}
         />
       ) : (
         <section className="border border-border p-7 text-sm leading-6 text-muted-foreground">

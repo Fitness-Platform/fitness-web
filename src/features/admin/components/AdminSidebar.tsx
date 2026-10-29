@@ -26,12 +26,12 @@ const items = [
     icon: BookOpen,
   },
   {
-    label: "Workouts",
+    label: "Workout Library",
     to: "/admin/workouts",
     icon: Dumbbell,
   },
   {
-    label: "Exercises",
+    label: "Exercise Library",
     to: "/admin/exercises",
     icon: ListChecks,
   },

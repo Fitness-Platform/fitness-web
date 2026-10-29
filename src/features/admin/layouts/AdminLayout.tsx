@@ -25,7 +25,7 @@ function AdminLayout() {
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div className="[--color-background:#F2F3F0] flex min-h-screen bg-background text-foreground">
       <AdminSidebar
         isMobileOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}

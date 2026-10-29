@@ -1,3 +1,4 @@
+import { adminManageInteraction } from "../components/programStructureStyles";
 import { Link } from "react-router-dom";
 import { useAdminDashboardQuery } from "../hooks/useAdminDashboardQuery";
 
@@ -344,7 +345,7 @@ function AdminDashboardPage() {
                       to={`/admin/programs/${program.id}`}
                       aria-label={`Manage ${program.name}`}
                       style={{ font: "inherit" }}
-                      className="inline-flex min-h-10 items-center justify-center border border-primary-dark px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-primary-dark transition-colors hover:bg-primary/10"
+                      className={"inline-flex min-h-10 items-center justify-center border border-primary-dark px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-primary-dark " + adminManageInteraction}
                     >
                       Manage
                     </Link>
