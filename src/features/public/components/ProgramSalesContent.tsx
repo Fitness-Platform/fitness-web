@@ -67,7 +67,7 @@ export default function ProgramSalesContent() {
       </section>
       <section
         aria-labelledby="steps-title"
-        className="border-t border-border bg-[#F7F5F0]"
+        className="border-t border-border bg-[#F2F3F0]"
       >
         <div className={`${container} py-12 md:py-16`}>
           <div className="grid gap-8">
@@ -155,7 +155,7 @@ export default function ProgramSalesContent() {
       </section>
       <section
         aria-labelledby="audience-title"
-        className="bg-[#F7F5F0] text-center"
+        className="bg-[#F2F3F0] text-center"
       >
         <div className={`${container} py-14 md:py-20 lg:py-24`}>
           <p className={eyebrow}>Who it's for</p>
