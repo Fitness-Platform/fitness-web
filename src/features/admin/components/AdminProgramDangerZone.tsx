@@ -118,7 +118,7 @@ function AdminProgramDangerZone({ program }: AdminProgramDangerZoneProps) {
                 type="button"
                 onClick={() => setIsConfirmationOpen(false)}
                 disabled={deleteProgramMutation.isPending}
-                className="min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground transition hover:border-primary-dark disabled:opacity-50"
+                className="admin-secondary-action min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground transition hover:border-primary-dark disabled:opacity-50"
               >
                 Cancel
               </button>

@@ -13,7 +13,7 @@ export const structurePrimary =
 export const structureDanger =
   "min-h-11 bg-red-700 px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-white transition hover:bg-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 disabled:cursor-not-allowed disabled:opacity-50";
 export const structureCancel =
-  "min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] disabled:opacity-50";
+  "admin-secondary-action min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] disabled:opacity-50";
 
 export function structureError(error: unknown) {
   if (error instanceof ApiError) {

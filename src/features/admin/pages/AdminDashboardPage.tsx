@@ -334,8 +334,8 @@ function AdminDashboardPage() {
                     <span
                       className={
                         program.status === "PUBLISHED"
-                          ? "w-fit bg-primary/10 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-primary-dark"
-                          : "w-fit bg-[#F3EEE1] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#776842]"
+                          ? "w-fit bg-[#E3ECE7] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#496658]"
+                          : "w-fit bg-[#F1E8D5] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#7A6334]"
                       }
                     >
                       {program.status}
@@ -417,9 +417,9 @@ function AdminDashboardPage() {
                           <span
                             className={
                               purchase.status === "PAID"
-                                ? "mt-2 inline-block bg-primary/10 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-primary-dark"
+                                ? "mt-2 inline-block bg-[#E3ECE7] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#496658]"
                                 : purchase.status === "PENDING"
-                                  ? "mt-2 inline-block bg-[#F3EEE1] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#776842]"
+                                  ? "mt-2 inline-block bg-[#F1E8D5] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#7A6334]"
                                   : "mt-2 inline-block bg-muted px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-muted-foreground"
                             }
                           >
@@ -479,9 +479,9 @@ function AdminDashboardPage() {
                             <span
                               className={
                                 purchase.status === "PAID"
-                                  ? "inline-block bg-primary/10 px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-primary-dark"
+                                  ? "inline-block bg-[#E3ECE7] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#496658]"
                                   : purchase.status === "PENDING"
-                                    ? "inline-block bg-[#F3EEE1] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#776842]"
+                                    ? "inline-block bg-[#F1E8D5] px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-[#7A6334]"
                                     : "inline-block bg-muted px-2 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-muted-foreground"
                               }
                             >

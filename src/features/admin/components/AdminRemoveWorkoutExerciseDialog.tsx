@@ -123,7 +123,7 @@ function AdminRemoveWorkoutExerciseDialog({
             disabled={
               deleteMutation.isPending
             }
-            className="min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground disabled:opacity-50"
+            className="admin-secondary-action min-h-11 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground disabled:opacity-50"
           >
             Cancel
           </button>

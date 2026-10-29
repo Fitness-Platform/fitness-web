@@ -234,7 +234,7 @@ function AdminCreateWorkoutDrawer({
               disabled={
                 createWorkoutMutation.isPending
               }
-              className="min-h-11 flex-1 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground transition hover:border-primary-dark disabled:opacity-50 sm:flex-none"
+              className="admin-secondary-action min-h-11 flex-1 border border-border px-5 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground transition hover:border-primary-dark disabled:opacity-50 sm:flex-none"
             >
               Cancel
             </button>

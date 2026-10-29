@@ -10,3 +10,19 @@
 .admin-shell .admin-surface {
   background-color: var(--admin-surface);
 }
+
+/* Shared secondary interaction; dimensions and form behavior stay local. */
+.admin-shell .admin-secondary-action {
+  transition: background-color 150ms, border-color 150ms, color 150ms;
+}
+
+.admin-shell .admin-secondary-action:hover:not(:disabled) {
+  background-color: #e3ece7;
+  border-color: #607a6d;
+  color: #496658;
+}
+
+.admin-shell .admin-secondary-action:focus-visible {
+  outline: 2px solid #607a6d;
+  outline-offset: 2px;
+}

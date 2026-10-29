@@ -7,9 +7,9 @@ export default function AdminPurchaseStatusBadge({
 }) {
   const color =
     status === "PAID"
-      ? "bg-primary/10 text-primary-dark"
+      ? "bg-[#E3ECE7] text-[#496658]"
       : status === "PENDING"
-        ? "bg-[#F3EEE1] text-[#776842]"
+        ? "bg-[#F1E8D5] text-[#7A6334]"
         : "bg-border/40 text-muted-foreground";
   return (
     <span
