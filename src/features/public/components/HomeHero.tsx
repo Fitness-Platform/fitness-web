@@ -43,7 +43,7 @@ export default function HomeHero({
             </a>
           </div>
         </div>
-        <figure className="relative w-full self-stretch overflow-hidden bg-[#F0EFEA] h-[27rem] md:h-[31rem] lg:h-[33rem]">
+        <figure className="relative w-full self-stretch overflow-hidden bg-[#F2F3F0] h-[27rem] md:h-[31rem] lg:h-[33rem]">
           <img
             src={hero}
             width="927"

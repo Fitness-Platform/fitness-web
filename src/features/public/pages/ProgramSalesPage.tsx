@@ -84,10 +84,10 @@ export default function ProgramSalesPage() {
   const allowed = isConfiguredSalesProgram(programId);
   const query = usePublicProgram(allowed ? programId : "");
   return (
-    <div className="bg-background text-foreground">
+    <div className="bg-[#F2F3F0] text-foreground">
       <a
         href="#sales-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-background focus:p-4"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-[#F2F3F0] focus:p-4"
       >
         Skip to content
       </a>
