@@ -1,4 +1,8 @@
-import { Check, Minus, Play, Plus } from 'lucide-react'
+import MemberRestTimer from './MemberRestTimer'
+import { useRestTimer } from '../hooks/useRestTimer'
+import MemberExerciseVideo from './MemberExerciseVideo'
+import { isValidSetDraft, type SetDraft } from '../utils/setDraft'
+import { Check, Minus, Plus } from 'lucide-react'
 import { useState } from 'react'
 
 import type { MemberWorkoutExercise } from '../types/memberProgramWorkoutDetail'
@@ -23,10 +27,6 @@ type MemberExerciseCardProps = {
   onEditingChange: (editing: boolean) => void
 }
 
-type SetDraft = {
-  reps: string
-  weightLb: string
-}
 
 function formatWeight(weight: number) {
   return `${weight} lb`
@@ -81,6 +81,7 @@ function MemberExerciseCard({
   const [setDrafts, setSetDrafts] = useState<Record<number, SetDraft>>(() =>
     createSetDrafts(exercise),
   )
+  const restTimer = useRestTimer()
   const [editingSetNumber, setEditingSetNumber] = useState<number | null>(null)
 
   const completedSets = [...exercise.completedSets].sort(
@@ -147,21 +148,15 @@ function MemberExerciseCard({
     const draft = setDrafts[setNumber]
     if (!draft || isSaving) return
 
+    if (!isValidSetDraft(draft)) return
     const reps = Number(draft.reps)
     const weightLb = Number(draft.weightLb)
 
-    if (
-      draft.reps.trim() === '' ||
-      draft.weightLb.trim() === '' ||
-      !Number.isInteger(reps) ||
-      reps < 0 ||
-      !Number.isFinite(weightLb) ||
-      weightLb < 0
-    ) {
-      return
-    }
-
+    // Capture whether this was new before the successful refetch includes it.
+    const wasSaved = editingSetNumber === setNumber ||
+      completedSets.some(set => set.setNumber === setNumber)
     onSaveSet(setNumber, reps, weightLb, () => {
+      if (!wasSaved && !isWorkoutCompleted) restTimer.start(exercise.restSeconds)
       if (editingSetNumber === setNumber) {
         setEditingSetNumber(null)
         onEditingChange(false)
@@ -173,16 +168,8 @@ function MemberExerciseCard({
     ? null
     : (setDrafts[activeSetNumber] ?? { reps: '', weightLb: '' })
 
-  const activeDraftValid = activeDraft !== null &&
-    activeDraft.reps.trim() !== '' &&
-    activeDraft.weightLb.trim() !== '' &&
-    Number.isInteger(Number(activeDraft.reps)) &&
-    Number(activeDraft.reps) >= 0 &&
-    Number.isFinite(Number(activeDraft.weightLb)) &&
-    Number(activeDraft.weightLb) >= 0
-
+  const activeDraftValid = activeDraft !== null && isValidSetDraft(activeDraft)
   const isEditingSavedSet = editingSetNumber !== null
-  const hasDemo = Boolean(exercise.videoUrl?.trim())
 
   return (
     <article className="min-w-0">
@@ -199,7 +186,7 @@ function MemberExerciseCard({
             />
           ))}
         </div>
-        <h2 className="mt-3 text-2xl font-semibold leading-7 tracking-tight text-foreground">
+        <h2 tabIndex={-1} className="mt-3 text-2xl font-semibold leading-7 tracking-tight text-foreground">
           {exercise.name}
         </h2>
         {exercise.equipment && (
@@ -207,28 +194,7 @@ function MemberExerciseCard({
         )}
       </div>
 
-      {/* Real video when provided by the API, neutral placeholder otherwise */}
-      <div className="relative mt-0 overflow-hidden bg-border/70">
-        {hasDemo ? (
-          <video
-            controls
-            playsInline
-            preload="metadata"
-            className="h-40 w-full bg-foreground object-contain sm:h-52"
-            src={exercise.videoUrl}
-            aria-label={`Demonstration of ${exercise.name}`}
-          >
-            Your browser does not support video playback.
-          </video>
-        ) : (
-          <div className="flex h-40 flex-col items-center justify-center gap-3 text-muted-foreground sm:h-52">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full border border-primary-dark/30 text-primary-dark">
-              <Play className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <span className="text-xs">Video demonstration unavailable</span>
-          </div>
-        )}
-      </div>
+      <MemberExerciseVideo key={exercise.videoUrl} url={exercise.videoUrl} name={exercise.name} />
 
       {/* Exercise prescription */}
       <dl className="grid grid-cols-2 border-x border-b border-border bg-background sm:grid-cols-4">
@@ -243,7 +209,7 @@ function MemberExerciseCard({
         <div className="border-r border-border px-4 py-3">
           <dt className="text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">Rest</dt>
           <dd className="mt-1 text-sm font-semibold text-foreground">
-            {exercise.restSeconds !== null ? formatRest(exercise.restSeconds) : '—'}
+            {exercise.restSeconds != null && Number.isFinite(exercise.restSeconds) ? formatRest(exercise.restSeconds) : '—'}
           </dd>
         </div>
         <div className="px-4 py-3">
@@ -270,6 +236,10 @@ function MemberExerciseCard({
             {completedSets.length} of {exercise.sets} sets saved
           </p>
         </div>
+
+        {!isWorkoutCompleted && restTimer.rest && (
+          <MemberRestTimer remaining={restTimer.rest.remaining} exerciseName={exercise.name} onDismiss={restTimer.dismiss} />
+        )}
 
         <div className="mt-4 space-y-2.5">
           {completedSets
@@ -348,6 +318,7 @@ function MemberExerciseCard({
                         id={`${field}-${exercise.workoutExerciseId}-${activeSetNumber}`}
                         type="number"
                         min="0"
+                        max={field === 'reps' ? 2147483647 : 999999.99}
                         step={field === 'reps' ? '1' : '0.01'}
                         inputMode={field === 'reps' ? 'numeric' : 'decimal'}
                         value={activeDraft[field]}

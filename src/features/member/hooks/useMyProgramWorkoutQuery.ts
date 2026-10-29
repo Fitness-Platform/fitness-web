@@ -1,3 +1,4 @@
+import { memberQueryRetry } from '../utils/memberQueryRetry'
 import { useQuery } from '@tanstack/react-query'
 
 import { getMyProgramWorkout } from '../api/getMyProgramWorkout'
@@ -24,6 +25,7 @@ export function useMyProgramWorkoutQuery(
   programWeekWorkoutId: string | undefined,
 ) {
   return useQuery({
+    retry: memberQueryRetry,
     queryKey: memberProgramWorkoutQueryKey(
       programId ?? '',
       weekId ?? '',

@@ -13,7 +13,7 @@ export type MemberWorkoutExercise = {
   name: string
   instructions: string
   equipment: string
-  videoUrl: string
+  videoUrl: string | null
   sets: number
   reps: string
   suggestedWeightLb: number | null

@@ -1,9 +1,9 @@
+import MemberRequestError from '../components/MemberRequestError'
 import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 
 import { ApiError } from '../../../services/apiClient'
 
-import MemberPhotoPlaceholder from '../components/MemberPhotoPlaceholder'
 import MemberProgramResourceCard from '../components/MemberProgramResourceCard'
 import MemberProgramWeekCard from '../components/MemberProgramWeekCard'
 
@@ -32,7 +32,7 @@ function MemberProgramOverviewPage() {
     error instanceof ApiError && error.status === 403
 
   return (
-    <div className="space-y-7 sm:space-y-9">
+    <div className="space-y-7 sm:space-y-9" role="status">
       {/* Back navigation */}
       <Link
         to="/app/programs"
@@ -79,19 +79,7 @@ function MemberProgramOverviewPage() {
 
       {/* Error state */}
       {isError && !isAccessDenied && (
-        <div className="border border-border p-5 sm:p-6">
-          <p className="text-sm text-foreground">
-            We couldn't load this program.
-          </p>
-
-          <button
-            type="button"
-            onClick={() => refetch()}
-            className="mt-3 text-sm text-muted-foreground underline underline-offset-4 transition hover:text-foreground"
-          >
-            Try again
-          </button>
-        </div>
+        <MemberRequestError error={error} subject="program" onRetry={refetch} />
       )}
 
       {/* Program content */}
@@ -99,10 +87,6 @@ function MemberProgramOverviewPage() {
         <>
           {/* Program header */}
           <header className="space-y-4">
-            <MemberPhotoPlaceholder
-              variant="card"
-              className="h-28 w-full sm:h-44"
-            />
 
             <div>
               <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">

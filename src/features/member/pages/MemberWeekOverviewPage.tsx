@@ -1,3 +1,4 @@
+import MemberRequestError from '../components/MemberRequestError'
 import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 
@@ -21,7 +22,7 @@ function MemberWeekOverviewPage() {
     error instanceof ApiError && error.status === 403
 
   return (
-    <div className="space-y-8 sm:space-y-10">
+    <div className="space-y-8 sm:space-y-10" role="status">
       {/* Back navigation */}
       <Link
         to={`/app/programs/${programId}`}
@@ -49,12 +50,12 @@ function MemberWeekOverviewPage() {
       {isAccessDenied && (
         <div className="border border-border p-5 sm:p-6">
           <p className="font-medium text-foreground">
-            This week isn't available yet.
+            This week isn't currently available.
           </p>
 
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            Return to the program overview to see
-            when it unlocks.
+            Return to the program overview to check
+            your access and week availability.
           </p>
 
           <Link
@@ -68,19 +69,7 @@ function MemberWeekOverviewPage() {
 
       {/* Error state */}
       {isError && !isAccessDenied && (
-        <div className="border border-border p-5 sm:p-6">
-          <p className="text-sm text-foreground">
-            We couldn't load this week.
-          </p>
-
-          <button
-            type="button"
-            onClick={() => refetch()}
-            className="mt-3 text-sm text-muted-foreground underline underline-offset-4 transition hover:text-foreground"
-          >
-            Try again
-          </button>
-        </div>
+        <MemberRequestError error={error} subject="week" onRetry={refetch} />
       )}
 
       {/* Week content */}

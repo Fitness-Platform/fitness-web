@@ -1,7 +1,7 @@
 export type MemberProgramSummary = {
   programId: string
   name: string
-  description: string
+  description: string | null
   accessStartsAt: string
-  accessExpiresAt: string
+  accessExpiresAt: string | null
 }

@@ -1,5 +1,5 @@
 import { LogOut, UserRound } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 import { useAuthSession } from '../../auth/hooks/useAuthSession'
@@ -20,6 +20,7 @@ function MemberHeader() {
   const { user } = useAuthSession()
   const logoutMutation = useLogoutMutation()
 
+  const accountButton = useRef<HTMLButtonElement>(null)
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false)
 
   async function handleLogout() {
@@ -72,25 +73,17 @@ function MemberHeader() {
           >
             Programs
           </NavLink>
-
-          <NavLink
-            to="/app/groups"
-            className={getDesktopLinkClassName}
-          >
-            Groups
-          </NavLink>
-
-          <NavLink
-            to="/app/coaching"
-            className={getDesktopLinkClassName}
-          >
-            Coaching
-          </NavLink>
         </nav>
 
         {/* Account */}
-        <div className="relative justify-self-end">
+        <div className="relative justify-self-end" onKeyDown={(event) => {
+          if (event.key === 'Escape' && isAccountMenuOpen) {
+            setIsAccountMenuOpen(false)
+            accountButton.current?.focus()
+          }
+        }}>
           <button
+            ref={accountButton}
             type="button"
             onClick={() =>
               setIsAccountMenuOpen((current) => !current)

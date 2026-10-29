@@ -1,3 +1,4 @@
+import { ApiError } from '../../../services/apiClient'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { completeMyWorkout } from '../api/completeMyWorkout'
@@ -24,6 +25,13 @@ export function useCompleteMyWorkoutMutation({
         programWeekWorkoutId,
       }),
 
+    onError: async (error) => {
+      if (error instanceof ApiError && error.status === 403) {
+        await queryClient.invalidateQueries({
+          queryKey: memberProgramWorkoutQueryKey(programId, weekId, programWeekWorkoutId),
+        })
+      }
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: memberProgramWorkoutQueryKey(

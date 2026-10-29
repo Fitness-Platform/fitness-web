@@ -1,3 +1,4 @@
+import MemberRequestError from '../components/MemberRequestError'
 import MemberProgramCard from '../components/MemberProgramCard'
 import { useMyProgramsQuery } from '../hooks/useMyProgramsQuery'
 
@@ -6,11 +7,12 @@ function MemberProgramsPage() {
     data: programs,
     isPending,
     isError,
+    error,
     refetch,
   } = useMyProgramsQuery()
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8" role="status">
       {/* Page header */}
       <header className="max-w-2xl">
         <p className="text-sm text-muted-foreground">
@@ -50,19 +52,7 @@ function MemberProgramsPage() {
 
         {/* Error state */}
         {isError && (
-          <div className="border border-border p-5 sm:p-6">
-            <p className="text-sm text-foreground">
-              We couldn't load your programs.
-            </p>
-
-            <button
-              type="button"
-              onClick={() => refetch()}
-              className="mt-3 text-sm text-muted-foreground underline underline-offset-4 transition hover:text-foreground"
-            >
-              Try again
-            </button>
-          </div>
+          <MemberRequestError error={error} subject="programs" onRetry={refetch} />
         )}
 
         {/* Empty state */}

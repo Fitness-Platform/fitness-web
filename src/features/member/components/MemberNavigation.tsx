@@ -1,8 +1,6 @@
 import {
   Dumbbell,
   Home,
-  MessagesSquare,
-  Users,
 } from 'lucide-react'
 
 import { NavLink } from 'react-router-dom'
@@ -20,18 +18,6 @@ const memberLinks = [
     icon: Dumbbell,
     end: false,
   },
-  {
-    to: '/app/groups',
-    label: 'Groups',
-    icon: Users,
-    end: false,
-  },
-  {
-    to: '/app/coaching',
-    label: 'Coaching',
-    icon: MessagesSquare,
-    end: false,
-  },
 ]
 
 function MemberNavigation() {
@@ -40,7 +26,7 @@ function MemberNavigation() {
       className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background pb-[env(safe-area-inset-bottom)] lg:hidden"
       aria-label="Member navigation"
     >
-      <div className="grid h-[72px] grid-cols-4">
+      <div className="grid h-[72px] grid-cols-2">
         {memberLinks.map(
           ({ to, label, icon: Icon, end }) => (
             <NavLink

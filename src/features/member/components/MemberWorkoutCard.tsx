@@ -2,7 +2,6 @@ import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import type { MemberProgramWorkoutSummary } from '../types/memberProgramWeekDetail'
-import MemberPhotoPlaceholder from './MemberPhotoPlaceholder'
 
 type MemberWorkoutCardProps = {
   programId: string
@@ -22,22 +21,6 @@ function MemberWorkoutCard({
       aria-label={`Open workout ${workout.position}: ${workout.name}`}
     >
       <div className="flex min-w-0 items-stretch gap-3 sm:gap-4">
-        {/* Workout image */}
-        <div className="relative min-h-36 w-24 shrink-0 self-stretch sm:w-28">
-          <MemberPhotoPlaceholder
-            variant="card"
-            className="absolute inset-0 h-full w-full"
-          />
-
-          {/* Workout number */}
-          <span
-            className="absolute left-0 top-0 flex h-7 w-7 items-center justify-center bg-background text-xs font-semibold text-foreground"
-            aria-hidden="true"
-          >
-            {workout.position}
-          </span>
-        </div>
-
         {/* Workout information */}
         <div className="flex min-w-0 flex-1 flex-col">
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
